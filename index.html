@@ -359,18 +359,17 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 🚨 บังคับให้ผู้ใช้งานต้องกรอกข้อมูล Firebase ของตัวเองตรงนี้ 🚨
-const firebaseConfig = {
-            apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
-            authDomain: "jossai-5a857.firebaseapp.com",
-            projectId: "jossai-5a857",
-            storageBucket: "jossai-5a857.firebasestorage.app",
-            messagingSenderId: "1080088885354",
-            appId: "1:1080088885354:web:693ae4350e49fe37c53213",
-            measurementId: "G-7PHD69E0W7"
+        // 🚨 เว้นว่างไว้สำหรับแอดมินหรือผู้ใช้งานไปกรอก Firebase Config ของตัวเอง 🚨
+        const firebaseConfig = {
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: "",
+            measurementId: ""
         };
 
-        // ป้องกันไม่ให้ระบบแครชถ้ายังไม่ได้ใส่ Firebase Config
         const isFirebaseConfigured = firebaseConfig.apiKey !== "";
         let auth, provider;
 
@@ -389,7 +388,7 @@ const firebaseConfig = {
 
         window.loginWithGoogle = async function() {
             if (!isFirebaseConfigured) {
-                showToast("ระบบยังไม่ได้เชื่อมต่อ Firebase กรุณาตั้งค่าโค้ดก่อน", "warning");
+                showToast("ระบบยังไม่ได้เชื่อมต่อ Firebase แอดมินต้องใส่โค้ดในระบบหลังบ้านก่อน", "warning");
                 return;
             }
 
@@ -482,7 +481,7 @@ const firebaseConfig = {
 
         window.autoResize = function(el) { el.style.height = 'auto'; el.style.height = (el.scrollHeight) + 'px'; }
 
-        // โหลด API Key ที่ผู้ใช้เคยกรอกไว้จากเครื่อง
+        // โหลด API Key ที่ลูกศิษย์เคยกรอกไว้ในเครื่องของเขา
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('jossApiKey');
             const apiKeyInput = document.getElementById('userApiKey');
@@ -748,7 +747,7 @@ SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Ch
                     if (dataModels.error) throw new Error(dataModels.error.message);
                     validModels = dataModels.models.filter(m => m.supportedGenerationMethods?.includes("generateContent")).map(m => m.name.replace('models/', ''));
                 } catch(err) {
-                    if (err.message.includes("API key not valid")) throw new Error("🔑 API Key ไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
+                    if (err.message.includes("API key not valid")) throw new Error("🔑 API Key ของคุณไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
                     validModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]; 
                 }
 
@@ -832,7 +831,7 @@ SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Ch
                             let errMsg = data.error?.message || "Unknown Error";
                             if (errMsg.includes("limit: 0") || errMsg.includes("not found")) continue; 
                             if (errMsg.includes("Quota exceeded") || errMsg.includes("quota")) throw new Error("⏳ โควต้า API นาทีนี้เต็มแล้วครับพี่! รบกวนรอ 1 นาทีแล้วกดปุ่มใหม่นะครับ 🦄");
-                            if (errMsg.includes("API key not valid")) throw new Error("🔑 API Key ของ Gemini ไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
+                            if (errMsg.includes("API key not valid")) throw new Error("🔑 API Key ของคุณไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
                             throw new Error(errMsg);
                         }
 
