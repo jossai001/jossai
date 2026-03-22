@@ -359,39 +359,32 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 🚨 เว้นว่างไว้สำหรับแอดมินหรือผู้ใช้งานไปกรอก Firebase Config ของตัวเอง 🚨
+        // 🚨 ใส่ Firebase Config ของพี่จอสAi กลับคืนมา (ส่วนนี้จำเป็นต้องฝังไว้ครับ) 🚨
         const firebaseConfig = {
-            apiKey: "",
-            authDomain: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: "",
-            measurementId: ""
+            apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
+            authDomain: "jossai-5a857.firebaseapp.com",
+            projectId: "jossai-5a857",
+            storageBucket: "jossai-5a857.firebasestorage.app",
+            messagingSenderId: "1080088885354",
+            appId: "1:1080088885354:web:693ae4350e49fe37c53213",
+            measurementId: "G-7PHD69E0W7"
         };
 
-        const isFirebaseConfigured = firebaseConfig.apiKey !== "";
-        let auth, provider;
+        const isFirebaseConfigured = true;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        if (isFirebaseConfigured) {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            provider = new GoogleAuthProvider();
-        }
-
-        // รายชื่ออีเมลที่อนุญาตให้ใช้งานระบบ (เปลี่ยนเป็นของตัวเอง)
+        // 🚨 ตรงนี้อย่าลืมเอารายชื่ออีเมลลูกศิษย์ของพี่มาวางทับนะครับ 🚨
         const ALLOWED_EMAILS = [
-            "admin@gmail.com", 
-            "student1@gmail.com",
-            "student2@gmail.com"
+            "admin@gmail.com", // อีเมลหลักของพี่
+            "ploy4661@gmail.com", 
+            "toyjutha@gmail.com",
+            "yingonwan.stock@gmail.com"
+            // ... วางรายชื่อที่เหลือต่อได้เลยครับ ...
         ];
 
         window.loginWithGoogle = async function() {
-            if (!isFirebaseConfigured) {
-                showToast("ระบบยังไม่ได้เชื่อมต่อ Firebase แอดมินต้องใส่โค้ดในระบบหลังบ้านก่อน", "warning");
-                return;
-            }
-
             try {
                 const result = await signInWithPopup(auth, provider);
                 const userEmail = result.user.email.toLowerCase();
@@ -407,7 +400,8 @@
                     document.getElementById('loginForm').classList.add('hidden');
                 }
             } catch (error) {
-                showToast("ล็อกอินไม่สำเร็จ กรุณาลองใหม่", "error");
+                console.error("Login Error:", error);
+                showToast("ล็อกอินไม่สำเร็จ กรุณาลองใหม่ หรือปิดตัวบล็อกป๊อปอัป", "error");
             }
         };
 
@@ -418,11 +412,7 @@
         };
 
         window.logout = function() {
-            if(isFirebaseConfigured) {
-                signOut(auth).then(processLogout);
-            } else {
-                processLogout();
-            }
+            signOut(auth).then(processLogout);
         };
 
         function processLogout() {
@@ -436,20 +426,18 @@
             document.getElementById('analysisOutput').classList.add('hidden');
         }
 
-        if (isFirebaseConfigured) {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    const userEmail = user.email.toLowerCase();
-                    if (ALLOWED_EMAILS.includes(userEmail) || userEmail.includes("admin")) { 
-                        document.getElementById('loginForm').classList.add('hidden');
-                        document.getElementById('authScreen').classList.add('hidden');
-                        document.getElementById('mainSidebar').classList.remove('hidden');
-                        document.getElementById('mainArea').classList.remove('hidden');
-                        document.getElementById('userEmailDisplay').innerText = userEmail;
-                    }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userEmail = user.email.toLowerCase();
+                if (ALLOWED_EMAILS.includes(userEmail) || userEmail.includes("admin")) { 
+                    document.getElementById('loginForm').classList.add('hidden');
+                    document.getElementById('authScreen').classList.add('hidden');
+                    document.getElementById('mainSidebar').classList.remove('hidden');
+                    document.getElementById('mainArea').classList.remove('hidden');
+                    document.getElementById('userEmailDisplay').innerText = userEmail;
                 }
-            });
-        }
+            }
+        });
     </script>
 
     <script>
