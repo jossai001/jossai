@@ -82,7 +82,7 @@
             <div id="pendingForm" class="hidden">
                 <div class="text-pink-500 mb-4 text-5xl md:text-6xl animate-bounce">⏳</div>
                 <h2 class="text-xl md:text-2xl font-bold text-white mb-2">รอการอนุมัติ</h2>
-                <p class="text-gray-300 text-sm md:text-base mb-6">ระบบได้รับอีเมลแล้ว กรุณารอตรวจสอบและเปิดสิทธิ์ให้นะครับ ✨</p>
+                <p class="text-gray-300 text-sm md:text-base mb-6">ระบบได้รับอีเมลแล้ว กรุณารอ พี่จอสAi ตรวจสอบและเปิดสิทธิ์ให้นะครับ ✨</p>
                 <button onclick="resetLogin()" class="text-purple-400 text-sm hover:text-pink-400 transition">ลองบัญชีอื่น</button>
             </div>
         </div>
@@ -331,6 +331,8 @@
                         <option value="Dark and gritty, high contrast, moody lighting, raw atmosphere">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
                         <option value="Luxury, glamorous gold, sparkling, rich and elegant lighting">💎 เศรษฐีดูไบ (Rich & Shine)</option>
                         <option value="Pastel dreamy, soft color palette, magical light, cotton candy colors">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
+                        <option value="Wes Anderson style, symmetrical composition, quirky pastel palette">🎨 อินดี้สมมาตร (Symmetric Pastel)</option>
+                        <option value="Earth tone, muted colors, Korean cafe aesthetic, soft natural light">🤎 สายคาเฟ่ (Muted Earth)</option>
                     </select>
                 </div>
 
@@ -342,6 +344,8 @@
                         <option value="3D animation, Pixar style, Disney style, cute stylized 3D render">🏰 การ์ตูนฝรั่ง (Cute 3D)</option>
                         <option value="Next-gen game graphics, Unreal Engine 5 render, ray tracing, cinematic game art">🎮 เกมภาพสวย (Unreal Engine)</option>
                         <option value="Studio Ghibli style, soft anime art, watercolor background, nostalgic anime">🌸 อนิเมะใจฟู (Soft Anime)</option>
+                        <option value="Shonen action anime style, sharp lines, dynamic comic art, intense shading">⚔️ อนิเมะสายบวก (Fierce Anime)</option>
+                        <option value="Modern Manhwa style, Korean webtoon art, beautiful stylized characters, clean lines">📖 มันฮวาสายเกา (Webtoon Art)</option>
                     </select>
                 </div>
             </div>
@@ -359,7 +363,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 🚨 ใส่ Firebase Config ของพี่จอสAi กลับคืนมา (ส่วนนี้จำเป็นต้องฝังไว้ครับ) 🚨
+        // 🚨 ฝัง Firebase Config (ระบบล็อกอิน) ของพี่จอสAi 🚨
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
@@ -370,18 +374,58 @@
             measurementId: "G-7PHD69E0W7"
         };
 
-        const isFirebaseConfigured = true;
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // 🚨 ตรงนี้อย่าลืมเอารายชื่ออีเมลลูกศิษย์ของพี่มาวางทับนะครับ 🚨
+        // 🚨 รายชื่อลูกศิษย์ที่อนุญาตให้ล็อกอินเข้าใช้เว็บได้ 🚨
         const ALLOWED_EMAILS = [
-            "admin@gmail.com", // อีเมลหลักของพี่
-            "ploy4661@gmail.com", 
-            "toyjutha@gmail.com",
-            "yingonwan.stock@gmail.com"
-            // ... วางรายชื่อที่เหลือต่อได้เลยครับ ...
+            "admin@gmail.com", "adminaong01", "rungtipvee@gmail.com",
+            "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
+            "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
+            "ployandrs@gmail.com", "bua.pimchanok@gmail.com", "johntp3265@gmail.com", "hachikeru66@gmail.com", 
+            "kik2688@gmail.com", "sawasdee-2011@hotmail.com", "ppukpui555@gmail.com", "yingphat59144@gmail.com", 
+            "surasaksk212@gmail.com", "kheaknuttha@gmail.com", "aiewpong05@gmail.com", "suyaya14tan@gmail.com", 
+            "gitsafang@gmail.com", "suryaneesamahoh53@gmail.com", "noofonwow123@gmail.com", "bowsudarat1312@gmail.com", 
+            "pomwong1977@gmail.com", "thanaree404@gmail.com", "anne.17wk@gmail.com", "werapat123wi@gmail.com", 
+            "bengloomy21242@gmail.com", "wangkahadploy1988@gmail.com", "wanitchaya.kp@gmail.com", "orawan.piphat@gmail.com", 
+            "pitchanuch.i@gmail.com", "suradect083@gmail.com", "op.moniquewedding@gmail.com", "onanong.man@gmail.com", 
+            "patthirayatongjeen@gmail.com", "muayja5@gmail.com", "parapop1995@gmail.com", "jakdaw1977@gmail.com", 
+            "sjshopjune@gmail.com", "j.pensubdesigns@gmail.com", "imsayan.int@gmail.com", "nun.daw253746@gmail.com", 
+            "napatcha.jj@gmail.com", "patcharat@gmail.com", "kiatatisdej@gmail.com", "panatda.waew@gmail.com", 
+            "orawanjitdee@gmail.com", "lovetamsab89@gmail.com", "ug632447074@ftu.ac.th", "too235276@gmail.com", 
+            "piknicha@gmail.com", "p.ying.onwan@gmail.com", "b17636353@gmail.com", "lhee0706@gmail.com", 
+            "jirapatik2233@gmail.com", "paulchayasit@gmail.com", "alinda7316@gmail.com", "pakpornr@gmail.com", 
+            "peerada31210@gmail.com", "schaysm38@gmail.com", "krusarah1234@gmail.com", "treeranais20@gmail.com", 
+            "anattapongz@gmail.com", "jppaikamnarm@gmail.com", "kanya.thitalohakul@gmail.com", "bwhiteth@gmail.com", 
+            "atipornkhwan@gmail.com", "thitirat24269@gmail.com", "panwitpanwit5@gmail.com", "naipon4ais@gmail.com", 
+            "ngorngor.593@gmail.com", "matus17102550@gmail.com", "paisankhamnoy@gmail.com", "jiraporn56779@gmail.com", 
+            "thanaporn712389@gmail.com", "usasaetan69@gmail.com", "ahmuaypinya333@gmail.com", "supreme1988.z@gmail.com", 
+            "chotiros.phooraya@gmail.com", "thidnapa@gmail.com", "cheawkheruxaom@gmail.com", "aop.gus789@gmail.com", 
+            "chainzaa2549@gmail.com", "nicha19.03.1998@gmail.com", "tangthai550@gmail.com", "nnk24562456@gmail.com", 
+            "pomkanlayarat@gmail.com", "yimdi1@gmail.com", "pornthep.js@gmail.com", "fon43dmfom@gmail.com", 
+            "pattama.weaw@gmail.com", "jaonepay168@gmail.com", "aobneung1993@gmail.com", "pipopnuk44@gmail.com", 
+            "kraisorn11.nun2235@gmail.com", "chomchank93@gmail.com", "ratcham888@gmail.com", "langkangz81@gmail.com", 
+            "mooaungeay@gmail.com", "toonsu.nix@gmail.com", "chananphat.r@gmail.com", "20lomly@gmail.com", 
+            "ijab2543@gmail.com", "jane021tt@gmail.com", "kibkubkobkeb@gmail.com", "uzagi.a@gmail.com", 
+            "thepphimonkan@gmail.com", "taksaonsaetan@gmail.com", "fairphurichaya@gmail.com", "wowsengsengwow@gmail.com", 
+            "maiprom56@gmail.com", "24julio.closet@gmail.com", "sittisak.2121m@gmail.com", "billycat1989@gmail.com", 
+            "papapook1@gmail.com", "arunrat573@gmail.com", "jayzimina@gmail.com", "pateemoh822@gmail.com", 
+            "nathaphat58@gmail.com", "pkunpiti@gmail.com", "am848rat@gmail.com", "ss.jaravee99@gmail.com", 
+            "khathabut49@gmail.com", "satangmay11@gmail.com", "jakd77010819@gmail.com", "29pulom@gmail.com", 
+            "chanat.ch789@gmail.com", "nangchada55@gmail.com", "kamolchanok.fg@gmail.com", "kate.bevacation@gmail.com", 
+            "looktan40plus@gmail.com", "natatsapornkeereepoomrat@gmail.com", "annann.name@gmail.com", "a.tanongsak@gmail.com", 
+            "ongapisitphuket001@gmail.com", "nanted14595@gmail.com", "swicharaphoch@gmail.com", "tharidtimat@gmail.com", 
+            "somkead105@gmail.com", "mmenaruk632@gmail.com", "pakwan.poldon@gmail.com", "iaa208639@gmail.com", 
+            "rawatpoto1992@gmail.com", "elbe289@gmail.com", "oat.candys11@gmail.com", "tikyemily@gmail.com", 
+            "zingyimgourmet@gmail.com", "acharahoney@gmail.com", "khampee.2519@gmail.com", "aemwitchayapat@gmail.com", 
+            "nattytoday155@gmail.com", "name2500500@gmail.com", "tempakdee@gmail.com", "swnwtns.ai569@gmail.com", 
+            "phlayphelidsuchada@gmail.com", "pimpunpudyam@gmail.com", "peerayatinnut4628@gmail.com", "ardkan@gmail.com", 
+            "saibuatiktok@gmail.com", "anchalees901@gmail.com", "amirabahek@gmail.com", "name2500400@gmail.com", 
+            "ploy4661@gmail.com", "chumpuneks@gmail.com", "miskasawetr@gmail.com", "turakchareon@gmail.com", 
+            "nee.9484@gmail.com", "archiraya04@gmail.com", "anantasale2@gmail.com", "sakda0870826154@gmail.com",
+            "jaoh0963605619@gmail.com", "supawadee.cartoon@gmail.com", "chantolaongdao@gmail.com", 
+            "flukefashion22@gmail.com", "xiaolongnu55@gmail.com", "ongapisitphuket@gmail.com", "hastachairat@gmail.com"
         ];
 
         window.loginWithGoogle = async function() {
@@ -408,7 +452,7 @@
         window.resetLogin = function() {
             document.getElementById('pendingForm').classList.add('hidden');
             document.getElementById('loginForm').classList.remove('hidden');
-            if(isFirebaseConfigured) signOut(auth);
+            signOut(auth);
         };
 
         window.logout = function() {
@@ -469,7 +513,7 @@
 
         window.autoResize = function(el) { el.style.height = 'auto'; el.style.height = (el.scrollHeight) + 'px'; }
 
-        // โหลด API Key ที่ลูกศิษย์เคยกรอกไว้ในเครื่องของเขา
+        // โหลด API Key ที่ผู้ใช้เคยกรอกไว้ในเครื่อง
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('jossApiKey');
             const apiKeyInput = document.getElementById('userApiKey');
@@ -819,7 +863,7 @@ SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Ch
                             let errMsg = data.error?.message || "Unknown Error";
                             if (errMsg.includes("limit: 0") || errMsg.includes("not found")) continue; 
                             if (errMsg.includes("Quota exceeded") || errMsg.includes("quota")) throw new Error("⏳ โควต้า API นาทีนี้เต็มแล้วครับพี่! รบกวนรอ 1 นาทีแล้วกดปุ่มใหม่นะครับ 🦄");
-                            if (errMsg.includes("API key not valid")) throw new Error("🔑 API Key ของคุณไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
+                            if (errMsg.includes("API key not valid")) throw new Error("🔑 API Key ของ Gemini ไม่ถูกต้องครับ รบกวนตรวจสอบกุญแจอีกรอบ");
                             throw new Error(errMsg);
                         }
 
