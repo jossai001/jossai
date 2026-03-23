@@ -10,6 +10,7 @@
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
+            /* เปลี่ยนพื้นหลังเป็นธีมเป็ดเหลืองในความมืด */
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -60,6 +61,7 @@
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
         
+        /* สไลด์เมนูสำหรับมือถือ */
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) {
@@ -130,7 +132,7 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -149,12 +151,17 @@
                     <button id="btnAnalyze" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-300 font-bold py-5 text-lg rounded-2xl border border-yellow-500/50 transition shadow-lg flex justify-center items-center gap-2">
                         <span class="text-2xl font-bold uppercase tracking-tighter">🕵️‍♀️ ตรวจสอบความปลอดภัย & ให้คะแนน</span>
                     </button>
+                    
                     <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-3xl p-8 shadow-2xl">
                         <div class="flex items-center gap-3 mb-6 border-b border-slate-700 pb-4">
                             <span class="text-4xl">🕵️‍♀️</span>
                             <h4 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400 uppercase tracking-widest">TikTok Policy Report</h4>
                         </div>
                         <div id="analysisText" class="text-slate-200 text-base md:text-lg leading-relaxed whitespace-pre-wrap">กำลังสแกนหาข้อบกพร่อง...</div>
+                        
+                        <button id="btnAutoFix" class="hidden mt-8 w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-extrabold py-4 text-xl rounded-xl transition shadow-[0_0_15px_rgba(16,185,129,0.4)] flex justify-center items-center gap-3">
+                            <span class="text-3xl">🪄</span> อัปเกรดสคริปต์ให้สมบูรณ์แบบ 100% (Auto-Fix)
+                        </button>
                     </div>
                 </div>
             </div>
@@ -322,7 +329,7 @@
         </div>
 
         <div class="p-6 bg-slate-900/90 border-t-2 border-yellow-600 z-10 backdrop-blur-md">
-            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
+            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 shadow-[0_0_20px_rgba(234,179,8,0.3)] transition hover:scale-[1.02]">
                 <span class="text-3xl">🦆</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
         </div>
@@ -350,7 +357,6 @@
         const ADMIN_EMAIL = "admin@gmail.com"; 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
-        // 🚨 รายชื่อ 153 คนแบบบรรทัดเดียว ป้องกันบรรทัดหาย 🚨
         window.ALLOWED_EMAILS = [
             "ploy4661@gmail.co",
             "toyjutha@gmail.com",
@@ -686,7 +692,6 @@
             });
         }
 
-        // 🚨🔥 SYSTEM PROMPT คืนชีพกฎของบอสฉบับเต็มโดยใช้ Array ป้องกัน Syntax Error 🔥🚨
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -708,7 +713,7 @@
             "7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น \"ภาษาไทย\" 100% ห้ามใช้ภาษาอังกฤษ",
             "8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน",
             "9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน",
-            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK (กฎการสร้างภาพสินค้า): บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
+            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK: บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
             "",
             "[CONCEPT-BASED DICTIONARY CONTROL: กฎการหลบเลี่ยงคำต้องห้ามขั้นเด็ดขาด]",
             "⚠️ ห้ามใช้คำศัพท์ที่เข้าข่าย 'เคลมเกินจริง' หรือ 'ผิดกฎ TikTok' ทั้งหมด โดยให้ใช้ Metaphor (การเปรียบเปรย) แทนเสมอ ตัวอย่างเช่น:",
@@ -848,6 +853,9 @@
             document.getElementById('welcomeScreen')?.classList.add('hidden');
             document.getElementById('resultContainer')?.classList.add('hidden');
             document.getElementById('analysisOutput')?.classList.add('hidden');
+            // ซ่อนปุ่ม Auto-Fix ไปก่อนเวลาเริ่มเจนใหม่
+            document.getElementById('btnAutoFix')?.classList.add('hidden');
+
             const dynOut = document.getElementById('dynamicOutput');
             if(dynOut) dynOut.innerHTML = '';
             document.getElementById('loadingStatus')?.classList.remove('hidden');
@@ -956,7 +964,7 @@
                 }
                 
                 apiParts.push({ text: basePrompt });
-                window.LAST_API_PARTS = apiParts; 
+                window.LAST_API_PARTS = apiParts; // 🧠 เก็บประวัติการคุย
 
                 let success = false;
                 let finalError = "";
@@ -1056,6 +1064,7 @@
             }
         });
 
+        // --- ปุ่มปรับแก้สคริปต์แบบพิมพ์เอง (FollowUp) ---
         document.getElementById('btnFollowUp').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -1135,7 +1144,7 @@
             }
         });
 
-        // 🚨 อัปเกรดปุ่ม Analyze ล็อกคอ AI ให้ออกรีพอร์ตสีสันสวยงาม อ่านง่าย 100% 🚨
+        // 🚨 ระบบตรวจสอบ (Analyze) TikTok Policy แบบละเอียด 🚨
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -1155,13 +1164,15 @@
                 btnAnalyze.innerHTML = '<span class="text-xl md:text-2xl animate-spin">⏳</span> อัลกอริทึมกำลังสแกนคลิปทุกเฟรม...';
             }
             if(analysisOutput) analysisOutput.classList.remove('hidden');
+            // ซ่อนปุ่มอัปเกรดตอนกำลังตรวจ
+            document.getElementById('btnAutoFix')?.classList.add('hidden');
+            
             if(analysisText) analysisText.innerHTML = '<span class="animate-pulse text-orange-400 font-bold text-sm md:text-lg">กำลังดึงฐานข้อมูลกฎ TikTok ล่าสุด และชำแหละสคริปต์ (รอ 10-15 วินาที)...</span>';
 
             try {
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-1.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                // บังคับรูปแบบการตอบของ AI ขั้นเด็ดขาด
                 const analysisPrompt = `คุณคือ "TikTok Policy AI"
 วิเคราะห์สคริปต์นี้อย่างเข้มงวดที่สุด
 [คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ในหัวข้อเด็ดขาด ห้ามเกริ่นนำ ให้คุณตอบกลับโดยใช้รูปแบบด้านล่างนี้เป๊ะๆ ทุกบรรทัด ห้ามขาดห้ามเกิน:
@@ -1203,13 +1214,16 @@ ${currentGeneratedScript}`;
                     // เปลี่ยนตัวหนาให้เป็นสีเหลือง
                     rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400">$1</strong>');
                     
-                    // จับหัวข้อ 1-5 และตกแต่งให้สวยงาม
+                    // จัดรูปแบบหัวข้อ 1-5 ให้สวยงาม
                     rawText = rawText.replace(/(1\.|2\.|3\.|4\.|5\.)\s*(👁️|🎧|🗣️|📊|⭐)(.*?)(?=\n|$)/g, '<div class="text-xl mt-6 mb-2 border-b border-slate-600 pb-2 text-orange-400 font-extrabold flex items-center gap-2"><span>$2</span> $3</div>');
                     
-                    // เปลี่ยนการขึ้นบรรทัดใหม่เป็น <br>
+                    // เปลี่ยนการขึ้นบรรทัดใหม่
                     rawText = rawText.replace(/\n/g, '<br>');
                     
                     analysisText.innerHTML = rawText;
+                    
+                    // 🚨 โชว์ปุ่ม Auto-Fix เมื่อวิเคราะห์เสร็จ 🚨
+                    document.getElementById('btnAutoFix').classList.remove('hidden');
                 }
 
             } catch (error) {
@@ -1221,6 +1235,68 @@ ${currentGeneratedScript}`;
                     btnAnalyze.classList.replace('bg-slate-800', 'bg-yellow-900/50');
                     btnAnalyze.classList.replace('border-yellow-500/50', 'border-orange-500');
                 }
+            }
+        });
+
+        // 🚨 ระบบใหม่เอี่ยม: ปุ่ม Auto-Fix 100% 🚨
+        document.getElementById('btnAutoFix').addEventListener('click', async () => {
+            const userInputKeyEl = document.getElementById('userApiKey');
+            const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
+            const ACTIVE_API_KEY = userInputKey !== "" ? userInputKey : SYSTEM_API_KEY;
+
+            if(!window.LAST_API_PARTS || !currentGeneratedScript) {
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ไม่พบสคริปต์ต้นฉบับครับ!' });
+                return;
+            }
+
+            const btn = document.getElementById('btnAutoFix');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังอัปเกรด...';
+            
+            document.getElementById('loadingStatus').classList.remove('hidden');
+            document.getElementById('resultContainer').classList.add('hidden');
+            document.getElementById('loadingText').innerText = "✨ สภา Mastermind กำลังรีไรท์สคริปต์ให้สมบูรณ์แบบ 100%...";
+
+            try {
+                const MODEL_NAME = window.WORKING_MODEL || 'gemini-2.5-flash';
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
+
+                let chatHistory = [
+                    { role: "user", parts: window.LAST_API_PARTS }, 
+                    { role: "model", parts: [{ text: currentGeneratedScript }] }, 
+                    { role: "user", parts: [{ text: `🚨 คำสั่งฉุกเฉิน (AUTO-FIX 100%): 
+จากผลการวิเคราะห์ล่าสุด จงปรับแก้และรีไรท์สคริปต์นี้ใหม่ทั้งหมดให้ "สมบูรณ์แบบและปลอดภัย 100%" 
+1. แก้ไขคำต้องห้าม คำละเมิด และคำเคลมเกินจริงทั้งหมดให้เป็น Metaphor 
+2. ปรับ Hook ให้หยุดนิ้วคนดูได้จริงใน 3 วินาที 
+3. รักษากฎเหล็กทั้งหมด (Google Flow ล็อกภาพสินค้า 100%, บทพูดห้ามมีเครื่องหมายวรรคตอน .?! และต้องยาว 23-28 คำ, เสียงพากย์และตัวหนังสือเป็นภาษาไทย) 
+ส่งสคริปต์ที่แก้แล้วกลับมาในรูปแบบ FULL STORYBOARD (Code Block) แบบเดิมเป๊ะๆ` }] }
+                ];
+
+                let response = await fetch(API_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: chatHistory, generationConfig: { temperature: 0.7, maxOutputTokens: 8192 } })
+                });
+
+                let data = await response.json();
+                if (!response.ok || data.error) throw new Error(data.error?.message || "Auto-Fix ล้มเหลว");
+
+                currentGeneratedScript = data.candidates[0].content.parts[0].text; 
+                renderGeminiBoxes(currentGeneratedScript);
+                
+                // ซ่อนกรอบการวิเคราะห์ทิ้งไป เพราะแก้ไขแล้ว
+                document.getElementById('analysisOutput').classList.add('hidden');
+                btn.classList.add('hidden');
+                
+                document.getElementById('resultContainer').classList.remove('hidden');
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเกรดสมบูรณ์แบบ 100% แล้วครับบอส! ✨', showConfirmButton: false, timer: 3000 });
+
+            } catch (error) {
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาดในการอัปเกรด', text: error.message });
+                document.getElementById('resultContainer').classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="text-3xl">🪄</span> อัปเกรดสคริปต์ให้สมบูรณ์แบบ 100% (Auto-Fix)';
+                document.getElementById('loadingStatus').classList.add('hidden');
             }
         });
     </script>
