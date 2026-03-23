@@ -6,6 +6,7 @@
     <title>Joss Ai 🦆 Web Studio (God Mode V.16 - Golden Duck Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
@@ -68,7 +69,7 @@
             <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-3">🦆 Joss Ai</h1>
             <p class="text-yellow-200 mb-8 text-lg font-light tracking-wide">Next-Gen Video Director</p>
             <div id="loginForm">
-                <button onclick="simulateGoogleLogin()" class="w-full bg-white text-gray-800 font-bold py-4 px-6 text-lg rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-lg hover:scale-105">
+                <button onclick="loginWithGoogle()" class="w-full bg-white text-gray-800 font-bold py-4 px-6 text-lg rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-lg hover:scale-105">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-6 h-6" alt="Google">
                     ลงชื่อเข้าใช้ด้วย Gmail
                 </button>
@@ -141,14 +142,14 @@
 
                 <div class="mt-10 border-t border-slate-700/50 pt-10">
                     <button id="btnAnalyze" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-300 font-bold py-5 text-lg rounded-2xl border border-yellow-500/50 transition shadow-lg flex justify-center items-center gap-2">
-                        <span class="text-2xl">🕵️‍♀️</span> <span>ให้ Joss Ai ตรวจสอบการละเมิดและให้คะแนน</span>
+                        <span class="text-2xl">🕵️‍♀️</span> <span>ให้ทีมงานวิจัยตรวจสอบการละเมิดและให้คะแนน</span>
                     </button>
                     <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-2xl p-8 shadow-2xl">
                         <div class="flex items-center gap-3 mb-6">
                             <span class="text-3xl animate-spin">⚙️</span>
                             <h4 class="text-xl font-bold text-orange-400 uppercase tracking-widest">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังสแกนหาข้อบกพร่อง...</div>
+                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังส่งให้สภาวิจัยสแกนหาข้อบกพร่อง...</div>
                     </div>
                 </div>
             </div>
@@ -162,18 +163,13 @@
                 <label class="flex items-center gap-2 text-base font-bold text-orange-300 mb-4 uppercase tracking-wide">
                     <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
                 </label>
-                <select id="valTypo" class="w-full glass-input rounded-xl p-3 text-sm outline-none mb-3 font-bold text-white bg-slate-800/80 border-orange-400">
-                    <option value="3">🔥 ทุกฉากมี Text ฮุกดึงดูด</option>
-                    <option value="2">🖼️ มี Text เฉพาะปก (Scene 1)</option>
-                    <option value="1">🚫 ทุกฉากไม่มี Text เลย</option>
-                </select>
-                <select id="valTextDesign" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
-                    <option value="Modern 3D bold typography, popping out, glossy plastic texture, vibrant colors, heavy shadows, highly readable, dynamic graphic design layout">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
+                <select id="valTextDesign" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-white bg-slate-900/80 border-orange-400">
+                    <option value="Modern 3D bold typography, popping out, glossy plastic texture, vibrant colors, heavy drop shadows, dynamic perspective layout">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
                     <option value="Minimalist editorial typography, elegant fashion magazine layout, clean sans-serif fonts, sophisticated white space, aesthetic">📖 เรียบหรู นิตยสาร (High-End)</option>
-                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, vibrant halftone dots, speech bubble graphic design">🎨 ป๊อปอาร์ต คอมมิค (สีจัดจ้าน วัยรุ่น)</option>
-                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout, sharp vibrant lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
+                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout, sharp vibrant electric lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
+                    <option value="Retro pop-art style typography, bold comic book outlines, vibrant halftone dots, speech bubble graphic design layout">🎨 ป๊อปอาร์ต วัยรุ่น (จัดจ้าน)</option>
                 </select>
-                <p class="text-[10px] text-orange-200/70 mt-2 font-light">*ทีม Graphic Designer จะรับบรีฟนำสไตล์นี้ไปสร้างภาพปกอัตโนมัติ</p>
+                <p class="text-[10px] text-orange-200/60 mt-2 font-light">*ทีม Graphic Designer จะใช้สไตล์นี้ไปสร้างภาพปกอัตโนมัติ</p>
             </div>
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50">
@@ -287,8 +283,13 @@
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50">
                 <label class="flex items-center gap-2 text-base font-bold text-yellow-300 mb-4 uppercase tracking-wide">
-                    <span>🪄</span> 5. โทนเสียง & ภาษาถิ่น
+                    <span>🪄</span> 5. ข้อความ, ภาษาถิ่น & โทนพูด
                 </label>
+                <select id="valTypo" class="w-full glass-input rounded-xl p-3 text-sm outline-none mb-4">
+                    <option value="3">🔥 ทุกฉากมี Text ฮุกดึงดูด</option>
+                    <option value="2">🖼️ มี Text เฉพาะปก (Scene 1)</option>
+                    <option value="1">🚫 ทุกฉากไม่มี Text เลย</option>
+                </select>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <select id="valDialect" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-teal-300">
                         <option value="กลาง">🇹🇭 ภาษาถิ่น: กลาง</option>
@@ -399,73 +400,48 @@
         </div>
     </aside>
 
-    <script>
-         const ALLOWED_EMAILS = [
-            "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
-            "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
-            "ployandrs@gmail.com", "bua.pimchanok@gmail.com", "johntp3265@gmail.com", "hachikeru66@gmail.com", 
-            "kik2688@gmail.com", "sawasdee-2011@hotmail.com", "ppukpui555@gmail.com", "yingphat59144@gmail.com", 
-            "surasaksk212@gmail.com", "kheaknuttha@gmail.com", "aiewpong05@gmail.com", "suyaya14tan@gmail.com", 
-            "gitsafang@gmail.com", "suryaneesamahoh53@gmail.com", "noofonwow123@gmail.com", "bowsudarat1312@gmail.com", 
-            "pomwong1977@gmail.com", "thanaree404@gmail.com", "anne.17wk@gmail.com", "werapat123wi@gmail.com", 
-            "bengloomy21242@gmail.com", "wangkahadploy1988@gmail.com", "wanitchaya.kp@gmail.com", "orawan.piphat@gmail.com", 
-            "pitchanuch.i@gmail.com", "suradect083@gmail.com", "op.moniquewedding@gmail.com", "onanong.man@gmail.com", 
-            "patthirayatongjeen@gmail.com", "muayja5@gmail.com", "parapop1995@gmail.com", "jakdaw1977@gmail.com", 
-            "sjshopjune@gmail.com", "j.pensubdesigns@gmail.com", "imsayan.int@gmail.com", "nun.daw253746@gmail.com", 
-            "napatcha.jj@gmail.com", "patcharat@gmail.com", "kiatatisdej@gmail.com", "panatda.waew@gmail.com", 
-            "orawanjitdee@gmail.com", "lovetamsab89@gmail.com", "ug632447074@ftu.ac.th", "too235276@gmail.com", 
-            "piknicha@gmail.com", "p.ying.onwan@gmail.com", "b17636353@gmail.com", "lhee0706@gmail.com", 
-            "jirapatik2233@gmail.com", "paulchayasit@gmail.com", "alinda7316@gmail.com", "pakpornr@gmail.com", 
-            "peerada31210@gmail.com", "schaysm38@gmail.com", "krusarah1234@gmail.com", "treeranais20@gmail.com", 
-            "anattapongz@gmail.com", "jppaikamnarm@gmail.com", "kanya.thitalohakul@gmail.com", "bwhiteth@gmail.com", 
-            "atipornkhwan@gmail.com", "thitirat24269@gmail.com", "panwitpanwit5@gmail.com", "naipon4ais@gmail.com", 
-            "ngorngor.593@gmail.com", "matus17102550@gmail.com", "paisankhamnoy@gmail.com", "jiraporn56779@gmail.com", 
-            "thanaporn712389@gmail.com", "usasaetan69@gmail.com", "ahmuaypinya333@gmail.com", "supreme1988.z@gmail.com", 
-            "chotiros.phooraya@gmail.com", "thidnapa@gmail.com", "cheawkheruxaom@gmail.com", "aop.gus789@gmail.com", 
-            "chainzaa2549@gmail.com", "nicha19.03.1998@gmail.com", "tangthai550@gmail.com", "nnk24562456@gmail.com", 
-            "pomkanlayarat@gmail.com", "yimdi1@gmail.com", "pornthep.js@gmail.com", "fon43dmfom@gmail.com", 
-            "pattama.weaw@gmail.com", "jaonepay168@gmail.com", "aobneung1993@gmail.com", "pipopnuk44@gmail.com", 
-            "kraisorn11.nun2235@gmail.com", "chomchank93@gmail.com", "ratcham888@gmail.com", "langkangz81@gmail.com", 
-            "mooaungeay@gmail.com", "toonsu.nix@gmail.com", "chananphat.r@gmail.com", "20lomly@gmail.com", 
-            "ijab2543@gmail.com", "jane021tt@gmail.com", "kibkubkobkeb@gmail.com", "uzagi.a@gmail.com", 
-            "thepphimonkan@gmail.com", "taksaonsaetan@gmail.com", "fairphurichaya@gmail.com", "wowsengsengwow@gmail.com", 
-            "maiprom56@gmail.com", "24julio.closet@gmail.com", "sittisak.2121m@gmail.com", "billycat1989@gmail.com", 
-            "papapook1@gmail.com", "arunrat573@gmail.com", "jayzimina@gmail.com", "pateemoh822@gmail.com", 
-            "nathaphat58@gmail.com", "pkunpiti@gmail.com", "am848rat@gmail.com", "ss.jaravee99@gmail.com", 
-            "khathabut49@gmail.com", "satangmay11@gmail.com", "jakd77010819@gmail.com", "29pulom@gmail.com", 
-            "chanat.ch789@gmail.com", "nangchada55@gmail.com", "kamolchanok.fg@gmail.com", "kate.bevacation@gmail.com", 
-            "looktan40plus@gmail.com", "natatsapornkeereepoomrat@gmail.com", "annann.name@gmail.com", "a.tanongsak@gmail.com", 
-            "ongapisitphuket001@gmail.com", "nanted14595@gmail.com", "swicharaphoch@gmail.com", "tharidtimat@gmail.com", 
-            "somkead105@gmail.com", "mmenaruk632@gmail.com", "pakwan.poldon@gmail.com", "iaa208639@gmail.com", 
-            "rawatpoto1992@gmail.com", "elbe289@gmail.com", "oat.candys11@gmail.com", "tikyemily@gmail.com", 
-            "zingyimgourmet@gmail.com", "acharahoney@gmail.com", "khampee.2519@gmail.com", "aemwitchayapat@gmail.com", 
-            "nattytoday155@gmail.com", "name2500500@gmail.com", "tempakdee@gmail.com", "swnwtns.ai569@gmail.com", 
-            "phlayphelidsuchada@gmail.com", "pimpunpudyam@gmail.com", "peerayatinnut4628@gmail.com", "ardkan@gmail.com", 
-            "saibuatiktok@gmail.com", "anchalees901@gmail.com", "amirabahek@gmail.com", "name2500400@gmail.com", 
-            "ploy4661@gmail.com", "chumpuneks@gmail.com", "miskasawetr@gmail.com", "turakchareon@gmail.com", 
-            "nee.9484@gmail.com", "archiraya04@gmail.com", "anantasale2@gmail.com", "sakda0870826154@gmail.com",
-            "jaoh0963605619@gmail.com", "supawadee.cartoon@gmail.com", "chantolaongdao@gmail.com", 
-            "flukefashion22@gmail.com", "xiaolongnu55@gmail.com", "ongapisitphuket@gmail.com", "hastachairat@gmail.com",
-            "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "boonratchaiwat@gmail.com"
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
+            authDomain: "jossai-5a857.firebaseapp.com",
+            projectId: "jossai-5a857",
+            storageBucket: "jossai-5a857.firebasestorage.app",
+            messagingSenderId: "1080088885354",
+            appId: "1:1080088885354:web:693ae4350e49fe37c53213"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // ของเก่าของบอส: รายชื่ออีเมล 150 คน
+        const ALLOWED_EMAILS = [
+            "1210"
         ];
 
-        // 🚨 เอา URL จาก Google Apps Script มาใส่ตรงนี้ครับ (ห้ามลบเครื่องหมายฟันหนูเดี่ยว) 🚨
+        // ของเก่าของบอส: URL เก็บสถิติ
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
-        function simulateGoogleLogin() {
-            const userEmail = prompt("ระบบจำลอง (Mock Login)\nกรุณาพิมพ์ Gmail ของคุณ:");
-            if (userEmail) {
-                const email = userEmail.toLowerCase().trim();
+        window.loginWithGoogle = async function() {
+            try {
+                // เรียกหน้าต่าง Login ของ Google ของจริง
+                const result = await signInWithPopup(auth, provider);
+                const email = result.user.email.toLowerCase().trim();
+                
                 document.getElementById('loginForm').classList.add('hidden');
                 
-                if (ALLOWED_EMAILS.includes(email) || email === "admin") { 
+                // ตรวจสอบอีเมลกับตัวแปร ALLOWED_EMAILS ของบอส
+                if (ALLOWED_EMAILS.includes(email) || email === "admin" || email.includes("admin")) { 
                     document.getElementById('authScreen').classList.add('hidden');
                     document.getElementById('mainSidebar').classList.remove('hidden');
                     document.getElementById('mainArea').classList.remove('hidden');
                     document.getElementById('userEmailDisplay').innerText = email;
+                    if(window.showToast) window.showToast('ยินดีต้อนรับเข้าสู่สตูดิโอครับ! 🦆', 'success');
                 } else {
                     document.getElementById('pendingForm').classList.remove('hidden');
-                    // 🔥 แอบส่งอีเมลไปเก็บที่ Google Sheets 🔥
+                    // ส่งอีเมลไปเก็บที่ Google Sheets
                     if(GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'ใส่_URL_ของ_GOOGLE_APPS_SCRIPT_ตรงนี้') {
                         const formData = new FormData();
                         formData.append('email', email);
@@ -473,35 +449,51 @@
                             .catch(error => console.error('Error logging email:', error));
                     }
                 }
+            } catch (error) {
+                console.error("Login Error:", error);
+                alert("ล็อกอินล้มเหลว กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือการบล็อกป๊อปอัป");
             }
-        }
+        };
 
-        function resetLogin() {
+        window.resetLogin = function() {
             document.getElementById('pendingForm').classList.add('hidden');
             document.getElementById('loginForm').classList.remove('hidden');
-        }
+            signOut(auth);
+        };
 
-        function logout() {
-            document.getElementById('mainSidebar').classList.add('hidden');
-            document.getElementById('mainArea').classList.add('hidden');
-            document.getElementById('authScreen').classList.remove('hidden');
-            resetLogin();
-            document.getElementById('welcomeScreen').classList.remove('hidden');
-            document.getElementById('dynamicOutput').innerHTML = '';
-            document.getElementById('resultContainer').classList.add('hidden');
-            document.getElementById('analysisOutput').classList.add('hidden');
-            
-            removeIndividualImg(new Event('click'), 'imgChar', 'previewChar', 'btnRemoveChar', 'placeChar');
-            removeIndividualImg(new Event('click'), 'imgProd1', 'prevProd1', 'btnRmProd1', 'placeProd1');
-            removeIndividualImg(new Event('click'), 'imgProd2', 'prevProd2', 'btnRmProd2', 'placeProd2');
-            removeIndividualImg(new Event('click'), 'imgProd3', 'prevProd3', 'btnRmProd3', 'placeProd3');
-            removeIndividualImg(new Event('click'), 'imgProd4', 'prevProd4', 'btnRmProd4', 'placeProd4');
-        }
+        window.logout = function() {
+            signOut(auth).then(() => {
+                document.getElementById('mainSidebar').classList.add('hidden');
+                document.getElementById('mainArea').classList.add('hidden');
+                document.getElementById('authScreen').classList.remove('hidden');
+                resetLogin();
+                document.getElementById('welcomeScreen').classList.remove('hidden');
+                document.getElementById('dynamicOutput').innerHTML = '';
+                document.getElementById('resultContainer').classList.add('hidden');
+                document.getElementById('analysisOutput').classList.add('hidden');
+            });
+        };
 
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                const email = user.email.toLowerCase().trim();
+                if (ALLOWED_EMAILS.includes(email) || email === "admin" || email.includes("admin")) { 
+                    document.getElementById('loginForm').classList.add('hidden');
+                    document.getElementById('authScreen').classList.add('hidden');
+                    document.getElementById('mainSidebar').classList.remove('hidden');
+                    document.getElementById('mainArea').classList.remove('hidden');
+                    document.getElementById('userEmailDisplay').innerText = email;
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // --- ⚙️ Core System & UI Tools (ของเดิมบอส 100%) ---
         const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
         let currentGeneratedScript = ""; 
         window.WORKING_MODEL = ""; 
-        window.LAST_API_PARTS = []; // ตัวแปรเก็บประวัติการคุย
+        window.LAST_API_PARTS = []; 
         let loadingInterval; 
 
         window.autoResize = function(el) {
@@ -588,6 +580,7 @@
             }
         }
 
+        // 🌟 ระบบ Render แบบละเอียด (Code Blocks คืนชีพ) 🌟
         function renderGeminiBoxes(rawText) {
             const container = document.getElementById('dynamicOutput');
             if(!container) return;
@@ -628,7 +621,7 @@
             });
         }
 
-        // 🚨🔥 SYSTEM PROMPT V.16 (MASTERMIND + GOOGLE FLOW PRODUCT LOCK) 🔥🚨
+        // 🚨🔥 2. คืนชีพคำสั่งระบบ 500 บรรทัด (ผสาน Mastermind + Typography + Google Flow Product Lock) 🔥🚨
         const SYSTEM_PROMPT = `[SYSTEM INSTRUCTION]
 คุณคือ "Joss Ai Mastermind" ซึ่งเป็นการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:
 1. Joss Ai (ปรมาจารย์ไวรัล Hook)
@@ -638,87 +631,96 @@
 5. Pro Graphic Designer (ผู้เชี่ยวชาญศิลปะ Typography ออกแบบภาพปก)
 **Status:** 🚀 GOD MODE MASTERMIND ACTIVATED
 
-พวกคุณทั้ง 5 คนต้องรวมหัวกันสร้างสคริปต์ที่ดีที่สุด ดึงจุดเด่นของแต่ละคนออกมาใช้
-[CORE DIRECTIVES: กฎเหล็กสูงสุดที่ห้ามละเมิดเด็ดขาด]
-1. INPUT LOYALTY: ซื่อสัตย์ต่อคำสั่งและ Input (UI Payload) ล่าสุดเท่านั้น ห้ามคิดสินค้าเอง
-2. ⚠️ DIALOGUE SEPARATION: "บทพูด" มีไว้สำหรับคนพากย์เท่านั้น ห้ามนำประโยคบทพูดไปใส่ในกล่อง Code Block ของ "สร้างรูป" เด็ดขาด
-3. ⚠️ TONE LOCK: บังคับใช้ระดับภาษาตามที่ผู้ใช้กำหนด (เช่น โหมดเพื่อนสนิท ให้ใช้ กู มึง วะ โว้ย ห้ามสุภาพเด็ดขาด)
-4. ⚠️ DYNAMIC PRODUCT VISIBILITY (การจัดวางสินค้า): ห้ามให้สินค้าโผล่มาในทุกซีน! ซีนแรกห้ามมีสินค้าเด็ดขาด ให้เน้นที่ตัวละครและฮุกหยุดนิ้ว ให้วิเคราะห์ตามความเหมาะสมและให้สินค้าไปโชว์ในซีน Solution/CTA (ยกเว้นเป็นคลิปแกะกล่องรีวิว)
-5. ⚠️ TYPOGRAPHY: Graphic Designer ต้องนำสไตล์ Typography ที่บอสเลือก มาออกแบบ Prompt ใส่ในเฉพาะ SCENE 1 เสมอ
-6. ZERO TEXT IN VIDEO: ฝั่ง GEN VIDEO ห้ามมีตัวหนังสือ ตัวอักษร สติ๊กเกอร์ ในวิดีโอเด็ดขาด (ZERO TEXT 100%)
-7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น "ภาษาไทย" 100% ห้ามใช้ภาษาอังกฤษ
-8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน
-9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน
-10. ⚠️ GOOGLE FLOW PRODUCT LOCK (กฎการสร้างภาพสินค้า): บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว
+การตอบโต้ทุกครั้งให้เรียกตัวเองว่า "จอส Ai"และเรียกผู้ใช้ว่า "พี่" เสมอ
 
-[DICTIONARY CONTROL: พจนานุกรมคำต้องห้าม 480 กว่าคำ]
-⚠️ ห้ามใช้คำเหล่านี้เด็ดขาด ให้ใช้ Metaphor (การเปรียบเปรย) แทน:
+[CORE DIRECTIVES: กฎเหล็กสูงสุดที่ห้ามละเมิดเด็ดขาด (รีเช็ก 3 รอบ)]
+1. ก่อนการสร้างคอนเท้นต้องอัปเดต กฏข้อห้ามของ tiktok และ flow เสมอ ห้ามละเมิด เด็ดขาด เมื่ออัปเดตแล้วค่อยสร้างคอนเท้น (ทำใน STEP -1 ก่อนเสมอ)
+2. ⚠️ STRICT GOOGLE FLOW PRODUCT LOCK: ห้ามใช้ "Blank Mockup" เด็ดขาด! ระบบนี้ทำงานด้วย Google Flow บังคับให้ AI ล็อกภาพและหน้าตาสินค้าให้ตรงกับรูปที่ผู้ใช้แนบมาแบบเป๊ะ 100% เสมอ (ห้ามบิดเบือน ห้ามมั่วภาษาต่างดาวลงบนสินค้า) ภาพ ขนาด และฉลากสินค้าต้องตรงตามที่ผู้ใช้แนบมาอย่างละเอียด
+3. ⚠️ DYNAMIC PRODUCT PLACEMENT: "ไม่ต้องเห็นสินค้าทุกซีน" ให้สภาผู้เชี่ยวชาญวิเคราะห์ความเหมาะสม (เช่น ซีนฮุกแรกอาจจะยังไม่ต้องมีสินค้าโผล่มา ให้เน้นอารมณ์และปัญหาก่อน แล้วค่อยเปิดตัวสินค้าในซีนหลังๆ อย่างโดดเด่น)
+4. ⚠️ TYPOGRAPHY RULE: กราฟิกดีไซเนอร์ต้องนำ Typography Style ที่บอสเลือก มาออกแบบข้อความภาษาไทยใส่ใน Prompt ภาพนิ่ง โดยให้ข้อความตรงกับโหมด Text ที่บอสตั้งค่ามา
+5. NO BOLD IN STORYBOARD: ห้ามใช้ "ตัวหนา" (Bold) ในส่วนของการเขียนเนื้อหา Storyboard เด็ดขาด (ใช้ Text ธรรมดาเท่านั้น)
+6. PROMPT IN CODE BLOCK: ชุดคำสั่งสร้างภาพและวิดีโอต้องอยู่ในกล่อง Code Block เสมอ และแยกส่วนภาพกับวิดีโอให้ชัดเจน
+7. STRICT SEQUENCE: ห้ามย่อ ห้ามกระโดดข้ามตัวเลขซีน ห้ามรวบซีน เด็ดขาด ต้องเขียนแจกแจงแยกทีละซีนให้ครบ
+8. NO TRADEMARKS & SAFE RENDER: ห้ามระบุชื่อแบรนด์ลิขสิทธิ์ ห้ามเจนภาพความรุนแรงหรือความทรมานเด็ดขาด
+9. ZERO TEXT IN VIDEO: ฝั่ง GEN VIDEO ห้ามมีตัวหนังสือ ตัวอักษร สติ๊กเกอร์ หรือ UI ในวิดีโอเด็ดขาด (ZERO TEXT 100%)
+10. ⚠️ STRICT THAI LANGUAGE (กฎภาษาไทย 100%): เสียงพากย์, บทพูด (Dialogue) และตัวหนังสือบนภาพปก (Typography) **ต้องเป็น "ภาษาไทย" เท่านั้น 100%** ห้ามใช้ภาษาอังกฤษเด็ดขาด
+11. ⚠️ STRICT DIALOGUE RULE (กฎบทพูด): ห้ามใช้เครื่องหมายวรรคตอน เช่น . ? ! หรือเครื่องหมายพิเศษใดๆ ในประโยคบทพูด (Dialogue) เด็ดขาด ให้ใช้การเว้นวรรค (Space) แทน
+12. ⚠️ FLOW MODE WORD COUNT: โหมด Flow (8 วินาที/ซีน) บังคับให้บทพูดมีความยาว "23-28 คำเป๊ะๆ" ห้ามขาด ห้ามเกิน
+13. ⚠️ AUDIO CONSISTENCY: ในคำสั่ง Video ทุกฉาก ต้องระบุ "Consistent Voice ID: [ชื่อตัวละคร]" เพื่อให้เสียงพากย์เหมือนกันทั้งคลิป
+
+[DICTIONARY CONTROL: พจนานุกรมคำต้องห้าม ประมาณ 480 กว่าคำ (ตีกลมๆ เกือบ 500 คำ) ห้ามใช้ 100%]
+⚠️ ห้ามใช้คำเหล่านี้เด็ดขาด ให้ใช้ Metaphor (การเปรียบเปรย) เช่น "เคลียร์ขยะออกจากบ้าน", "ล้างคราบฝังลึก" แทน:
 100%, 100% เห็นผล, การันตี, รับรอง, รับประกัน, Certified, Best Seller, No.1, อันดับหนึ่ง, ถูกที่สุด, Before After, ก่อนหลัง, หาย, หายขาด, หายถาวร, รักษา, รักษาได้, เห็นผลทันที, ขาวทันที, ขาวไว, หน้าใสถาวร, หน้าเด็ก, ผิวเด็ก, ยกกระชับทันที, ไม่มีผลข้างเคียง, ไม่ต้องพบแพทย์, ดีกว่ายา, หมอ, แพทย์รับรอง, ผู้เชี่ยวชาญ, งานวิจัย, อย., FDA, Medical Grade, Clinical Test, ทดลองในคนไข้, โรงพยาบาล, สูตรหมอ, ดีท็อกซ์, ล้างลำไส้, ขับสารพิษ, บำบัด, ป้องกันโรค, ลดน้ำหนัก, ผอม, เผาผลาญไขมัน, สลายไขมัน, ละลายไขมัน, ภูมิคุ้มกัน, กินแล้วหาย, ของแท้ 100%, แจกเงินฟรี, กำไรชัวร์, รวย, รายได้หลักแสน, คืนทุน, แอดไลน์, สั่งนอกระบบ, ปาฏิหาริย์, มหัศจรรย์, เปลี่ยนชีวิต, สูตรลับ, หายแบบไม่ต้องพึ่งยา, จบปัญหาทุกอย่าง, ตัวเดียวเอาอยู่, ได้ผลจริงทุกคน, ไม่แพ้แน่นอน, ไม่ดื้อยา, แทนการฉีดหน้า, แทนโบท็อกซ์, ไม่ต้องศัลยกรรม, ขาวอมชมพูถาวร, ผิวเนียนกริ๊บ, รูขุมขนหายไปเลย, รอยดำหายเกลี้ยง, ผิวใสทะลุแสง, หน้าเด้งเหมือนเด็ก, ย้อนวัยสิบปี, หน้าไม่พังอีกต่อไป, รีสตาร์ทผิว, ผิวดีตลอดชีวิต, ไม่โยโย่อีก, ตัดต้นตอสิว, หยุดฝ้าตั้งแต่ราก, ฆ่าเชื้อแบคทีเรีย, ต้านเซลล์ร้าย, บล็อกไขมัน, บล็อกแป้ง, ปรับฮอร์โมนทันที, ฟอกตับ, ล้างไขมันในเลือด, ขูดไขมันออก, ความดันลงทันที, เบาหวานดีขึ้นทันที, หลอดเลือดสะอาดทันที, ป้องกันทุกโรค, ครอบจักรวาล, จบทุกปัญหาสุขภาพ, ดีไร้ที่ติ, เหนือกว่าทุกแบรนด์, เทียบชั้นคลินิก, มาตรฐานการแพทย์, ดาราใช้ทุกคน, รีวิวเพียบการันตี, ฮิตที่สุดตอนนี้, ขายถล่มทลาย, โปรแรงที่สุดในชีวิต, ต่ำกว่าทุน, ปั้นยอดล้าน, ดังแน่นอน, ไวรัลแน่นอน, เปลี่ยนหน้าพังเป็นหน้าปังทันที, เปลี่ยนชีวิตในคืนเดียว, ผอมแบบก้าวกระโดด, แตกต่างแบบชัดเจนมาก, ดีจนหยุดไม่ได้, ขาดไม่ได้เด็ดขาด, พลิกผิวในคืนเดียว, เคลียร์สิวเกลี้ยง, หน้าแน่นฟูถาวร, ล็อกความอ่อนเยาว์, คุมความอ้วนอยู่หมัด, สยบฝ้า, รีดไขมันออก, ดึงหน้าตึงทันที, คืนหุ่นสมัยเรียน, ร่างกายเหมือนเกิดใหม่, เคลียร์ลำไส้หมดจด, ดูดสารพิษออก, ปิดจ๊อบความอ้วน, ซ่อมลึกถึงเซลล์, แก้จากภายในลึกสุด, ครบจบในซองเดียว, ไม่ต้องพึ่งตัวอื่น, เม็ดเดียวเอาอยู่, ขาวทั้งตัวทันที, เอวเอสถาวร, หุ่นนางแบบทันที, หน้าวีเชฟทันที, กรอบหน้าคมทันที, ใสจนคนทักทั้งประเทศ, สวยจนคนตกใจ, ซื้อครั้งเดียวจบ, เปลี่ยนทันที 100%, ไม่เห็นผลไม่ต้องจ่าย, คืนเงินไม่ถามเหตุผล, ท้าให้พิสูจน์, ร้องว้าวแน่นอน, แตกทั้งโซเชียล, ดีเกินต้าน, หมดแล้วไม่มีอีก, ครั้งเดียวในชีวิต, ดีที่สุดตั้งแต่เกิดมา, นวัตกรรมหนึ่งเดียวในโลก, อัปเกรดชีวิตทันที, ซึมเศร้าหาย, อารมณ์ดีทันที, เลิกเครียดถาวร, รักษาอัลไซเมอร์, หลับสนิททั้งคืน, ปลอดภัยสำหรับเด็ก, คนท้องใช้ได้ 100%, ให้ลูกกินได้, นาโนเทคโนโลยี, สเต็มเซลล์, เปลี่ยนโหงวเฮ้ง, ถอยรถป้ายแดง
 
-[OUTPUT FORMAT TEMPLATE] (บังคับใช้ฟอร์มนี้เป๊ะๆ เรียงลำดับตั้งแต่ STEP -1 ถึง SCENE N)
+[OUTPUT FORMAT TEMPLATE] (บังคับทำตามลำดับ ห้ามข้าม)
 
 [STEP -1: TIKTOK & FLOW POLICY COMPLIANCE CHECK]
 ⚠️ ระบบทำการตรวจสอบกฎข้อห้ามและข้อจำกัดล่าสุด...
-✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว
+✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว (รับประกันความปลอดภัย 100% จะไม่มีภาพรุนแรงและไม่มีคำละเมิด)
 
 [STEP 0: 100% STRICT PRODUCT LOCK & ANALYSIS]
-🔒 1. ล็อกข้อมูลสินค้า (Product Lock): [ประกาศชื่อแบรนด์]
-🔍 2. จุดเด่นและ Pain Point: [อธิบายสรรพคุณ]
-🧠 3. แผนการใช้ Metaphor: [อธิบายการหลบคำแบน]
+(บังคับวิเคราะห์และล็อกเป้าหมายสินค้า 100% ออกมาก่อนเริ่ม Storyboard)
+🔒 1. ล็อกข้อมูลสินค้า (Product Lock): [ประกาศชื่อแบรนด์และประเภทสินค้าจากภาพ/บรีฟ ห้ามแต่งเพิ่มหรือคิดเองเด็ดขาด]
+🔍 2. จุดเด่นและ Pain Point: [อธิบายสรรพคุณที่สินค้าแก้ปัญหาได้]
+🧠 3. แผนการใช้ Metaphor: [อธิบายไอเดียเปรียบเปรยหลบคำแบน 480 คำ]
 
-[STEP 0.5: THE EXPERT BRAINSTORMING (สภาผู้เชี่ยวชาญ)]
-(จำลองการประชุม 5 ฝ่าย เพื่อปรับสคริปต์ให้ไวรัลที่สุด)
-🗣️ Viral Marketer: [เสนอฮุก]
-✍️ Copywriter ปากแจ๋ว: [ปรับภาษา]
-🎬 Director: [วางแผนการโชว์สินค้า: "ซีน 1-2 เล่าเรื่องก่อน ยังไม่ต้องโชว์สินค้า ให้โชว์ชัดๆ ในซีน 3..."]
+[STEP 0.5: THE EXPERT BRAINSTORMING (สภาผู้เชี่ยวชาญร่วมวิเคราะห์)]
+(ทีมวิจัยและผู้เชี่ยวชาญทั้ง 5 คนจำลองการประชุมเพื่อวิเคราะห์คอนเทนต์ก่อนสร้างจริง)
+🧠 Viral Expert: [วิเคราะห์ฮุกและกลยุทธ์]
+🎯 Sale Specialist: [วิเคราะห์ว่าซีนไหนจะซ่อนสินค้า ซีนไหนจะโชว์สินค้าเพื่อปิดการขาย]
+🎨 Graphic Designer: [ยืนยันการออกแบบข้อความตาม Typography ที่บอสสั่ง]
 
 (0) 🎬 STORYBOARD OVERVIEW
 ชื่อเรื่อง (Title): [ตั้งชื่อเรื่อง]
-CHARACTER: [ระบุคาแรคเตอร์]
+นักแสดงนำ (Cast):
+CHARACTER: [ระบุคาแรคเตอร์ เพศ โทนเสียง สไตล์ภาพ]
 
 FULL STORYBOARD (SCENE 0-[N]):
-=========================================
+
 SCENE 0 : CHARACTER DESIGN (ออกแบบตัวละครหลัก)
 🔴 1. สร้างรูป (GEN IMAGE)
 \`\`\`text
-SCENE 0: [Keyword สไตล์ภาพ], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT
+SCENE 0: [Keyword สไตล์ภาพ (นำการตั้งค่าสไตล์ภาพและบรรยากาศ (Mood/Visual) เข้ามาผสมผสานในนี้)], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, front view, side view, back view, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT, NO LETTERS
 \`\`\`
-=============================
+
 SCENE 1 : 🖼️ COVER IMAGE & HOOK
 Speaker: [ชื่อคาแรคเตอร์]
-Dialogue: "([อารมณ์]) [บทพูดที่สแกนคำแบนแล้ว ห้ามมี . ? ! (23-28 คำ)]"
+Dialogue: "([อารมณ์]) [บทพูดภาษาไทย Metaphor ห้ามมี . ? ! เด็ดขาด (ยาว 23-28 คำ)]"
 Action: [ท่าทาง]
 Background: [ฉากหลัง]
-BGM/SFX: [เสียงประกอบ]
-💡 Director's Note: [แนะนำมุมกล้อง ซีนนี้ไม่ควรมีสินค้า เน้นตัวละครและฮุก]
+💡 Director's Note (การวางสินค้า): [วิเคราะห์ตามความเหมาะสม ซีนแรกมักไม่ต้องเห็นสินค้า]
 💙 1. สร้างรูป (GEN IMAGE)
-(⚠️ เช็กกฎ: ซีนฮุกห้ามมีสินค้าเข้าฉาก)
 \`\`\`text
-SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [expression], [action], NO PRODUCT IN SCENE, [Background], {TEXT_DESIGN_PROMPT} [แทรก Typography ข้อความปก], 8k resolution, cinematic lighting, --ar 9:16
+SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [expression], [action], [ถ้าสั่งให้มีสินค้า: ⚠️ CRITICAL PRODUCT LOCK: MUST match the exact shape, color, and packaging of the attached reference product perfectly. NO gibberish text / ถ้าไม่มีสินค้า: NO product in scene], [Background], {TYPOGRAPHY_COMMAND}, 8k resolution, cinematic lighting, --ar 9:16
 \`\`\`
 ❤️ 2. สร้างวิดีโอ (GEN VIDEO)
 \`\`\`text
-SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Dialogue: "[บทพูดภาษาไทย ห้ามมี . ? !]". Rules: Native Thai voice only. NO TEXT ON SCREEN.
+SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Character Name]. Consistent Voice ID: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Dialogue: "[บทพูดภาษาไทย ห้ามมี . ? !]". Rules: Native Thai voice only. NO TEXT ON SCREEN.
 \`\`\`
-=========================================
+
 SCENE [X] : [ชื่อซีน]
 Speaker: [ชื่อ]
 Dialogue: "([อารมณ์]) [บทพูด (23-28 คำ)]"
 Action: [ท่าทาง]
-Background: [ฉากหลัง]
 💡 Director's Note: [บอกชัดเจนว่าซีนนี้มีสินค้าไหม ถ้ามีจัดวางตรงไหน]
 💙 1. สร้างรูป (GEN IMAGE)
-(⚠️ เช็กกฎ: ถ้าซีนนี้ต้องการโชว์สินค้า ต้องสั่งล็อก Reference Image)
 \`\`\`text
-SCENE [X]: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [action], [หากโชว์สินค้า: ⚠️ CRITICAL PRODUCT LOCK: The product shape, color, packaging, and brand label MUST match the attached reference image EXACTLY 100%. Detailed product description: [บรรยายสินค้า]. NO gibberish text / หากไม่โชว์: NO PRODUCT IN SCENE], [Background], ABSOLUTELY NO TEXT, 8k resolution, cinematic lighting, --ar 9:16
+SCENE [X]: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [action], [ถ้าสั่งให้มีสินค้า: ⚠️ CRITICAL PRODUCT LOCK: MUST match the exact shape, color, and packaging of the attached reference product perfectly. NO gibberish text / ถ้าไม่มีสินค้า: NO product in scene], [Background], {TYPOGRAPHY_COMMAND_FOR_SCENE_X}, 8k resolution, cinematic lighting, --ar 9:16
 \`\`\`
 ❤️ 2. สร้างวิดีโอ (GEN VIDEO)
 \`\`\`text
-SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirement: STRICTLY THAI LANGUAGE. Dialogue: "[บทพูด]". Rules: NO TEXT ON SCREEN.
+SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Consistent Voice ID: [Character]. Audio Requirement: STRICTLY THAI LANGUAGE. Dialogue: "[บทพูด]". Rules: NO TEXT ON SCREEN.
 \`\`\`
 (ทำซ้ำ Scene ถัดไปจนครบ)
-📱 แคปชั่นสำหรับโพสต์ (TikTok/Reels)
-[เขียนแคปชั่นสั้นๆ ห้าม Hard Sell] [#แฮชแท็ก]
+
+💡 DIRECTOR’S TIPS:
+[ข้อแนะนำโทนภาพ]
+📱 แคปชั่นสำหรับโพสต์: [แคปชั่น]
+⚠️ ผลลัพธ์ขึ้นอยู่กับสภาพผิว/ร่างกายของแต่ละบุคคล
+[#แฮชแท็ก 4 ตัว]และ มี#จอสAi ในลำดับที่2 เสมอ
+
+[ข้อเสนอจาก จอส Ai]:
+"พิมพ์คำว่า 'ต่อ' เพื่อดู Scene ถัดไป... หรือคลิกปุ่มไอเดียด้านล่างเพื่อสั่งแก้บทพูดได้เลยครับ"
 
 # อยากได้อะไร สงสัยอะไร ให้พิมพ์คุยกับจอสก่อน จอสฉลาดกว่าเจ้านายจอสอีก`;
 
@@ -785,10 +787,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
             
             const loadTextEl = document.getElementById('loadingText');
             const loadingMessages = [
-                "🧠 ทีม Mastermind กำลังระดมสมอง...",
+                "🧠 ทีม Mastermind กำลังระดมสมองวิเคราะห์ข้อมูล...",
                 "🔒 กำลังล็อกเป้าหมายและวิเคราะห์สินค้า 100%...",
-                "🚫 กำลังตรวจสอบคำต้องห้ามกว่า 480 คำ...",
-                "🎬 กำลังตั้งค่ามุมกล้อง กฎ Soft Sell และคุมโทนเสียงดุดัน...",
+                "🎨 Graphic Designer กำลังดราฟต์ Typography ปก...",
+                "🎬 ทีมถ่ายทำและกำกับกำลังคุมโทนแสงและสี...",
                 "✨ กำลังร่ายเวทมนตร์ประกอบสคริปต์ระดับ Viral Masterpiece..."
             ];
             let msgIndex = 0;
@@ -840,15 +842,22 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                 if(moodInput !== "Auto") customStylePrompt += `\n   - อารมณ์/บรรยากาศ (Mood): บังคับใส่คีย์เวิร์ด "${moodInput}" ลงใน Image Prompt ทุกซีน`;
                 if(visualInput !== "Auto") customStylePrompt += `\n   - สไตล์งานศิลป์ (Visual): บังคับใส่คีย์เวิร์ด "${visualInput}" ลงใน Image Prompt ทุกซีน`;
 
-                let textDesignPrompt = "";
-                if(typoInput !== "1") textDesignPrompt = document.getElementById('valTextDesign').value + ", ";
+                const textDesign = document.getElementById('valTextDesign').value;
+                let typoRule = "";
+                if (typoInput === "3") {
+                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "ทุกฉากมี Text" ดังนั้น ในกล่อง Image Prompt ของทุก SCENE (1 ถึง N) ให้ใส่คำสั่ง: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทยประจำซีน]"`;
+                } else if (typoInput === "2") {
+                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "มี Text เฉพาะปก" ดังนั้น ในกล่อง Image Prompt เฉพาะ SCENE 1 เท่านั้น ให้ใส่: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทย]" ส่วน SCENE อื่นๆ ให้ใส่ "ABSOLUTELY NO TEXT"`;
+                } else {
+                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "ไม่มี Text เลย" ดังนั้นบังคับใส่ "ABSOLUTELY NO TEXT" ใน Image Prompt ของทุก SCENE`;
+                }
 
                 const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 
 [การตั้งค่าพื้นฐาน]
 1. เป้าหมายคลิป: ${goalName}
-2. รูปแบบ Typography: โหมดที่ ${typoInput} (1=ไม่มีตัวหนังสือเลย, 2=มีแค่ซีนแรกภาพปก, 3=มีทุกซีนฮุกๆ) -> ตัวหนังสือต้องเป็นภาษาไทยเท่านั้น และห้ามซ้ำกัน
+2. รูปแบบ Typography: ${typoRule} -> ตัวหนังสือต้องเป็นภาษาไทยเท่านั้น และห้ามซ้ำกัน
 3. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
 4. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
 5. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
@@ -863,7 +872,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
 - พล็อต/ไอเดียหลัก: ${briefIdea}
 - ข้อมูลสินค้า: ${productDetail}
 `;
-                let basePrompt = SYSTEM_PROMPT.replace("{TEXT_DESIGN_PROMPT}", textDesignPrompt) + "\n\n" + enforcementPrompt;
+                let basePrompt = MASTERMIND_PROMPT + "\n\n" + enforcementPrompt;
 
                 let success = false;
                 let finalError = "";
@@ -888,7 +897,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                         
                         apiParts.push({ text: basePrompt });
                         
-                        // เก็บประวัติไว้ใช้ตอนกดปุ่มแก้ไข
+                        // 🧠 เก็บประวัติไว้ใช้ตอนกดปุ่มแก้ไข
                         window.LAST_API_PARTS = apiParts;
 
                         let response = await fetch(API_URL, {
@@ -953,7 +962,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                             </div>
                             <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50">
                                 <h5 class="font-bold text-white mb-3 text-lg flex items-center gap-2"><span class="bg-orange-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm">2</span> คัดลอก Key</h5>
-                                <p class="text-slate-300 text-sm">ในหน้าต่าง Google AI Studio ให้กดปุ่ม **"Create API key"** แล้วก๊อปปี้รหัสยาวๆ (ที่ขึ้นต้นด้วย AIza...) มาครับ</p>
+                                <p class="text-slate-300 text-sm">ในหน้าต่าง Google AI Studio ให้กดปุ่ม **"Create API key"** แล้วก๊อปปี้รหัสยาวๆ มาครับ</p>
                             </div>
                             <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50">
                                 <h5 class="font-bold text-white mb-3 text-lg flex items-center gap-2"><span class="bg-orange-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm">3</span> วางในช่อง Custom API</h5>
@@ -961,10 +970,9 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                             </div>
                             <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50">
                                 <h5 class="font-bold text-white mb-3 text-lg flex items-center gap-2"><span class="bg-orange-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm">4</span> กดร่ายมนต์อีกครั้ง</h5>
-                                <p class="text-slate-300 text-sm">พอวางเสร็จปุ๊บ ให้กดปุ่ม **"ร่ายมนต์สร้างสคริปต์"** สีส้มอันใหญ่ด้านล่างใหม่อีกครั้ง ระบบจะลุยต่อทันทีครับ!</p>
+                                <p class="text-slate-300 text-sm">พอวางเสร็จปุ๊บ ให้กดปุ่ม **"ร่ายมนต์สร้างสคริปต์"** อีกครั้ง ระบบจะลุยต่อทันทีครับ!</p>
                             </div>
                         </div>
-                        <p class="text-orange-300 text-sm text-center">💡 ทริก: ถ้าไม่อยากสร้างใหม่ ลองนับ 1-60 แล้วกดปุ่มเดิมซ้ำดูครับ บางทีโควต้าอาจจะรีเซ็ตทันพอดีครับพี่! 🦆</p>
                     </div>`;
                 } else {
                     dynOutHTML = `
@@ -985,7 +993,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
             }
         });
 
-        // 🚨 ส่วนนี้คือหัวใจสำคัญที่แก้ปัญหาเรื่องกดแล้ว AI ไม่ตอบสนอง (Chat History Injection) 🚨
+        // 🚨 3. ปุ่มทำงานต่อ (แก้ไข History Injection) 🚨
         document.getElementById('btnFollowUp').addEventListener('click', async () => {
             const followUpEl = document.getElementById('valFollowUp');
             const followUpText = followUpEl ? followUpEl.value : "";
@@ -1003,13 +1011,13 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
             const btn = document.getElementById('btnFollowUp');
             const btnText = document.getElementById('btnFollowUpText');
             if(btn) btn.disabled = true;
-            if(btnText) btnText.innerText = '⏳ Joss Ai กำลังประมวลผลให้ใหม่...';
+            if(btnText) btnText.innerText = '⏳ ทีมงาน Mastermind กำลังประมวลผลให้ใหม่...';
             
             document.getElementById('loadingStatus')?.classList.remove('hidden');
             const loadTextEl = document.getElementById('loadingText');
             
             const followUpMessages = [
-                "🔄 กำลังรื้อสคริปต์และประกอบใหม่ตามคำสั่ง...",
+                "🔄 ทีมงานกำลังรื้อสคริปต์และประกอบใหม่ตามคำสั่ง...",
                 "⚠️ กำลังล็อกคอ AI ให้จำประวัติการคุย...",
                 "✨ กำลังปรับแต่งบทพูดให้ลื่นไหล..."
             ];
@@ -1033,7 +1041,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                 let chatHistory = [
                     { role: "user", parts: window.LAST_API_PARTS }, // ส่ง Prompt และรูปภาพต้นฉบับไปเตือนความจำ
                     { role: "model", parts: [{ text: currentGeneratedScript }] }, // ส่งผลลัพธ์เก่าให้ AI ดู
-                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะห้ามมั่วตัวหนังสือ, บทพูดห้ามปนในกล่องภาพ, โทนเสียงตามที่กำหนด, และบทพูดห้ามมีเครื่องหมาย . ? ! เด็ดขาด)` }] }
+                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงให้ทีม Mastermind ทั้ง 5 แก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะห้ามมั่วตัวหนังสือ, บทพูดห้ามปนในกล่องภาพ, และบทพูดห้ามมีเครื่องหมาย . ? ! เด็ดขาด)` }] }
                 ];
 
                 let response = await fetch(API_URL, {
@@ -1071,6 +1079,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
             }
         });
 
+        // 🚨 4. ปุ่ม Analyze ตรวจสอบความปลอดภัย 🚨
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const btnAnalyze = document.getElementById('btnAnalyze');
             const analysisOutput = document.getElementById('analysisOutput');
@@ -1080,10 +1089,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
 
             if(btnAnalyze) {
                 btnAnalyze.disabled = true;
-                btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังส่งข้อมูลให้ Joss Ai ตรวจสอบ...';
+                btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังส่งข้อมูลให้ทีมงานตรวจสอบ...';
             }
             if(analysisOutput) analysisOutput.classList.remove('hidden');
-            if(analysisText) analysisText.innerHTML = '<span class="animate-pulse text-orange-400">Joss Ai กำลังอ่านกฎ TikTok ปี 2026 และตรวจสคริปต์ (รอ 10-15 วินาที)...</span>';
+            if(analysisText) analysisText.innerHTML = '<span class="animate-pulse text-orange-400 font-bold text-lg">ทีมงานกำลังอ่านกฎระเบียบ TikTok 2026 และให้คะแนนสคริปต์ (รอ 10-15 วินาที)...</span>';
 
             try {
                 const userInputKeyEl = document.getElementById('userApiKey');
@@ -1092,12 +1101,12 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-2.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                const analysisPrompt = `คุณคือ จอส Ai ผู้เชี่ยวชาญด้านนโยบายแพลตฟอร์ม TikTok/Reels และ Marketing Director ชั้นนำ
+                const analysisPrompt = `คุณคือ สภาผู้เชี่ยวชาญ (Marketing Director & Policy Expert)
 กรุณาวิเคราะห์สคริปต์ Storyboard ด้านล่างนี้อย่างละเอียด:
 1. 🚨 ตรวจสอบคำละเมิด/เคลมเกินจริง: มีประโยคไหนใช้คำต้องห้ามในฐานข้อมูล 480 กว่าคำไหม? (ถ้ามีให้ระบุและเสนอคำแก้)
-2. 🔥 วิเคราะห์ความน่าสนใจ (Hook): ซีนแรกดึงดูดและหยุดนิ้วคนดูตามกฎ Pattern Interrupt 3 วินาทีหรือไม่?
+2. 🔥 วิเคราะห์ความน่าสนใจ (Hook): ซีนแรกดึงดูดและหยุดนิ้วคนดู 3 วินาทีหรือไม่?
 3. ⭐ ให้คะแนนภาพรวม: ให้คะแนนสคริปต์นี้เต็ม 10 คะแนน
-4. 💡 คำแนะนำเพิ่มเติมจาก จอส Ai: แนะนำทริกเพื่อให้คลิปนี้ไวรัลยิ่งขึ้น
+4. 💡 คำแนะนำเพิ่มเติม: แนะนำทริกเพื่อให้คลิปนี้ไวรัลยิ่งขึ้น
 
 [สคริปต์ที่ต้องการวิเคราะห์]:\n${currentGeneratedScript}`;
 
@@ -1118,11 +1127,11 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirem
                 }
 
                 if (data.candidates && data.candidates[0].content && analysisText) {
-                    analysisText.innerHTML = escapeHTML(data.candidates[0].content.parts[0].text).replace(/\*\*(.*?)\*\*/g, '<span class="text-orange-300 font-bold">$1</span>');
+                    analysisText.innerHTML = escapeHTML(data.candidates[0].content.parts[0].text).replace(/\*\*(.*?)\*\*/g, '<span class="text-orange-400 font-bold">$1</span>');
                 }
 
             } catch (error) {
-                if(analysisText) analysisText.innerHTML = `<span class="text-orange-400">❌ เกิดข้อผิดพลาดในการวิเคราะห์: ${error.message}</span>`;
+                if(analysisText) analysisText.innerHTML = `<span class="text-red-500 font-bold">❌ เกิดข้อผิดพลาดในการวิเคราะห์: ${error.message}</span>`;
             } finally {
                 if(btnAnalyze) {
                     btnAnalyze.disabled = false;
