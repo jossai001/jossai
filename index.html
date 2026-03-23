@@ -10,7 +10,6 @@
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
-            /* เปลี่ยนพื้นหลังเป็นธีมเป็ดเหลืองในความมืด */
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -61,7 +60,6 @@
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
         
-        /* สไลด์เมนูสำหรับมือถือ */
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) {
@@ -132,7 +130,7 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -151,12 +149,12 @@
                     <button id="btnAnalyze" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-300 font-bold py-5 text-lg rounded-2xl border border-yellow-500/50 transition shadow-lg flex justify-center items-center gap-2">
                         <span class="text-2xl font-bold uppercase tracking-tighter">🕵️‍♀️ ตรวจสอบความปลอดภัย & ให้คะแนน</span>
                     </button>
-                    <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-2xl p-8 shadow-2xl">
+                    <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-3xl p-8 shadow-2xl">
                         <div class="flex items-center gap-3 mb-6 border-b border-slate-700 pb-4">
-                            <span class="text-3xl">🕵️‍♀️</span>
-                            <h4 class="text-2xl font-bold text-orange-400 uppercase tracking-widest">TikTok Policy Report</h4>
+                            <span class="text-4xl">🕵️‍♀️</span>
+                            <h4 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400 uppercase tracking-widest">TikTok Policy Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-200 text-lg leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026...</div>
+                        <div id="analysisText" class="text-slate-200 text-base md:text-lg leading-relaxed whitespace-pre-wrap">กำลังสแกนหาข้อบกพร่อง...</div>
                     </div>
                 </div>
             </div>
@@ -323,9 +321,9 @@
             
         </div>
 
-        <div class="p-6 bg-slate-900 border-t-2 border-yellow-600 z-10 shadow-2xl">
-            <button id="btnGenerate" class="w-full btn-super text-white font-black py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
-                <span class="text-3xl uppercase tracking-widest">✨ ร่ายมนต์สร้างสคริปต์</span>
+        <div class="p-6 bg-slate-900/90 border-t-2 border-yellow-600 z-10 backdrop-blur-md">
+            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
+                <span class="text-3xl">🦆</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
         </div>
     </aside>
@@ -352,53 +350,194 @@
         const ADMIN_EMAIL = "admin@gmail.com"; 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
+        // 🚨 รายชื่อ 153 คนแบบบรรทัดเดียว ป้องกันบรรทัดหาย 🚨
         window.ALLOWED_EMAILS = [
-            "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
-            "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
-            "ployandrs@gmail.com", "bua.pimchanok@gmail.com", "johntp3265@gmail.com", "hachikeru66@gmail.com", 
-            "kik2688@gmail.com", "sawasdee-2011@hotmail.com", "ppukpui555@gmail.com", "yingphat59144@gmail.com", 
-            "surasaksk212@gmail.com", "kheaknuttha@gmail.com", "aiewpong05@gmail.com", "suyaya14tan@gmail.com", 
-            "gitsafang@gmail.com", "suryaneesamahoh53@gmail.com", "noofonwow123@gmail.com", "bowsudarat1312@gmail.com", 
-            "pomwong1977@gmail.com", "thanaree404@gmail.com", "anne.17wk@gmail.com", "werapat123wi@gmail.com", 
-            "bengloomy21242@gmail.com", "wangkahadploy1988@gmail.com", "wanitchaya.kp@gmail.com", "orawan.piphat@gmail.com", 
-            "pitchanuch.i@gmail.com", "suradect083@gmail.com", "op.moniquewedding@gmail.com", "onanong.man@gmail.com", 
-            "patthirayatongjeen@gmail.com", "muayja5@gmail.com", "parapop1995@gmail.com", "jakdaw1977@gmail.com", 
-            "sjshopjune@gmail.com", "j.pensubdesigns@gmail.com", "imsayan.int@gmail.com", "nun.daw253746@gmail.com", 
-            "napatcha.jj@gmail.com", "patcharat@gmail.com", "kiatatisdej@gmail.com", "panatda.waew@gmail.com", 
-            "orawanjitdee@gmail.com", "lovetamsab89@gmail.com", "ug632447074@ftu.ac.th", "too235276@gmail.com", 
-            "piknicha@gmail.com", "p.ying.onwan@gmail.com", "b17636353@gmail.com", "lhee0706@gmail.com", 
-            "jirapatik2233@gmail.com", "paulchayasit@gmail.com", "alinda7316@gmail.com", "pakpornr@gmail.com", 
-            "peerada31210@gmail.com", "schaysm38@gmail.com", "krusarah1234@gmail.com", "treeranais20@gmail.com", 
-            "anattapongz@gmail.com", "jppaikamnarm@gmail.com", "kanya.thitalohakul@gmail.com", "bwhiteth@gmail.com", 
-            "atipornkhwan@gmail.com", "thitirat24269@gmail.com", "panwitpanwit5@gmail.com", "naipon4ais@gmail.com", 
-            "ngorngor.593@gmail.com", "matus17102550@gmail.com", "paisankhamnoy@gmail.com", "jiraporn56779@gmail.com", 
-            "thanaporn712389@gmail.com", "usasaetan69@gmail.com", "ahmuaypinya333@gmail.com", "supreme1988.z@gmail.com", 
-            "chotiros.phooraya@gmail.com", "thidnapa@gmail.com", "cheawkheruxaom@gmail.com", "aop.gus789@gmail.com", 
-            "chainzaa2549@gmail.com", "nicha19.03.1998@gmail.com", "tangthai550@gmail.com", "nnk24562456@gmail.com", 
-            "pomkanlayarat@gmail.com", "yimdi1@gmail.com", "pornthep.js@gmail.com", "fon43dmfom@gmail.com", 
-            "pattama.weaw@gmail.com", "jaonepay168@gmail.com", "aobneung1993@gmail.com", "pipopnuk44@gmail.com", 
-            "kraisorn11.nun2235@gmail.com", "chomchank93@gmail.com", "ratcham888@gmail.com", "langkangz81@gmail.com", 
-            "mooaungeay@gmail.com", "toonsu.nix@gmail.com", "chananphat.r@gmail.com", "20lomly@gmail.com", 
-            "ijab2543@gmail.com", "jane021tt@gmail.com", "kibkubkobkeb@gmail.com", "uzagi.a@gmail.com", 
-            "thepphimonkan@gmail.com", "taksaonsaetan@gmail.com", "fairphurichaya@gmail.com", "wowsengsengwow@gmail.com", 
-            "maiprom56@gmail.com", "24julio.closet@gmail.com", "sittisak.2121m@gmail.com", "billycat1989@gmail.com", 
-            "papapook1@gmail.com", "arunrat573@gmail.com", "jayzimina@gmail.com", "pateemoh822@gmail.com", 
-            "nathaphat58@gmail.com", "pkunpiti@gmail.com", "am848rat@gmail.com", "ss.jaravee99@gmail.com", 
-            "khathabut49@gmail.com", "satangmay11@gmail.com", "jakd77010819@gmail.com", "29pulom@gmail.com", 
-            "chanat.ch789@gmail.com", "nangchada55@gmail.com", "kamolchanok.fg@gmail.com", "kate.bevacation@gmail.com", 
-            "looktan40plus@gmail.com", "natatsapornkeereepoomrat@gmail.com", "annann.name@gmail.com", "a.tanongsak@gmail.com", 
-            "ongapisitphuket001@gmail.com", "nanted14595@gmail.com", "swicharaphoch@gmail.com", "tharidtimat@gmail.com", 
-            "somkead105@gmail.com", "mmenaruk632@gmail.com", "pakwan.poldon@gmail.com", "iaa208639@gmail.com", 
-            "rawatpoto1992@gmail.com", "elbe289@gmail.com", "oat.candys11@gmail.com", "tikyemily@gmail.com", 
-            "zingyimgourmet@gmail.com", "acharahoney@gmail.com", "khampee.2519@gmail.com", "aemwitchayapat@gmail.com", 
-            "nattytoday155@gmail.com", "name2500500@gmail.com", "tempakdee@gmail.com", "swnwtns.ai569@gmail.com", 
-            "phlayphelidsuchada@gmail.com", "pimpunpudyam@gmail.com", "peerayatinnut4628@gmail.com", "ardkan@gmail.com", 
-            "saibuatiktok@gmail.com", "anchalees901@gmail.com", "amirabahek@gmail.com", "name2500400@gmail.com", 
-            "ploy4661@gmail.com", "chumpuneks@gmail.com", "miskasawetr@gmail.com", "turakchareon@gmail.com", 
-            "nee.9484@gmail.com", "archiraya04@gmail.com", "anantasale2@gmail.com", "sakda0870826154@gmail.com",
-            "jaoh0963605619@gmail.com", "supawadee.cartoon@gmail.com", "chantolaongdao@gmail.com", 
-            "flukefashion22@gmail.com", "xiaolongnu55@gmail.com", "ongapisitphuket@gmail.com", "hastachairat@gmail.com",
-            "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "Jamras.scb@gmail.com", "boonratchaiwat@gmail.com"
+            "ploy4661@gmail.co",
+            "toyjutha@gmail.com",
+            "yingonwan.stock@gmail.com",
+            "passamonai30@gmail.com",
+            "jaru1688@gmail.com",
+            "ton_9926@hotmail.com",
+            "puynadee03@gmail.com",
+            "pungpondzaa1012@gmail.com",
+            "ployandrs@gmail.com",
+            "bua.pimchanok@gmail.com",
+            "johntp3265@gmail.com",
+            "hachikeru66@gmail.com",
+            "kik2688@gmail.com",
+            "sawasdee-2011@hotmail.com",
+            "ppukpui555@gmail.com",
+            "yingphat59144@gmail.com",
+            "surasaksk212@gmail.com",
+            "kheaknuttha@gmail.com",
+            "aiewpong05@gmail.com",
+            "suyaya14tan@gmail.com",
+            "gitsafang@gmail.com",
+            "suryaneesamahoh53@gmail.com",
+            "noofonwow123@gmail.com",
+            "bowsudarat1312@gmail.com",
+            "pomwong1977@gmail.com",
+            "thanaree404@gmail.com",
+            "anne.17wk@gmail.com",
+            "werapat123wi@gmail.com",
+            "bengloomy21242@gmail.com",
+            "wangkahadploy1988@gmail.com",
+            "wanitchaya.kp@gmail.com",
+            "orawan.piphat@gmail.com",
+            "pitchanuch.i@gmail.com",
+            "suradect083@gmail.com",
+            "op.moniquewedding@gmail.com",
+            "onanong.man@gmail.com",
+            "patthirayatongjeen@gmail.com",
+            "muayja5@gmail.com",
+            "parapop1995@gmail.com",
+            "jakdaw1977@gmail.com",
+            "sjshopjune@gmail.com",
+            "j.pensubdesigns@gmail.com",
+            "imsayan.int@gmail.com",
+            "nun.daw253746@gmail.com",
+            "napatcha.jj@gmail.com",
+            "patcharat@gmail.com",
+            "kiatatisdej@gmail.com",
+            "panatda.waew@gmail.com",
+            "orawanjitdee@gmail.com",
+            "lovetamsab89@gmail.com",
+            "ug632447074@ftu.ac.th",
+            "too235276@gmail.com",
+            "piknicha@gmail.com",
+            "p.ying.onwan@gmail.com",
+            "b17636353@gmail.com",
+            "lhee0706@gmail.com",
+            "jirapatik2233@gmail.com",
+            "paulchayasit@gmail.com",
+            "alinda7316@gmail.com",
+            "pakpornr@gmail.com",
+            "peerada31210@gmail.com",
+            "schaysm38@gmail.com",
+            "krusarah1234@gmail.com",
+            "treeranais20@gmail.com",
+            "anattapongz@gmail.com",
+            "jppaikamnarm@gmail.com",
+            "kanya.thitalohakul@gmail.com",
+            "bwhiteth@gmail.com",
+            "atipornkhwan@gmail.com",
+            "thitirat24269@gmail.com",
+            "panwitpanwit5@gmail.com",
+            "naipon4ais@gmail.com",
+            "ngorngor.593@gmail.com",
+            "matus17102550@gmail.com",
+            "paisankhamnoy@gmail.com",
+            "jiraporn56779@gmail.com",
+            "thanaporn712389@gmail.com",
+            "usasaetan69@gmail.com",
+            "ahmuaypinya333@gmail.com",
+            "supreme1988.z@gmail.com",
+            "chotiros.phooraya@gmail.com",
+            "thidnapa@gmail.com",
+            "cheawkheruxaom@gmail.com",
+            "aop.gus789@gmail.com",
+            "chainzaa2549@gmail.com",
+            "nicha19.03.1998@gmail.com",
+            "tangthai550@gmail.com",
+            "nnk24562456@gmail.com",
+            "pomkanlayarat@gmail.com",
+            "yimdi1@gmail.com",
+            "pornthep.js@gmail.com",
+            "fon43dmfom@gmail.com",
+            "pattama.weaw@gmail.com",
+            "jaonepay168@gmail.com",
+            "aobneung1993@gmail.com",
+            "pipopnuk44@gmail.com",
+            "kraisorn11.nun2235@gmail.com",
+            "chomchank93@gmail.com",
+            "ratcham888@gmail.com",
+            "langkangz81@gmail.com",
+            "mooaungeay@gmail.com",
+            "toonsu.nix@gmail.com",
+            "chananphat.r@gmail.com",
+            "20lomly@gmail.com",
+            "ijab2543@gmail.com",
+            "jane021tt@gmail.com",
+            "kibkubkobkeb@gmail.com",
+            "uzagi.a@gmail.com",
+            "thepphimonkan@gmail.com",
+            "taksaonsaetan@gmail.com",
+            "fairphurichaya@gmail.com",
+            "wowsengsengwow@gmail.com",
+            "maiprom56@gmail.com",
+            "24julio.closet@gmail.com",
+            "sittisak.2121m@gmail.com",
+            "billycat1989@gmail.com",
+            "papapook1@gmail.com",
+            "arunrat573@gmail.com",
+            "jayzimina@gmail.com",
+            "pateemoh822@gmail.com",
+            "nathaphat58@gmail.com",
+            "pkunpiti@gmail.com",
+            "am848rat@gmail.com",
+            "ss.jaravee99@gmail.com",
+            "khathabut49@gmail.com",
+            "satangmay11@gmail.com",
+            "jakd77010819@gmail.com",
+            "29pulom@gmail.com",
+            "chanat.ch789@gmail.com",
+            "nangchada55@gmail.com",
+            "kamolchanok.fg@gmail.com",
+            "kate.bevacation@gmail.com",
+            "looktan40plus@gmail.com",
+            "natatsapornkeereepoomrat@gmail.com",
+            "annann.name@gmail.com",
+            "a.tanongsak@gmail.com",
+            "ongapisitphuket001@gmail.com",
+            "nanted14595@gmail.com",
+            "swicharaphoch@gmail.com",
+            "tharidtimat@gmail.com",
+            "somkead105@gmail.com",
+            "mmenaruk632@gmail.com",
+            "pakwan.poldon@gmail.com",
+            "iaa208639@gmail.com",
+            "rawatpoto1992@gmail.com",
+            "elbe289@gmail.com",
+            "oat.candys11@gmail.com",
+            "tikyemily@gmail.com",
+            "zingyimgourmet@gmail.com",
+            "acharahoney@gmail.com",
+            "khampee.2519@gmail.com",
+            "aemwitchayapat@gmail.com",
+            "nattytoday155@gmail.com",
+            "name2500500@gmail.com",
+            "tempakdee@gmail.com",
+            "swnwtns.ai569@gmail.com",
+            "phlayphelidsuchada@gmail.com",
+            "pimpunpudyam@gmail.com",
+            "peerayatinnut4628@gmail.com",
+            "ardkan@gmail.com",
+            "saibuatiktok@gmail.com",
+            "anchalees901@gmail.com",
+            "amirabahek@gmail.com",
+            "name2500400@gmail.com",
+            "ploy4661@gmail.com",
+            "chumpuneks@gmail.com",
+            "miskasawetr@gmail.com",
+            "turakchareon@gmail.com",
+            "nee.9484@gmail.com",
+            "archiraya04@gmail.com",
+            "anantasale2@gmail.com",
+            "sakda0870826154@gmail.com",
+            "jaoh0963605619@gmail.com",
+            "supawadee.cartoon@gmail.com",
+            "chantolaongdao@gmail.com",
+            "flukefashion22@gmail.com",
+            "xiaolongnu55@gmail.com",
+            "ongapisitphuket@gmail.com",
+            "hastachairat@gmail.com",
+            "adminaong01",
+            "rungtipvee@gmail.com",
+            "1210",
+            "2410",
+            "shopchillchill66@gmail.com",
+            "Jamras.scb@gmail.com",
+            "boonratchaiwat@gmail.com"
         ];
 
         window.loginWithGoogle = async function() {
@@ -462,7 +601,6 @@
     </script>
 
     <script>
-        // --- ⚙️ Core Logic & Prompt UI ⚙️ ---
         const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
         let currentGeneratedScript = ""; 
         window.WORKING_MODEL = ""; 
@@ -548,6 +686,7 @@
             });
         }
 
+        // 🚨🔥 SYSTEM PROMPT คืนชีพกฎของบอสฉบับเต็มโดยใช้ Array ป้องกัน Syntax Error 🔥🚨
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -817,7 +956,7 @@
                 }
                 
                 apiParts.push({ text: basePrompt });
-                window.LAST_API_PARTS = apiParts; // 🧠 เก็บประวัติการคุย
+                window.LAST_API_PARTS = apiParts; 
 
                 let success = false;
                 let finalError = "";
@@ -917,7 +1056,6 @@
             }
         });
 
-        // --- ปุ่มทำต่อ / แก้ไขสคริปต์ (History Injection) ---
         document.getElementById('btnFollowUp').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -997,7 +1135,7 @@
             }
         });
 
-        // 🚨 อัปเกรดปุ่ม Analyze ใหม่ออกแบบ Prompt ถี่ยิบ (ห้ามทวนคำสั่ง ห้ามตกหล่น) 🚨
+        // 🚨 อัปเกรดปุ่ม Analyze ล็อกคอ AI ให้ออกรีพอร์ตสีสันสวยงาม อ่านง่าย 100% 🚨
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -1023,30 +1161,27 @@
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-1.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                // บังคับ Template ไม่ให้ AI ทวนคำสั่ง
-                const analysisPrompt = `คุณคือ "TikTok Policy & Algorithm AI" (อัปเดตฐานข้อมูลกฎและข้อห้าม TikTok ล่าสุด)
-หน้าที่ของคุณคือวิเคราะห์สคริปต์ด้านล่างอย่างเข้มงวดที่สุด
+                // บังคับรูปแบบการตอบของ AI ขั้นเด็ดขาด
+                const analysisPrompt = `คุณคือ "TikTok Policy AI"
+วิเคราะห์สคริปต์นี้อย่างเข้มงวดที่สุด
+[คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ในหัวข้อเด็ดขาด ห้ามเกริ่นนำ ให้คุณตอบกลับโดยใช้รูปแบบด้านล่างนี้เป๊ะๆ ทุกบรรทัด ห้ามขาดห้ามเกิน:
 
-[คำสั่งเด็ดขาด]: ห้ามทวนคำสั่ง ห้ามเกริ่นนำ ให้เริ่มรายงานผลการวิเคราะห์ข้อ 1 ถึง 5 ทันทีตามรูปแบบด้านล่างนี้:
+1. 👁️ ประเมินภาพ:
+(อธิบายผลวิเคราะห์ที่นี่)
 
-1. 👁️ การประเมินภาพ (Visuals):
-- (อธิบายผลวิเคราะห์...)
+2. 🎧 ประเมินเสียง:
+(อธิบายผลวิเคราะห์ที่นี่)
 
-2. 🎧 การประเมินเสียง (Audio):
-- (อธิบายผลวิเคราะห์...)
+3. 🗣️ ประเมินคำพูด:
+(อธิบายผลวิเคราะห์ที่นี่ และชี้เป้าคำแบนที่ต้องระวัง)
 
-3. 🗣️ การประเมินคำพูดและตัวหนังสือ (Dialogue & Text):
-- (อธิบายผลวิเคราะห์... เน้นหาคำเคลมเกินจริง 480 คำ เช่น 100%, รักษา, ขาวทันที)
+4. 📊 โอกาสไวรัล:
+(อธิบายผลวิเคราะห์ที่นี่)
 
-4. 📊 โอกาสรอดและไวรัล (Viral Potential):
-- (อธิบายผลวิเคราะห์ฮุก 3 วินาทีแรก...)
+5. ⭐ สรุปคะแนน:
+(ให้คะแนนความปลอดภัย X/10, ความไวรัล X/10 และคำแนะนำ)
 
-5. ⭐ สรุปและข้อเสนอแนะ (Score & Advice):
-- คะแนนความปลอดภัย: [X]/10
-- คะแนนไวรัล: [X]/10
-- คำแนะนำ: (ต้องแก้ตรงไหนบ้าง)
-
-[สคริปต์ที่ต้องการวิเคราะห์]:
+[สคริปต์ที่ต้องวิเคราะห์]:
 ${currentGeneratedScript}`;
 
                 let response = await fetch(API_URL, {
@@ -1062,10 +1197,18 @@ ${currentGeneratedScript}`;
                 }
 
                 if (data.candidates && data.candidates[0].content && analysisText) {
-                    let rawText = escapeHTML(data.candidates[0].content.parts[0].text);
-                    rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400 text-lg">$1</strong>');
-                    // จัดรูปแบบหัวข้อ 1-5 ให้สวยงาม ไม่เพี้ยน
-                    rawText = rawText.replace(/(\d+\.\s*(👁️|🎧|🗣️|📊|⭐).*?):/g, '<br><span class="text-xl mt-4 inline-block border-b border-slate-700 pb-1 text-orange-400 font-bold">$1:</span>');
+                    let rawText = data.candidates[0].content.parts[0].text;
+                    rawText = escapeHTML(rawText);
+                    
+                    // เปลี่ยนตัวหนาให้เป็นสีเหลือง
+                    rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400">$1</strong>');
+                    
+                    // จับหัวข้อ 1-5 และตกแต่งให้สวยงาม
+                    rawText = rawText.replace(/(1\.|2\.|3\.|4\.|5\.)\s*(👁️|🎧|🗣️|📊|⭐)(.*?)(?=\n|$)/g, '<div class="text-xl mt-6 mb-2 border-b border-slate-600 pb-2 text-orange-400 font-extrabold flex items-center gap-2"><span>$2</span> $3</div>');
+                    
+                    // เปลี่ยนการขึ้นบรรทัดใหม่เป็น <br>
+                    rawText = rawText.replace(/\n/g, '<br>');
+                    
                     analysisText.innerHTML = rawText;
                 }
 
