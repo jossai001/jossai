@@ -85,18 +85,18 @@
 
     <div id="authScreen" class="auth-overlay flex flex-col items-center">
         <div class="glass-panel p-8 md:p-12 rounded-[3rem] shadow-2xl w-[95%] md:w-[30rem] text-center border-yellow-400 border-2">
-            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500 mb-4">🦆 Joss Ai</h1>
-            <p class="text-slate-500 mb-10 text-lg font-medium">Digital Content Creator Studio</p>
+            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500 mb-4 drop-shadow-sm">🦆 Joss Ai</h1>
+            <p class="text-slate-500 mb-10 text-lg font-medium tracking-wide">Digital Content Creator Studio</p>
             <div id="loginForm">
                 <button onclick="loginWithGoogle()" class="w-full bg-white text-slate-800 border-2 border-yellow-400 font-black py-4 px-6 text-lg rounded-2xl flex items-center justify-center gap-3 hover:bg-yellow-50 transition shadow-xl hover:scale-105">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-7 h-7" alt="Google">
-                    ลงชื่อเข้าใช้ (ระบบลูกศิษย์)
+                    ลงชื่อเข้าใช้ด้วย Gmail
                 </button>
             </div>
             <div id="pendingForm" class="hidden">
                 <div class="text-red-500 mb-6 text-7xl animate-bounce">⏳</div>
-                <h2 class="text-2xl font-black text-slate-800 mb-3">ไม่พบสิทธิ์เข้าใช้งาน</h2>
-                <p class="text-slate-600 text-base mb-8">กรุณาสมัครคอร์สเรียนเพื่อขอเปิดใช้งานระบบนะครับ 💛</p>
+                <h2 class="text-2xl font-black text-slate-800 mb-3">รอการอนุมัติ</h2>
+                <p class="text-slate-600 text-base mb-8">กรุณารอสักครู่ ระบบกำลังนำท่านเข้าสู่สตูดิโอ 💛</p>
                 <button onclick="resetLogin()" class="text-red-500 font-bold hover:underline">ลองบัญชีอื่น</button>
             </div>
         </div>
@@ -105,15 +105,15 @@
     <main class="flex-1 h-full flex flex-col relative hidden" id="mainArea">
         <header class="h-16 md:h-20 glass-panel flex items-center justify-between px-4 md:px-10 z-10 border-b border-yellow-200">
             <div class="flex items-center gap-3">
-                <span class="text-3xl md:text-4xl">🦆</span>
+                <span class="text-3xl md:text-4xl drop-shadow-sm">🦆</span>
                 <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800">JOSS AI <span class="text-red-500">STUDIO</span></h1>
             </div>
             <div class="flex items-center gap-3 md:gap-8">
                 <div class="hidden md:flex bg-yellow-400/20 border border-yellow-500/50 text-yellow-700 text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span> Personal Master
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span> Pro Edition
                 </div>
                 <div class="text-right border-l border-slate-300 pl-6 hidden sm:block">
-                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">boss@jossai.com</div>
+                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">user@gmail.com</div>
                 </div>
                 <button onclick="logout()" class="bg-white hover:bg-red-50 text-red-500 border border-red-200 font-bold px-4 py-2 rounded-xl transition shadow-sm">ออก</button>
                 <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300">⚙️</button>
@@ -121,11 +121,11 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-4 md:p-12 scroll-smooth relative" id="resultArea">
-            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center opacity-90">
                 <span class="text-8xl md:text-[10rem] mb-8 drop-shadow-lg">🐤</span>
-                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมร่ายเวทมนตร์แล้วครับบอส!</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมทำงานแล้วครับบอส!</h2>
                 <p class="text-slate-500 font-medium text-lg max-w-2xl leading-relaxed bg-white/40 p-5 rounded-3xl border border-yellow-200">
-                    ตั้งค่า API Key และปรับแต่งแผงควบคุมด้านขวา<br>ทีมงาน Mastermind รอรับคำสั่ง <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> อยู่ครับ!
+                    ตั้งค่า API Key และปรับแต่งแผงควบคุมด้านขวา<br>แล้วกดปุ่ม <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> ได้เลย ทีมงานรออยู่ครับ!
                 </p>
                 <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-10 py-4 rounded-2xl font-black text-white shadow-xl animate-bounce">เปิดแผงควบคุม ⚙️</button>
             </div>
@@ -136,13 +136,17 @@
             </div>
 
             <div id="resultContainer" class="hidden max-w-4xl mx-auto pb-32 pt-4">
+                <h3 class="text-xl md:text-3xl font-black text-slate-800 flex items-center gap-3 mb-6 md:mb-10 bg-white p-4 md:p-6 rounded-3xl border border-yellow-300 shadow-sm">
+                    <span class="text-3xl md:text-5xl drop-shadow-sm">🎉</span> สคริปต์ของคุณพร้อมใช้งานแล้ว!
+                </h3>
+                
                 <div id="dynamicOutput" class="space-y-10"></div>
 
                 <div class="mt-16 bg-white p-8 md:p-10 rounded-[3rem] border-2 border-blue-200 shadow-2xl">
                     <label class="flex items-center gap-3 text-xl font-black text-blue-600 mb-6 uppercase tracking-widest">
                         <span class="text-3xl">💬</span> ปรับแก้สคริปต์ / สั่งทำต่อ
                     </label>
-                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน พิมพ์บอกจอสได้เลยครับ..."></textarea>
+                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน พิมพ์บอกทีมงานได้เลยครับ..."></textarea>
                     
                     <div class="flex flex-wrap gap-3 mt-6">
                         <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-white hover:bg-yellow-50 text-slate-700 font-bold px-6 py-3 rounded-full border border-slate-300 transition shadow-sm">➕ ซีนถัดไป</button>
@@ -191,10 +195,10 @@
                 <label class="flex items-center gap-2 text-sm font-black text-slate-800 mb-3 uppercase tracking-wide">
                     <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
                 </label>
-                <select id="valTextDesign" class="w-full glass-input bg-slate-50 rounded-2xl p-3 text-sm font-bold text-slate-600 outline-none">
-                    <option value="Modern 3D bold typography, popping out, glossy finish, highly readable, dynamic graphic design">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
-                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated design">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
-                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, dynamic comic design">🎨 ป๊อปอาร์ต คอมมิค (วัยรุ่น สีจัดจ้าน)</option>
+                <select id="valTextDesign" class="w-full glass-input bg-slate-50 rounded-2xl p-3 text-sm font-bold text-slate-600 outline-none border border-yellow-200">
+                    <option value="Modern 3D bold typography, popping out, glossy finish, highly readable, vibrant design">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
+                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
+                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, dynamic design">🎨 ป๊อปอาร์ต คอมมิค (วัยรุ่น สีจัดจ้าน)</option>
                     <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
                 </select>
             </div>
@@ -286,7 +290,7 @@
                     </select>
                 </div>
                 <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs font-bold mb-2">
-                    <option value="Auto">⚪ อารมณ์: ปล่อยจอย</option>
+                    <option value="Auto">⚪ อารมณ์: ปล่อยจอย AI</option>
                     <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
                     <option value="Bright and airy, minimalist, clean light">🌤️ โปร่งสบาย (Airy Clear)</option>
                 </select>
@@ -304,67 +308,64 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
+        
+        // 🚨 ฝัง Firebase Config ของบอส 🚨
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
             projectId: "jossai-5a857",
             storageBucket: "jossai-5a857.firebasestorage.app",
             messagingSenderId: "1080088885354",
-            appId: "1:1080088885354:web:693ae4350e49fe37c53213",
-            measurementId: "G-7PHD69E0W7"
+            appId: "1:1080088885354:web:693ae4350e49fe37c53213"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-
-        // 🚨 ระบุอีเมลแอดมินของบอสที่นี่ (เข้าได้เสมอ)
-        const ADMIN_EMAIL = "admin@gmail.com"; 
 
         window.loginWithGoogle = async function() {
             try {
                 const result = await signInWithPopup(auth, provider);
-                await checkAccess(result.user.email.toLowerCase());
+                const userEmail = result.user.email.toLowerCase();
+                
+                // เข้าสู่ระบบทันที (ไม่มีรายชื่อฝังในโค้ด)
+                enterStudio(userEmail);
+                
             } catch (error) {
-                showToast("ล็อกอินล้มเหลว กรุณาปิดตัวบล็อกป๊อปอัป", "error");
+                console.error("Login Error:", error);
+                showToast("ล็อกอินไม่สำเร็จ กรุณาลองใหม่", "error");
             }
         };
-
-        async function checkAccess(email) {
-            // เช็กว่าเป็นแอดมินไหม
-            if (email === ADMIN_EMAIL || email.includes("admin")) {
-                enterStudio(email); return;
-            }
-            // ถ้านักเรียน ให้เช็กรายชื่อจาก Firestore Database เท่านั้น
-            const q = query(collection(db, "allowed_users"), where("email", "==", email));
-            const snap = await getDocs(q);
-            
-            if (!snap.empty) { 
-                enterStudio(email); 
-            } else {
-                document.getElementById('pendingForm').classList.remove('hidden');
-                document.getElementById('loginForm').classList.add('hidden');
-            }
-        }
 
         function enterStudio(email) {
             document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainSidebar').classList.remove('hidden');
             document.getElementById('mainArea').classList.remove('hidden');
             document.getElementById('userEmailDisplay').innerText = email;
-            showToast("ยินดีต้อนรับสู่สตูดิโอครับบอส! 🦆", "success");
+            showToast(`ยินดีต้อนรับ ${email} เข้าสู่สตูดิโอครับ! 🦆`, "success");
         }
 
-        window.logout = () => signOut(auth).then(() => location.reload());
-        window.resetLogin = () => {
-            document.getElementById('pendingForm').classList.add('hidden');
-            document.getElementById('loginForm').classList.remove('hidden');
+        window.resetLogin = function() {
             signOut(auth);
         };
 
-        onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase()); });
+        window.logout = function() {
+            signOut(auth).then(() => {
+                document.getElementById('mainArea').classList.add('hidden');
+                document.getElementById('authScreen').classList.remove('hidden');
+                document.getElementById('mainSidebar').classList.add('sidebar-closed');
+                document.getElementById('welcomeScreen').classList.remove('hidden');
+                document.getElementById('dynamicOutput').innerHTML = '';
+                document.getElementById('resultContainer').classList.add('hidden');
+                document.getElementById('analysisOutput').classList.add('hidden');
+            });
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                enterStudio(user.email.toLowerCase());
+            }
+        });
     </script>
 
     <script>
@@ -402,7 +403,6 @@
 
         const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
 
-        // จำ API Key
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('jossApiKey');
             if(savedKey) document.getElementById('userApiKey').value = savedKey;
