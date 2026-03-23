@@ -61,20 +61,20 @@
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
         
-        /* 🚨 แก้ไขระบบ Slide-over สำหรับมือถือให้สมบูรณ์ 🚨 */
+        /* สไลด์เมนูสำหรับมือถือ */
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) {
-            .sidebar-closed { transform: translateX(0%); } /* บังคับให้เปิดค้างไว้บนหน้าจอคอมพิวเตอร์ */
+            .sidebar-closed { transform: translateX(0%); } 
         }
     </style>
 </head>
 <body class="h-screen flex flex-row text-base relative">
 
     <div id="authScreen" class="auth-overlay flex flex-col items-center">
-        <div class="glass-panel p-10 rounded-3xl shadow-2xl w-[90%] md:w-[28rem] text-center border-yellow-500/30 border">
+        <div class="glass-panel p-10 rounded-3xl shadow-2xl w-[90%] md:w-[28rem] text-center border border-yellow-500/30">
             <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-3">🦆 Joss Ai</h1>
-            <p class="text-yellow-200 mb-8 text-lg font-light tracking-wide uppercase">Next-Gen Video Director</p>
+            <p class="text-yellow-200 mb-8 text-lg font-light tracking-wide uppercase">God Mode Studio</p>
             <div id="loginForm">
                 <button onclick="loginWithGoogle()" class="w-full bg-white text-gray-800 font-bold py-4 px-6 text-lg rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-lg hover:scale-105">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-6 h-6" alt="Google">
@@ -83,7 +83,7 @@
             </div>
             <div id="pendingForm" class="hidden">
                 <div class="text-orange-500 mb-4 text-6xl animate-bounce">⏳</div>
-                <h2 class="text-2xl font-bold text-white mb-2 tracking-tighter">รอการอนุมัติ</h2>
+                <h2 class="text-2xl font-bold text-white mb-2">รอการอนุมัติ</h2>
                 <p class="text-gray-300 text-base mb-6 leading-relaxed">อีเมลของท่านยังไม่ได้รับอนุมัติ<br>กรุณาติดต่อ พี่จอสAi เพื่อเปิดสิทธิ์ใช้งานนะครับ 🦆</p>
                 <button onclick="resetLogin()" class="text-yellow-400 text-sm hover:text-orange-400 transition underline">ลองบัญชีอื่น</button>
             </div>
@@ -94,46 +94,45 @@
         <header class="h-20 glass-panel flex items-center justify-between px-6 md:px-8 z-10 shadow-md">
             <div class="flex items-center gap-3">
                 <span class="text-3xl">🦆</span>
-                <h1 class="text-xl md:text-2xl font-extrabold tracking-wide text-white uppercase">Joss Ai <span class="text-yellow-400 font-light hidden sm:inline">Studio</span></h1>
+                <h1 class="text-2xl font-extrabold tracking-wide text-white uppercase">Joss Ai <span class="text-yellow-400 font-light hidden sm:inline">Studio</span></h1>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
                 <div class="hidden md:flex bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/50 text-orange-300 text-xs font-bold px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse"></span>
-                    Mastermind Active
+                    <span class="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse shadow-sm"></span> Mastermind Active
                 </div>
-                <div class="text-right border-l border-slate-700 pl-6 hidden md:block">
+                <div class="text-right border-l border-slate-700 pl-6 hidden sm:block">
                     <div class="text-base font-bold text-white" id="userEmailDisplay">user@gmail.com</div>
                 </div>
                 <button onclick="logout()" class="text-sm bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg border border-slate-600 transition shadow-sm">ออก</button>
-                <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-slate-800 p-2 rounded-lg border border-slate-600 shadow-sm transition hover:bg-slate-700">⚙️</button>
+                <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-slate-800 p-1.5 rounded-lg border border-slate-600 shadow-sm transition hover:bg-slate-700">⚙️</button>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-12 scroll-smooth relative" id="resultArea">
+        <div class="flex-1 overflow-y-auto p-6 md:p-12 scroll-smooth relative" id="resultArea">
             <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center opacity-80 text-center px-4">
-                <span class="text-7xl md:text-8xl mb-6 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]">✨</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-wide uppercase">ยินดีต้อนรับบอสสู่ Mastermind</h2>
-                <p class="text-slate-300 text-base md:text-lg max-w-2xl leading-relaxed">
-                    สภาผู้เชี่ยวชาญ 5 อรหันต์ พร้อมระดมสมองช่วยงานบอสแล้ว!<br>ปรับรายละเอียดที่แผงควบคุม แล้วกด <b class="text-orange-400 uppercase">ร่ายมนต์สร้างสคริปต์</b> ได้เลย
+                <span class="text-8xl mb-6 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]">✨</span>
+                <h2 class="text-4xl font-bold text-white mb-4 tracking-wide uppercase">ยินดีต้อนรับบอสสู่ Mastermind</h2>
+                <p class="text-slate-300 text-lg max-w-2xl leading-relaxed">
+                    สภาผู้เชี่ยวชาญ 5 อรหันต์ พร้อมระดมสมองช่วยงานบอสแล้ว!<br>ปรับรายละเอียดที่แผงควบคุมด้านขวา แล้วกด <b class="text-orange-400 uppercase">ร่ายมนต์สร้างสคริปต์</b> ได้เลย
                 </p>
                 <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-8 py-3 rounded-2xl font-bold text-white shadow-lg animate-bounce uppercase">เปิดแผงควบคุม ⚙️</button>
             </div>
 
             <div id="loadingStatus" class="hidden flex flex-col items-center justify-center h-full">
                 <div class="text-7xl animate-bounce mb-6">🪄</div>
-                <p id="loadingText" class="text-orange-400 font-bold text-2xl animate-pulse tracking-wide text-center">กำลังระดมสมองวิเคราะห์ข้อมูล...</p>
+                <p id="loadingText" class="text-orange-400 font-bold text-2xl animate-pulse tracking-wide text-center">สภาวิจัยกำลังระดมสมอง...</p>
             </div>
 
             <div id="resultContainer" class="hidden max-w-5xl mx-auto pb-24 pt-4">
-                <h3 class="text-2xl md:text-3xl font-extrabold text-yellow-300 flex items-center gap-3 mb-10 bg-yellow-900/30 p-6 rounded-2xl border border-yellow-500/30 shadow-lg">
+                <h3 class="text-3xl font-extrabold text-yellow-300 flex items-center gap-3 mb-10 bg-yellow-900/30 p-6 rounded-2xl border border-yellow-500/30 shadow-lg">
                     <span class="text-4xl">🎉</span> สคริปต์ Mastermind พร้อมใช้งานแล้ว!
                 </h3>
                 
                 <div id="dynamicOutput" class="space-y-8 text-base"></div>
 
-                <div class="mt-14 bg-[#0f172a]/80 p-6 md:p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
+                <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -143,21 +142,21 @@
                         <button type="button" onclick="setFollowUpText('เน้นปิดการขายช่วงท้าย ให้มี Call to Action แรงๆ ชัดเจน')" class="text-sm bg-slate-800 hover:bg-slate-700 text-green-300 px-4 py-2.5 rounded-lg border border-green-500/30 transition shadow-sm font-bold">💰 เน้นปิดการขาย</button>
                     </div>
 
-                    <button id="btnFollowUp" class="mt-6 w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white font-bold py-4 md:py-5 text-lg rounded-xl transition shadow-lg flex justify-center items-center gap-2">
+                    <button id="btnFollowUp" class="mt-6 w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white font-bold py-5 text-lg rounded-xl transition shadow-lg flex justify-center items-center gap-2">
                         <span class="text-2xl">✨</span> <span id="btnFollowUpText" class="font-bold uppercase tracking-widest">ส่งคำสั่งให้ทีม Mastermind แก้ไข</span>
                     </button>
                 </div>
 
                 <div class="mt-10 border-t border-slate-700/50 pt-10">
-                    <button id="btnAnalyze" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-300 font-bold py-4 md:py-5 text-base md:text-lg rounded-2xl border border-yellow-500/50 transition shadow-lg flex justify-center items-center gap-2">
-                        <span class="text-xl md:text-2xl font-bold uppercase tracking-tighter">🕵️‍♀️ ตรวจสอบความปลอดภัย & ให้คะแนน</span>
+                    <button id="btnAnalyze" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-300 font-bold py-5 text-lg rounded-2xl border border-yellow-500/50 transition shadow-lg flex justify-center items-center gap-2">
+                        <span class="text-2xl font-bold uppercase tracking-tighter">🕵️‍♀️ ตรวจสอบความปลอดภัย & ให้คะแนน</span>
                     </button>
-                    <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
+                    <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-2xl p-8 shadow-2xl">
                         <div class="flex items-center gap-3 mb-6">
                             <span class="text-3xl animate-spin">⚙️</span>
                             <h4 class="text-xl font-bold text-orange-400 uppercase tracking-widest">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026 และตรวจสคริปต์...</div>
+                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026...</div>
                     </div>
                 </div>
             </div>
@@ -185,7 +184,7 @@
                 <label class="flex items-center gap-2 text-base font-bold text-orange-300 mb-4 uppercase tracking-wide">
                     <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
                 </label>
-                <select id="valTextDesign" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-white bg-slate-900/80 border-orange-400">
+                <select id="valTextDesign" class="w-full glass-input rounded-xl p-3.5 text-sm outline-none font-bold text-white bg-slate-900/80 border-orange-400">
                     <option value="Modern 3D bold typography, popping out, glossy plastic texture, vibrant colors, heavy drop shadows, dynamic perspective layout">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
                     <option value="Minimalist editorial typography, elegant fashion magazine layout, clean sans-serif fonts, sophisticated white space, professional aesthetic">📖 เรียบหรู นิตยสาร (High-End)</option>
                     <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout, sharp vibrant electric lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
@@ -211,7 +210,7 @@
                 </select>
                 <div class="flex items-center justify-between glass-input rounded-xl p-3 px-5 border border-slate-700">
                     <span class="text-sm text-slate-400 font-bold">จำนวนฉาก (ซีน):</span>
-                    <input type="number" id="valScenes" value="6" min="1" max="100" class="w-16 md:w-20 bg-transparent text-right outline-none font-bold text-yellow-400 text-lg md:text-xl">
+                    <input type="number" id="valScenes" value="6" min="1" max="100" class="w-20 bg-transparent text-right outline-none font-bold text-yellow-400 text-xl">
                 </div>
             </div>
 
@@ -239,35 +238,35 @@
                         <img id="prevChar" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
                         <button id="btnRmChar" onclick="removeImg(event, 'imgChar', 'prevChar', 'btnRmChar')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden z-10">✕</button>
                     </div>
-                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input rounded-xl p-3 text-xs md:text-sm font-medium resize-none h-full" placeholder="อธิบายรูปลักษณ์ตัวละคร..."></textarea>
+                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input rounded-xl p-3 text-xs font-medium resize-none h-full" placeholder="อธิบายรูปลักษณ์ตัวละคร..."></textarea>
                 </div>
                 <div class="grid grid-cols-4 gap-2 mb-3">
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd1').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 1</div>
                         <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd1', 'btnRmProd1')">
-                        <img id="prevProd1" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd2').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 2</div>
                         <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
-                        <img id="prevProd2" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd2" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd3').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 3</div>
                         <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd3', 'btnRmProd3')">
-                        <img id="prevProd3" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd3" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd4').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 4</div>
                         <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd4', 'btnRmProd4')">
-                        <img id="prevProd4" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd4" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                 </div>
-                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-900/50 rounded-2xl p-4 text-xs font-medium resize-none shadow-inner" placeholder="รายละเอียด/จุดเด่นสินค้าบังคับ..."></textarea>
+                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-900/50 rounded-2xl p-4 text-xs font-medium resize-none shadow-inner" placeholder="รายละเอียด/จุดเด่นสินค้า..."></textarea>
             </div>
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50">
@@ -285,16 +284,74 @@
                         <option value="5">🎧 โทน: ASMR</option>
                     </select>
                 </div>
-                <select id="valMood" class="w-full glass-input bg-slate-900/50 rounded-xl p-3 text-sm font-bold border border-slate-700 mb-2">
-                    <option value="Auto">⚪ อารมณ์: ปล่อยจอย AI</option>
-                    <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
-                    <option value="Minimalist, clean light, morning sunlight">🌤️ โปร่งสบาย (Airy Clear)</option>
-                </select>
-                <select id="valVisual" class="w-full glass-input bg-slate-900/50 rounded-xl p-3 text-sm font-bold border border-slate-700">
-                    <option value="Auto">⚪ งานศิลป์: ตามใจ AI</option>
-                    <option value="Ultra-realistic, hyper-detailed, 8k resolution">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
-                    <option value="3D animation, Pixar style">🏰 การ์ตูน 3D Pixar</option>
-                </select>
+                
+                <div class="mb-4">
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">อารมณ์และบรรยากาศ (Mood & Tone)</label>
+                    <select id="valMood" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
+                        <option value="Auto">⚪ ปล่อยจอย (Random Vibe)</option>
+                        <option value="Cinematic lighting, dramatic shadows, blockbuster movie style">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
+                        <option value="Bright and airy, minimalist, clean lighting, morning sunlight">🌤️ โปร่งสบาย (Airy Clear)</option>
+                        <option value="Warm and cozy, inviting lighting, golden hour, homey vibe">☕ ละมุนใจ (Soft & Warm)</option>
+                        <option value="Dark and gritty, high contrast, moody lighting, raw atmosphere">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
+                        <option value="Luxury, glamorous gold, sparkling, rich and elegant lighting">💎 เศรษฐีดูไบ (Rich & Shine)</option>
+                        <option value="Pastel dreamy, soft color palette, magical light, cotton candy colors">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
+                        <option value="Wes Anderson style, symmetrical composition, quirky pastel palette">🎨 อินดี้สมมาตร (Symmetric Pastel)</option>
+                        <option value="Earth tone, muted colors, Korean cafe aesthetic, soft natural light">🤎 สายคาเฟ่ (Muted Earth)</option>
+                        <option value="Horror, eerie atmosphere, psychological thriller, scary vibe">🩸 ขนหัวลุก (Nightmare)</option>
+                        <option value="High-octane action, explosive, dynamic movement, intense energy">💥 เดือดปุดๆ (Explosive Action)</option>
+                        <option value="Nature healing, organic, lush greenery, dappled sunlight">🍃 รับพลังธรรมชาติ (Green Oasis)</option>
+                        <option value="Melancholy, rainy day, overcast, gray and blue tones, lonely vibe">☔ คนเจ้าน้ำตา (Gloomy Rain)</option>
+                        <option value="Old money aesthetic, classic elegance, understated luxury, sophisticated">🕰️ ผู้ดีลูกคุณ (Quiet Luxury)</option>
+                        <option value="Lo-Fi chillhop, midnight vibe, dim lighting, purple and blue neon">🎧 คนนอนดึก (Midnight Chill)</option>
+                        <option value="Cyberpunk, neon lights, dystopian futuristic city, vibrant nightlife">🌃 เมืองล้ำยุค (Neon Cyberpunk)</option>
+                        <option value="Futuristic sci-fi, advanced technology, holographic elements, high-tech">🛸 ล้ำอวกาศ (Sci-Fi World)</option>
+                        <option value="Mystical, esoteric, candlelight, incense smoke, sacred atmosphere">🔮 สายมูเตลู (Sacred Vibe)</option>
+                        <option value="90s retro, vintage film look, warm nostalgic glow, film grain">📼 วัยรุ่นยุค 90 (Retro Film)</option>
+                        <option value="Y2K aesthetic, vibrant pop colors, trendy 2000s style, flashy">💿 ตัวจี๊ด Y2K (Trendy 2000s)</option>
+                        <option value="Thai street night market, raw fluorescent lighting, food smoke, authentic local">🍢 หิวตอนดึก (Local Street)</option>
+                        <option value="Bodycam POV, shaky camera, first-person action view, realistic motion blur">🏃‍♂️ สายลุย (POV Shaky)</option>
+                        <option value="Paparazzi flash photography, harsh direct flash, unpolished, celebrity candid">📸 โดนแอบถ่าย (Harsh Flash)</option>
+                        <option value="UGC raw photo, unedited smartphone camera, authentic casual shot">📱 กล้องสดมือถือ (Casual Snap)</option>
+                        <option value="Hyper-macro photography, extreme close-up, satisfying textures, high detail">🔬 ซูมตาแตก (Extreme Close-up)</option>
+                        <option value="Fire, inferno, burning blaze, intense heat, red and orange tones">🔥 นรกส่งมาเกิด (Inferno Blaze)</option>
+                        <option value="Freezing cold, snowy, ice frost, cool blue tones, winter wonderland">❄️ หนาวจับใจ (Arctic Frost)</option>
+                        <option value="Desert dunes, harsh sun, dusty safari, golden sand, adventurous">🏜️ ผจญภัยแดนเถื่อน (Desert Safari)</option>
+                        <option value="Clubbing, laser lights, disco ball, energetic party vibe, blurry movement">🥂 ปาร์ตี้สุดเหวี่ยง (Party Animal)</option>
+                        <option value="Zen garden, peaceful silence, soft light filtering through, mindful meditation">🧘 สงบจิตสงบใจ (Zen Temple)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">สไตล์ภาพและงานศิลปะ (Visual / Art Style)</label>
+                    <select id="valVisual" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
+                        <option value="Auto">⚪ ตามใจ AI (Any Style)</option>
+                        <option value="Ultra-realistic, hyper-detailed, photorealistic, 8k resolution, highly textured">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
+                        <option value="3D animation, Pixar style, Disney style, cute stylized 3D render">🏰 การ์ตูนฝรั่ง (Cute 3D)</option>
+                        <option value="Next-gen game graphics, Unreal Engine 5 render, ray tracing, cinematic game art">🎮 เกมภาพสวย (Unreal Engine)</option>
+                        <option value="Studio Ghibli style, soft anime art, watercolor background, nostalgic anime">🌸 อนิเมะใจฟู (Soft Anime)</option>
+                        <option value="Shonen action anime style, sharp lines, dynamic comic art, intense shading">⚔️ อนิเมะสายบวก (Fierce Anime)</option>
+                        <option value="Modern Manhwa style, Korean webtoon art, beautiful stylized characters, clean lines">📖 มันฮวาสายเกา (Webtoon Art)</option>
+                        <option value="Pop art, vintage comic book style, bold colors, halftone dots, thick outlines">💥 คอมมิคสายฝอ (Retro Pop-Art)</option>
+                        <option value="Watercolor painting, fluid brushstrokes, soft and artistic, gentle washes of color">🖌️ พู่กันสีน้ำ (Flowing Watercolor)</option>
+                        <option value="Classic oil painting, impasto brushstrokes, fine art masterpiece, textured canvas">🖼️ งานสีน้ำมัน (Masterpiece Oil)</option>
+                        <option value="Amigurumi, crochet art, knitted texture, fluffy yarn, handmade craft style">🧶 งานถักนุ่มนิ่ม (Yarn Crochet)</option>
+                        <option value="Papercut art, layered paper diorama, intricate 3D paper craft, paper textures">✂️ ศิลปะกระดาษ (Layered Paper)</option>
+                        <option value="Claymation style, stop-motion animation look, plasticine models, tactile texture">🗿 งานปั้นดินน้ำมัน (Stop-Motion Clay)</option>
+                        <option value="Pixel art, 8-bit retro gaming style, nostalgic arcade graphics, blocky pixels">👾 เกมตู้เรโทร (Pixel Block)</option>
+                        <option value="Glitch art, vaporwave aesthetic, digital distortion, VHS tracking errors, neon wave">📺 ทีวีพัง (Glitch Wave)</option>
+                        <option value="Lego style, constructed from toy building bricks, plastic block world, stud textures">🧱 เมืองตัวต่อ (Block Toys)</option>
+                        <option value="Steampunk aesthetic, Victorian machinery, brass gears, steam-powered inventions">⚙️ ยุคฟันเฟือง (Steam Machine)</option>
+                        <option value="Risograph print style, halftone textures, slightly misaligned ink, indie zine look">🖨️ งานสกรีนเท่ๆ (Riso Print)</option>
+                        <option value="Modern Thai temple mural art, intricate Thai traditional patterns, elegant gold accents">🛕 ลายไทยโมเดิร์น (Thai Art)</option>
+                        <option value="Vintage Thai movie poster, hand-painted style, bold vibrant colors, dramatic retro">🎬 ใบปิดหนังเรโทร (Thai Poster)</option>
+                        <option value="Thai cheap horror comic style, rough black and white ink drawing, raw spooky art">👻 การ์ตูนผีไทย (Thai Ghost)</option>
+                        <option value="Pencil sketch, graphite drawing, rough lines, black and white artistic sketch">✒️ สเก็ตช์ดินสอ (Pencil Sketch)</option>
+                        <option value="Stained glass art, church window style, glowing colorful light, geometric panes">🌈 กระจกสี (Stained Glass)</option>
+                        <option value="Embroidery art, needlework, stitched fabric texture, cross-stitch">🧵 งานปักผ้า (Embroidery Art)</option>
+                        <option value="Crayon drawing, childlike doodle, messy coloring, bright playful colors">🖍️ สีเทียนเด็กอนุบาล (Crayon Doodle)</option>
+                        <option value="Made of crystal glass, transparent, refracting light, shiny and fragile texture">🧊 คริสตัลแก้ว (Glass/Crystal)</option>
+                    </select>
+                </div>
             </div>
             
         </div>
@@ -311,6 +368,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // 🔥 Firebase Config ของโปรเจกต์บอส 🔥
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
@@ -328,7 +386,7 @@
         const ADMIN_EMAIL = "admin@gmail.com"; 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
-        // 🚨 รายชื่ออีเมลกว่า 150 คนของบอส (ยังอยู่ครบ 100% ห้ามลบเด็ดขาด) 🚨
+        // 🚨 รายชื่ออีเมล 150+ คนของบอส (อยู่ครบไม่ตัดทิ้ง 100%) 🚨
         window.ALLOWED_EMAILS = [
             "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
             "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
@@ -454,7 +512,7 @@
         });
         window.showToast = (msg, icon) => Toast.fire({ icon, title: msg });
         
-        // 🚨 สไลด์แผงควบคุม (รองรับมือถือ 100%) 🚨
+        // 🚨 สไลด์แผงควบคุม (รองรับมือถือ) 🚨
         window.toggleSidebar = () => { 
             const sb = document.getElementById('mainSidebar'); 
             sb.classList.toggle('sidebar-closed'); 
@@ -495,7 +553,7 @@
             });
         };
 
-        // 🌟 วาดกล่องผลลัพธ์แบบละเอียด 🌟
+        // 🌟 วาดกล่องผลลัพธ์แบบละเอียด (ไม่ซ่อน Prompt ของเดิมบอส) 🌟
         function renderGeminiBoxes(raw) {
             const container = document.getElementById('dynamicOutput'); container.innerHTML = '';
             const parts = raw.split(/(```[\s\S]*?```)/g);
@@ -526,7 +584,7 @@
         }
 
         // 🚨🔥 SYSTEM PROMPT 500 บรรทัด (คืนชีพคลังสมอง Mastermind & Dictionary) 🔥🚨
-        const SYSTEM_PROMPT = `[SYSTEM INSTRUCTION]
+        const MASTERMIND_PROMPT = `[SYSTEM INSTRUCTION]
 คุณคือ "Joss Ai Mastermind" การรวมตัวของสภาผู้เชี่ยวชาญ 5 ด้านทำงานแบบอัตโนมัติ:
 1. Viral Marketer: ปรมาจารย์เรื่องฮุกและอัลกอริทึม
 2. Sale Specialist: นักจิตวิทยาการขาย (Soft Sell)
@@ -540,7 +598,7 @@
 2. ⚠️ DYNAMIC VISIBILITY (กฎการจัดวาง): ห้ามโชว์สินค้าในทุกซีนเด็ดขาด! ซีนแรก (Hook) ห้ามมีสินค้า ให้เน้นอารมณ์และปัญหา แล้วค่อยนำสินค้ามาโชว์ในซีนแก้ปัญหา (Solution)
 3. ⚠️ TYPOGRAPHY RULE: ออกแบบคำสั่งภาพนิ่ง (Image Prompt) โดยใช้สไตล์ Typography ที่บอสกำหนดด้านล่าง และใส่ข้อความเฉพาะฉากที่ถูกสั่งเท่านั้น (Typography Thai Text ต้องอยู่ในเครื่องหมายคำพูดเสมอ)
 4. ⚠️ เสียงพากย์และบทพูด: ภาษาไทย 100% เท่านั้น ห้ามมีเครื่องหมาย . ? ! เด็ดขาด
-5. ⚠️ AUDIO CONSISTENCY: ในกล่องวิดีโอ (GEN VIDEO) ทุกซีน ต้องระบุคำสั่ง "Consistent Voice ID: [ชื่อตัวละคร]" เสมอเพื่อให้เสียงพากย์เหมือนกันทั้งคลิป
+5. ⚠️ AUDIO CONSISTENCY: ในกล่องวิดีโอ (GEN VIDEO) ทุกซีน ต้องระบุคำสั่ง "Consistent Voice ID: [ชื่อตัวละคร]" เสมอเพื่อให้เสียงไม่เพี้ยน
 6. โหมด Flow (8 วินาที/ซีน): บทพูด 23-28 คำเป๊ะๆ
 7. DICTIONARY CONTROL: ห้ามใช้คำต้องห้าม 480 คำ เช่น 100%, การันตี, รักษา, ขาวทันที ฯลฯ (ใช้การเปรียบเปรยแทนเสมอ)
 
@@ -551,7 +609,8 @@
 [OUTPUT FORMAT TEMPLATE] (บังคับใช้ฟอร์มนี้เป๊ะๆ เรียงลำดับตั้งแต่ STEP -1 ถึง SCENE N)
 
 [STEP -1: TIKTOK & FLOW POLICY COMPLIANCE CHECK]
-⚠️ ระบบทำการตรวจสอบกฎข้อห้ามและข้อจำกัดล่าสุด... ✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว
+⚠️ ระบบทำการตรวจสอบกฎข้อห้ามและข้อจำกัดล่าสุด...
+✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว
 
 [STEP 0: 100% STRICT PRODUCT LOCK & ANALYSIS]
 🔒 1. ล็อกข้อมูลสินค้า (Product Lock): [ประกาศชื่อแบรนด์และประเภทสินค้าจากภาพ/บรีฟ]
@@ -559,10 +618,11 @@
 🧠 3. แผนการใช้ Metaphor: [อธิบายไอเดียเปรียบเปรยหลบคำแบน 480 คำ]
 
 [STEP 0.5: THE EXPERT BRAINSTORMING (สภาผู้เชี่ยวชาญ)]
-(จำลองการประชุมของ 5 ทีมงาน: Viral Marketer, Sale Specialist, Storyteller, Comedian, Graphic Designer)
-🧠 Viral Marketer: [เสนอฮุก]
+(จำลองการประชุม 5 ฝ่าย เพื่อปรับสคริปต์ให้ไวรัลที่สุด)
+🗣️ Viral Marketer: [เสนอฮุก]
+✍️ Copywriter ปากแจ๋ว: [ปรับภาษา]
 🎬 Director: [วางแผนการโชว์สินค้า: "เราจะไม่โชว์สินค้าในซีน 1-2 เพราะมันดู Hard Sell ไป ให้โชว์ชัดๆ ในซีน..."]
-🎨 Graphic Designer: [เตรียมออกแบบ Typography ปก]
+🎨 Graphic Designer: [ยืนยันการใช้ Typography]
 
 (0) 🎬 STORYBOARD OVERVIEW
 ชื่อเรื่อง (Title): [ตั้งชื่อเรื่อง]
@@ -573,19 +633,19 @@ FULL STORYBOARD (SCENE 0-[N]):
 SCENE 0 : CHARACTER DESIGN (ออกแบบตัวละครหลัก)
 🔴 1. สร้างรูป (GEN IMAGE)
 \`\`\`text
-SCENE 0: [Keyword สไตล์ภาพ (นำการตั้งค่าสไตล์ภาพและบรรยากาศ (Mood/Visual) เข้ามาผสมผสานในนี้)], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, front view, side view, back view, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT, NO LETTERS
+SCENE 0: [Keyword สไตล์ภาพ], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT
 \`\`\`
 =============================
 SCENE 1 : 🖼️ COVER IMAGE & HOOK
 Speaker: [ชื่อคาแรคเตอร์]
-Dialogue: "([อารมณ์/โทนเสียง]) [บทพูดภาษาไทย Metaphor ห้ามมี . ? ! เด็ดขาด (ยาว 23-28 คำ)]"
+Dialogue: "([อารมณ์/โทนเสียง]) [บทพูดที่สแกนคำแบนแล้ว ห้ามมี . ? ! (23-28 คำ)]"
 Action: [ท่าทางดึงดูดสายตาอย่างแรง]
 Background: [ฉากหลัง]
 💡 Director's Note: [อธิบายว่าซีนนี้ห้ามมีสินค้าเด็ดขาด ให้เน้นฮุกอารมณ์]
 💙 1. สร้างรูป (GEN IMAGE)
 (⚠️ กฎ Typography: ดึงคำสั่งจาก Payload มาใส่ที่นี่)
 \`\`\`text
-SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละครแบบเต็ม], [expression], [action], NO PRODUCT IN SCENE, [Background], {TYPOGRAPHY_COMMAND}, 8k resolution, cinematic lighting, --ar 9:16
+SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [expression], [action], NO PRODUCT IN SCENE, [Background], {TYPOGRAPHY_COMMAND}, 8k resolution, cinematic lighting, --ar 9:16
 \`\`\`
 ❤️ 2. สร้างวิดีโอ (GEN VIDEO)
 \`\`\`text
@@ -624,12 +684,43 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
 
             const briefIdeaEl = document.getElementById('valBrief');
             const productDetailEl = document.getElementById('valProductDetail');
+            const charDescEl = document.getElementById('valChar');
             
             const briefIdea = briefIdeaEl ? briefIdeaEl.value : "";
             const productDetail = productDetailEl ? productDetailEl.value : "";
+            const charDesc = charDescEl ? charDescEl.value : "";
             
-            if (!briefIdea.trim() && !productDetail.trim()) {
-                window.showToast('🦆 พี่จอสAi ครับ รบกวนพิมพ์ไอเดีย หรือแนบรูปสินค้าให้สักนิดก่อนรันระบบนะครับ!', 'warning');
+            const goalEl = document.querySelector('input[name="goal"]:checked');
+            const typoEl = document.getElementById('valTypo');
+            const scenesEl = document.getElementById('valScenes');
+            const styleEl = document.querySelector('input[name="style"]:checked');
+            const toneEl = document.getElementById('valTone');
+            const dialectEl = document.getElementById('valDialect');
+            const moodEl = document.getElementById('valMood');
+            const visualEl = document.getElementById('valVisual');
+
+            const goalInput = goalEl ? goalEl.value : "2";
+            const typoInput = typoEl ? typoEl.value : "3";
+            let scenesInput = scenesEl ? parseInt(scenesEl.value) || 6 : 6;
+            const styleInput = styleEl ? styleEl.value : "A";
+            const toneInput = toneEl ? toneEl.value : "2";
+            const dialectInput = dialectEl ? dialectEl.value : "กลาง";
+            const moodInput = moodEl ? moodEl.value : "Auto";
+            const visualInput = visualEl ? visualEl.value : "Auto";
+
+            const charFileEl = document.getElementById('imgChar');
+            const charFile = (charFileEl && charFileEl.files) ? charFileEl.files[0] : null;
+            
+            const prodFiles = [];
+            for (let i = 1; i <= 4; i++) {
+                const prodEl = document.getElementById('imgProd' + i);
+                if (prodEl && prodEl.files && prodEl.files[0]) {
+                    prodFiles.push(prodEl.files[0]);
+                }
+            }
+
+            if (!briefIdea.trim() && !productDetail.trim() && prodFiles.length === 0) {
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '🦆 พี่จอสAi ครับ รบกวนพิมพ์ไอเดีย หรือแนบรูปสินค้าให้สักนิดก่อนรันระบบนะครับ!' });
                 return;
             }
 
@@ -681,17 +772,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                     return 0;
                 });
 
-                const goalEl = document.querySelector('input[name="goal"]:checked');
-                const styleEl = document.querySelector('input[name="style"]:checked');
-                const typoInput = document.getElementById('valTypo') ? document.getElementById('valTypo').value : "3";
-                const scenesInput = document.getElementById('valScenes') ? parseInt(document.getElementById('valScenes').value) || 6 : 6;
-                const toneInput = document.getElementById('valTone') ? document.getElementById('valTone').value : "2";
-                const dialectInput = document.getElementById('valDialect') ? document.getElementById('valDialect').value : "กลาง";
-                const moodInput = document.getElementById('valMood') ? document.getElementById('valMood').value : "Auto";
-                const visualInput = document.getElementById('valVisual') ? document.getElementById('valVisual').value : "Auto";
-                const charDesc = document.getElementById('valChar') ? document.getElementById('valChar').value : "";
-
-                const styleName = (styleEl && styleEl.value === 'A') ? 'คนจริง (Real human, highly realistic photo)' : 'การ์ตูน 3D (3D Pixar animation style)';
+                const styleName = styleInput === 'A' ? 'คนจริง (Real human, highly realistic photo)' : 'การ์ตูน 3D (3D Pixar animation style)';
                 
                 let toneName = "";
                 if(toneInput === '1') toneName = 'สุภาพ ทางการ (บังคับพูดเพราะ ใช้ ครับ/ค่ะ)';
@@ -700,37 +781,40 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 else if(toneInput === '4') toneName = 'ปากแซ่บขั้นสุด ดิบเถื่อน (จิกกัดแรงๆ ใช้คำกระแทกใจด่าเจ็บๆ ห้ามสุภาพเด็ดขาด)';
                 else toneName = 'ASMR (งดบทพูด 100% ให้มีแค่เสียงธรรมชาติและ SFX เท่านั้น)';
 
-                const goalName = (goalEl && goalEl.value === '1') ? 'สร้างตัวตน/ให้ความรู้ (ห้ามขายของ)' : 'ขายของ/ป้ายยาสินค้า (ชี้เป้า/มี CTA)';
+                const goalName = goalInput === '1' ? 'สร้างตัวตน/ให้ความรู้ (ห้ามขายของ)' : 'ขายของ/ป้ายยาสินค้า (ชี้เป้า/มี CTA)';
                 let platName = 'Google Flow (จังหวะสมูทธรรมชาติ)'; 
                 let platTime = "8"; 
                 let lengthRule = "บังคับความยาวบทพูด 23-28 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น";
-                const characterRule = charDesc.trim() !== "" ? `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
+
+                const characterRule = charDesc.trim() !== "" ? 
+                    `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
+
                 let batchScenes = scenesInput > 10 ? 10 : scenesInput;
 
                 let customStylePrompt = "";
                 if(moodInput !== "Auto") customStylePrompt += `\n   - อารมณ์/บรรยากาศ (Mood): บังคับใส่คีย์เวิร์ด "${moodInput}" ลงใน Image Prompt ทุกซีน`;
                 if(visualInput !== "Auto") customStylePrompt += `\n   - สไตล์งานศิลป์ (Visual): บังคับใส่คีย์เวิร์ด "${visualInput}" ลงใน Image Prompt ทุกซีน`;
 
-                const textDesign = document.getElementById('valTextDesign') ? document.getElementById('valTextDesign').value : "";
-                let typoRule = "";
-                if (typoInput === "3") {
-                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "ทุกฉากมี Text" ดังนั้น ในกล่อง Image Prompt ของทุก SCENE (1 ถึง N) ให้คุณใส่คำสั่งนี้ลงไปเสมอ: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทยประจำซีน]"`;
-                } else if (typoInput === "2") {
-                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "มี Text เฉพาะปก" ดังนั้น ในกล่อง Image Prompt เฉพาะ SCENE 1 เท่านั้น ให้ใส่: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทย]" ส่วน SCENE อื่นๆ ให้ใส่ "ABSOLUTELY NO TEXT"`;
+                let textDesignPrompt = "";
+                const textDesign = document.getElementById('valTextDesign').value;
+                if(typoInput === "3") {
+                    textDesignPrompt = `📌 กฎ Typography: ผู้ใช้เลือก "ทุกฉากมี Text" ดังนั้น ในกล่อง Image Prompt ของทุก SCENE (1 ถึง N) ให้คุณใส่คำสั่งนี้ลงไปเสมอ: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทยประจำซีน]"`;
+                } else if(typoInput === "2") {
+                    textDesignPrompt = `📌 กฎ Typography: ผู้ใช้เลือก "มี Text เฉพาะปก" ดังนั้น ในกล่อง Image Prompt เฉพาะ SCENE 1 เท่านั้น ให้ใส่: ${textDesign}, eye-catching typography THAI text "[ข้อความฮุกภาษาไทย]" ส่วน SCENE อื่นๆ ให้ใส่ "ABSOLUTELY NO TEXT"`;
                 } else {
-                    typoRule = `📌 กฎ Typography: ผู้ใช้เลือก "ไม่มี Text เลย" ดังนั้นบังคับใส่ "ABSOLUTELY NO TEXT" ใน Image Prompt ของทุก SCENE`;
+                    textDesignPrompt = `📌 กฎ Typography: ผู้ใช้เลือก "ไม่มี Text เลย" ดังนั้นบังคับใส่ "ABSOLUTELY NO TEXT" ใน Image Prompt ของทุก SCENE`;
                 }
 
                 const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 [การตั้งค่าพื้นฐาน]
 1. เป้าหมายคลิป: ${goalName}
-2. รูปแบบ Typography: ${typoRule}
+2. รูปแบบ Typography: ${textDesignPrompt}
 3. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
 4. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
 5. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
 6. ลักษณะตัวละคร: ${characterRule}
-7. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ)
+7. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
 8. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
 9. กฎเครื่องหมายวรรคตอนและภาษา: ห้ามมีเครื่องหมาย . ? ! ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
@@ -757,7 +841,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                     for(let i=0; i<prodFiles.length; i++) {
                         apiParts.push({ inlineData: await fileToBase64(prodFiles[i]) });
                     }
-                    basePrompt += `\n[ระบบ: แนบ 'รูปสินค้า' มาทั้งหมด ${prodFiles.length} รูป ให้ล็อกเป้าหมายสินค้าใน STEP 0 ห้ามมั่วเด็ดขาด]`;
+                    basePrompt += `\n[ระบบ: แนบ 'รูปสินค้า/บรีฟ' มาทั้งหมด ${prodFiles.length} รูป ให้ค้นหาข้อมูลและล็อคเป้าหมายสินค้าใน STEP 0 ห้ามมั่วเด็ดขาด]`;
                 }
                 
                 apiParts.push({ text: basePrompt });
@@ -872,12 +956,12 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             const followUpText = followUpEl ? followUpEl.value : "";
             
             if(!followUpText.trim()) {
-                window.showToast('🦆 พี่จอสAi พิมพ์คำสั่งที่ต้องการแก้ไขก่อนนะครับ!', 'warning');
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '🦆 พี่จอสAi พิมพ์คำสั่งที่ต้องการแก้ไขก่อนนะครับ!' });
                 return;
             }
 
             if(!window.LAST_API_PARTS || window.LAST_API_PARTS.length === 0 || !currentGeneratedScript) {
-                window.showToast('⚠️ พี่ต้องกดสร้างสคริปต์ให้เสร็จก่อน 1 รอบ ถึงจะสั่งแก้ไขได้ครับ!', 'warning');
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '⚠️ พี่ต้องกดสร้างสคริปต์ให้เสร็จก่อน 1 รอบ ถึงจะสั่งแก้ไขได้ครับ!' });
                 return;
             }
 
@@ -889,7 +973,11 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             document.getElementById('loadingStatus')?.classList.remove('hidden');
             const loadTextEl = document.getElementById('loadingText');
             
-            const followUpMessages = ["🔄 ทีมงานกำลังรื้อสคริปต์และประกอบใหม่...", "⚠️ กำลังให้ AI อ่านบริบทการคุยก่อนหน้า...", "✨ กำลังปรับแต่งบทพูดและมุมกล้อง..."];
+            const followUpMessages = [
+                "🔄 ทีมงานกำลังรื้อสคริปต์และประกอบใหม่ตามคำสั่ง...",
+                "⚠️ กำลังให้ AI อ่านบริบทการคุยก่อนหน้า...",
+                "✨ กำลังปรับแต่งบทพูดและมุมกล้องให้ใหม่..."
+            ];
             let msgIndex = 0;
             if(loadTextEl) loadTextEl.innerText = followUpMessages[0];
             loadingInterval = setInterval(() => {
@@ -906,7 +994,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 let chatHistory = [
                     { role: "user", parts: window.LAST_API_PARTS }, 
                     { role: "model", parts: [{ text: currentGeneratedScript }] }, 
-                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะตาม Google Flow, บทพูดห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด)` }] }
+                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะตาม Google Flow, บทพูดห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด และรักษากฎ Typography เดิมที่สั่งไว้)` }] }
                 ];
 
                 let response = await fetch(API_URL, {
@@ -925,10 +1013,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 renderGeminiBoxes(currentGeneratedScript);
                 document.getElementById('resultContainer')?.classList.remove('hidden');
                 if(followUpEl) { followUpEl.value = ''; autoResize(followUpEl); }
-                window.showToast("แก้ไขเรียบร้อยครับบอส! ✨", "success");
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไขเรียบร้อยครับบอส! ✨', showConfirmButton: false, timer: 3000 });
 
             } catch (error) {
-                window.showToast(error.message, "error");
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาดในการแก้ไข', text: error.message });
                 document.getElementById('resultContainer')?.classList.remove('hidden');
             } finally {
                 clearInterval(loadingInterval);
@@ -938,7 +1026,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             }
         });
 
-        // --- ปุ่ม Analyze (ตรวจคำแบน 100%) ---
+        // --- ปุ่ม Analyze (ตรวจคำแบนและไวรัล 100%) ---
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -949,7 +1037,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             const analysisText = document.getElementById('analysisText');
 
             if (!currentGeneratedScript) {
-                window.showToast('ต้องร่ายมนต์สร้างสคริปต์ก่อนนะครับบอส!', 'warning');
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ต้องร่ายมนต์สร้างสคริปต์ก่อนนะครับบอส!' });
                 return;
             }
 
