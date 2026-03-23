@@ -132,7 +132,7 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -152,11 +152,11 @@
                         <span class="text-2xl font-bold uppercase tracking-tighter">🕵️‍♀️ ตรวจสอบความปลอดภัย & ให้คะแนน</span>
                     </button>
                     <div id="analysisOutput" class="hidden mt-8 glass-panel rounded-2xl p-8 shadow-2xl">
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="text-3xl animate-spin">⚙️</span>
-                            <h4 class="text-xl font-bold text-orange-400 uppercase tracking-widest">Analysis Report</h4>
+                        <div class="flex items-center gap-3 mb-6 border-b border-slate-700 pb-4">
+                            <span class="text-3xl">🕵️‍♀️</span>
+                            <h4 class="text-2xl font-bold text-orange-400 uppercase tracking-widest">TikTok Policy Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026...</div>
+                        <div id="analysisText" class="text-slate-200 text-lg leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026...</div>
                     </div>
                 </div>
             </div>
@@ -244,25 +244,25 @@
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd1').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 1</div>
                         <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd1', 'btnRmProd1')">
-                        <img id="prevProd1" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd2').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 2</div>
                         <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
-                        <img id="prevProd2" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd2" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd3').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 3</div>
                         <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd3', 'btnRmProd3')">
-                        <img id="prevProd3" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd3" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd4').click()">
                         <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 4</div>
                         <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd4', 'btnRmProd4')">
-                        <img id="prevProd4" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
+                        <img id="prevProd4" class="absolute inset-0 hidden w-full h-full object-cover">
                         <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                 </div>
@@ -323,9 +323,9 @@
             
         </div>
 
-        <div class="p-6 bg-slate-900/90 border-t-2 border-yellow-600 z-10 backdrop-blur-md">
-            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
-                <span class="text-3xl">🦆</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
+        <div class="p-6 bg-slate-900 border-t-2 border-yellow-600 z-10 shadow-2xl">
+            <button id="btnGenerate" class="w-full btn-super text-white font-black py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
+                <span class="text-3xl uppercase tracking-widest">✨ ร่ายมนต์สร้างสคริปต์</span>
             </button>
         </div>
     </aside>
@@ -398,7 +398,7 @@
             "nee.9484@gmail.com", "archiraya04@gmail.com", "anantasale2@gmail.com", "sakda0870826154@gmail.com",
             "jaoh0963605619@gmail.com", "supawadee.cartoon@gmail.com", "chantolaongdao@gmail.com", 
             "flukefashion22@gmail.com", "xiaolongnu55@gmail.com", "ongapisitphuket@gmail.com", "hastachairat@gmail.com",
-            "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "boonratchaiwat@gmail.com", "Jamras.scb@gmail.com"
+            "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "Jamras.scb@gmail.com", "boonratchaiwat@gmail.com"
         ];
 
         window.loginWithGoogle = async function() {
@@ -548,7 +548,6 @@
             });
         }
 
-        // 🚨🔥 อัปเกรดสมอง AI: เปลี่ยนกฎห้าม 500 คำ ให้เป็น "กฎแบบคอนเซปต์ (Concept-Based)" 🔥🚨
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -998,7 +997,7 @@
             }
         });
 
-        // --- ปุ่ม Analyze (ตรวจคำแบนและไวรัลแบบ TikTok Moderator) ---
+        // 🚨 อัปเกรดปุ่ม Analyze ใหม่ออกแบบ Prompt ถี่ยิบ (ห้ามทวนคำสั่ง ห้ามตกหล่น) 🚨
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
@@ -1024,32 +1023,31 @@
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-1.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                const analysisPrompt = `คุณคือ "TikTok Policy & Algorithm AI" (อัปเดตฐานข้อมูลกฎชุมชนและข้อห้ามโฆษณา/Shadowban ล่าสุด)
-หน้าที่ของคุณคือ สแกนและชำแหละสคริปต์ Storyboard ด้านล่างนี้อย่างละเอียดถี่ยิบ ประหนึ่งคุณเป็นอัลกอริทึมของ TikTok ที่กำลังจะแบนคลิปนี้
+                // บังคับ Template ไม่ให้ AI ทวนคำสั่ง
+                const analysisPrompt = `คุณคือ "TikTok Policy & Algorithm AI" (อัปเดตฐานข้อมูลกฎและข้อห้าม TikTok ล่าสุด)
+หน้าที่ของคุณคือวิเคราะห์สคริปต์ด้านล่างอย่างเข้มงวดที่สุด
 
-กรุณาวิเคราะห์และรายงานผลโดยแยกหัวข้อดังนี้:
+[คำสั่งเด็ดขาด]: ห้ามทวนคำสั่ง ห้ามเกริ่นนำ ให้เริ่มรายงานผลการวิเคราะห์ข้อ 1 ถึง 5 ทันทีตามรูปแบบด้านล่างนี้:
 
-1. 👁️ การประเมินภาพและ Visuals (Image Generation):
-- มีความเสี่ยงเรื่องอนาจาร, ความรุนแรง, โชว์เนื้อหนังมากไป, หรือท่าทางที่ผิดกฎไหม?
-- การวางสินค้าดู Hard Sell หรือตั้งใจโชว์จนผิดธรรมชาติเกินไปหรือไม่? (AI มักจับแบนภาพโชว์สินค้าแบบจงใจ)
+1. 👁️ การประเมินภาพ (Visuals):
+- (อธิบายผลวิเคราะห์...)
 
-2. 🎧 การประเมินเสียงและ SFX (Audio Requirement):
-- เสียงที่ออกแบบมามีความสอดคล้องไหม? อารมณ์เสียงพากย์น่าเบื่อหรือดึงดูดใจ?
+2. 🎧 การประเมินเสียง (Audio):
+- (อธิบายผลวิเคราะห์...)
 
-3. 🗣️ การประเมินคำพูดและตัวหนังสือบนจอ (Dialogue & Text) [สำคัญที่สุด]:
-- สแกนหาคำเคลมเกินจริงตามหลัก Concept-Based: มีการอ้างผลลัพธ์ 100%, การันตี, รักษาโรค, หายขาด, ขาวทันที, ลดน้ำหนัก, สลายไขมัน, หรืออ้างอิงคลินิก/แพทย์ ที่เสี่ยงโดนแบนโฆษณาใน TikTok หลุดเข้ามาในบทพูดหรือข้อความ Typography หรือไม่?
-- ถ้าระบุเจอ ให้ยกประโยคนั้นมาและบอกวิธีเลี่ยงคำ (Metaphor)
+3. 🗣️ การประเมินคำพูดและตัวหนังสือ (Dialogue & Text):
+- (อธิบายผลวิเคราะห์... เน้นหาคำเคลมเกินจริง 480 คำ เช่น 100%, รักษา, ขาวทันที)
 
-4. 📊 โอกาสรอดและไวรัล (Hook & Retention):
-- ซีนแรก (3 วินาทีแรก) สามารถหยุดนิ้วคนดูได้จริงไหม?
-- เนื้อหามีความน่าติดตามจนจบ หรือน่าเบื่อจนคนปัดทิ้ง?
+4. 📊 โอกาสรอดและไวรัล (Viral Potential):
+- (อธิบายผลวิเคราะห์ฮุก 3 วินาทีแรก...)
 
-5. ⭐ สรุปคะแนน (เต็ม 10) และ 🛠️ ข้อเสนอแนะฉุกเฉิน:
-- ให้คะแนนความปลอดภัย (Safety Score)
-- ให้คะแนนโอกาสไวรัล (Viral Score)
-- สรุปว่าต้องแก้ตรงไหนก่อนนำไปใช้งานจริง
+5. ⭐ สรุปและข้อเสนอแนะ (Score & Advice):
+- คะแนนความปลอดภัย: [X]/10
+- คะแนนไวรัล: [X]/10
+- คำแนะนำ: (ต้องแก้ตรงไหนบ้าง)
 
-[สคริปต์ที่ต้องการวิเคราะห์]:\n${currentGeneratedScript}`;
+[สคริปต์ที่ต้องการวิเคราะห์]:
+${currentGeneratedScript}`;
 
                 let response = await fetch(API_URL, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -1066,7 +1064,8 @@
                 if (data.candidates && data.candidates[0].content && analysisText) {
                     let rawText = escapeHTML(data.candidates[0].content.parts[0].text);
                     rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400 text-lg">$1</strong>');
-                    rawText = rawText.replace(/(👁️|🎧|🗣️|📊|⭐|🛠️)(.*?):/g, '<br><span class="text-xl mt-5 inline-block border-b border-slate-700 pb-1">$1 <span class="text-orange-400 font-bold">$2:</span></span>');
+                    // จัดรูปแบบหัวข้อ 1-5 ให้สวยงาม ไม่เพี้ยน
+                    rawText = rawText.replace(/(\d+\.\s*(👁️|🎧|🗣️|📊|⭐).*?):/g, '<br><span class="text-xl mt-4 inline-block border-b border-slate-700 pb-1 text-orange-400 font-bold">$1:</span>');
                     analysisText.innerHTML = rawText;
                 }
 
