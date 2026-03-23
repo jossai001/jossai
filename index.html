@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joss Ai 🦆 Web Studio (Pro Master Edition)</title>
+    <title>Joss Ai 🦆 Web Studio (Minimal Duck Master)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
+            /* ธีมเป็ดมินิมอล สบายตา */
             background: radial-gradient(circle at top left, #fffbeb, #fef9c3, #fffdf2); 
             color: #334155; 
             overflow: hidden; 
         }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #fcd34d; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb { background: #fcd34d; border-radius: 10px; }
         
         .glass-panel { 
             background: rgba(255, 255, 255, 0.85); 
@@ -51,6 +52,7 @@
         .upload-box:hover { border-color: #ef4444; background: rgba(254, 240, 138, 0.4); }
         .upload-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
         
+        /* ปุ่มสีเหลืองเป็ด */
         .btn-super { 
             background: linear-gradient(135deg, #facc15 0%, #eab308 100%); 
             color: #fff;
@@ -61,11 +63,15 @@
             transform: translateY(-2px); 
             box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.4); 
         }
-        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; }
+        .btn-super:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; color: #64748b;}
+        
+        /* ปุ่มสีแดงปากเป็ด */
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; transition: 0.2s;}
         .btn-red:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3); }
 
         .auth-overlay { position: fixed; inset: 0; background: rgba(255, 251, 235, 0.95); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
+        
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) { .sidebar-closed { transform: translateX(0%); } }
@@ -78,7 +84,7 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
-        .scene-card:hover { transform: scale(1.01); }
+        .scene-card:hover { transform: scale(1.005); }
     </style>
 </head>
 <body class="h-screen flex flex-row text-base relative">
@@ -96,46 +102,46 @@
             <div id="pendingForm" class="hidden">
                 <div class="text-red-500 mb-6 text-7xl animate-bounce">⏳</div>
                 <h2 class="text-2xl font-black text-slate-800 mb-3">รอการอนุมัติ</h2>
-                <p class="text-slate-600 text-base mb-8">กรุณารอสักครู่ ระบบกำลังนำท่านเข้าสู่สตูดิโอ 💛</p>
+                <p class="text-slate-600 text-base mb-8">ระบบยังไม่พบสิทธิ์การใช้งาน กรุณาติดต่อ พี่จอสAi นะครับ 💛</p>
                 <button onclick="resetLogin()" class="text-red-500 font-bold hover:underline">ลองบัญชีอื่น</button>
             </div>
         </div>
     </div>
 
     <main class="flex-1 h-full flex flex-col relative hidden" id="mainArea">
-        <header class="h-16 md:h-20 glass-panel flex items-center justify-between px-4 md:px-10 z-10 border-b border-yellow-200">
+        <header class="h-16 md:h-20 glass-panel flex items-center justify-between px-4 md:px-10 z-10 border-b border-yellow-200 shadow-sm">
             <div class="flex items-center gap-3">
                 <span class="text-3xl md:text-4xl drop-shadow-sm">🦆</span>
-                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800">JOSS AI <span class="text-red-500">STUDIO</span></h1>
+                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800 uppercase">Joss Ai <span class="text-red-500 font-light hidden sm:inline">Studio</span></h1>
             </div>
-            <div class="flex items-center gap-3 md:gap-8">
+            <div class="flex items-center gap-3 md:gap-6">
                 <div class="hidden md:flex bg-yellow-400/20 border border-yellow-500/50 text-yellow-700 text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span> Pro Edition
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-sm"></span> Auto-Mastermind
                 </div>
-                <div class="text-right border-l border-slate-300 pl-6 hidden sm:block">
-                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">user@gmail.com</div>
+                <div class="text-right border-l border-slate-300 pl-4 md:pl-6 hidden sm:block">
+                    <div class="text-sm md:text-base font-black text-slate-700" id="userEmailDisplay">user@gmail.com</div>
                 </div>
-                <button onclick="logout()" class="bg-white hover:bg-red-50 text-red-500 border border-red-200 font-bold px-4 py-2 rounded-xl transition shadow-sm">ออก</button>
-                <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300">⚙️</button>
+                <button onclick="logout()" class="text-xs md:text-sm bg-white hover:bg-red-50 text-red-500 border border-red-200 font-bold px-4 py-2 rounded-xl transition shadow-sm">ออก</button>
+                <button onclick="toggleSidebar()" class="md:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300 shadow-sm">⚙️</button>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-4 md:p-12 scroll-smooth relative" id="resultArea">
-            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center opacity-90">
+            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center opacity-90 px-4 text-center">
                 <span class="text-8xl md:text-[10rem] mb-8 drop-shadow-lg">🐤</span>
-                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมทำงานแล้วครับบอส!</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมร่ายเวทมนตร์แล้วครับบอส!</h2>
                 <p class="text-slate-500 font-medium text-lg max-w-2xl leading-relaxed bg-white/40 p-5 rounded-3xl border border-yellow-200">
-                    ตั้งค่า API Key และปรับแต่งแผงควบคุมด้านขวา<br>แล้วกดปุ่ม <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> ได้เลย ทีมงานรออยู่ครับ!
+                    ปรับแต่งรายละเอียดที่แผงควบคุมด้านขวามือ<br>ทีมงานทั้ง 5 คนรอรับคำสั่ง <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> อยู่ครับ!
                 </p>
                 <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-10 py-4 rounded-2xl font-black text-white shadow-xl animate-bounce">เปิดแผงควบคุม ⚙️</button>
             </div>
 
             <div id="loadingStatus" class="hidden flex flex-col items-center justify-center h-full">
-                <div class="text-7xl md:text-9xl animate-bounce mb-8">🪄</div>
+                <div class="text-7xl md:text-9xl animate-bounce mb-8 drop-shadow-lg">🪄</div>
                 <p id="loadingText" class="text-red-500 font-black text-2xl md:text-4xl animate-pulse text-center px-8 bg-white/80 p-5 rounded-full border border-red-200 shadow-sm">ทีมงานกำลังระดมสมอง...</p>
             </div>
 
-            <div id="resultContainer" class="hidden max-w-4xl mx-auto pb-32 pt-4">
+            <div id="resultContainer" class="hidden max-w-5xl mx-auto pb-32 pt-4">
                 <h3 class="text-xl md:text-3xl font-black text-slate-800 flex items-center gap-3 mb-6 md:mb-10 bg-white p-4 md:p-6 rounded-3xl border border-yellow-300 shadow-sm">
                     <span class="text-3xl md:text-5xl drop-shadow-sm">🎉</span> สคริปต์ของคุณพร้อมใช้งานแล้ว!
                 </h3>
@@ -144,17 +150,18 @@
 
                 <div class="mt-16 bg-white p-8 md:p-10 rounded-[3rem] border-2 border-blue-200 shadow-2xl">
                     <label class="flex items-center gap-3 text-xl font-black text-blue-600 mb-6 uppercase tracking-widest">
-                        <span class="text-3xl">💬</span> ปรับแก้สคริปต์ / สั่งทำต่อ
+                        <span class="text-3xl">💬</span> สั่งปรับแก้ / เขียนต่อ (อิสระ)
                     </label>
-                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน พิมพ์บอกทีมงานได้เลยครับ..."></textarea>
+                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน โทนเสียง แสง สี พิมพ์บอกจอสได้เลยครับ..."></textarea>
                     
                     <div class="flex flex-wrap gap-3 mt-6">
-                        <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-white hover:bg-yellow-50 text-slate-700 font-bold px-6 py-3 rounded-full border border-slate-300 transition shadow-sm">➕ ซีนถัดไป</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น จิกกัด โดนใจไวรัลมากขึ้น')" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-6 py-3 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับให้แรงขึ้น</button>
-                        <button type="button" onclick="setFollowUpText('ขอเน้นการปิดการขายด่วนๆ Call to Action แรงๆ')" class="text-sm bg-green-50 hover:bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border border-green-200 transition shadow-sm">💰 เน้นปิดการขาย</button>
+                        <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-white hover:bg-yellow-50 text-slate-700 font-bold px-6 py-3 rounded-full border border-slate-300 transition shadow-sm">➕ เพิ่มซีนต่อไป (ต่อ)</button>
+                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้แรงขึ้น ปากแซ่บ จิกกัด โดนใจคนดูมากขึ้น')" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-6 py-3 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับคำพูดให้แรงขึ้น</button>
+                        <button type="button" onclick="setFollowUpText('ขอเน้นการปิดการขายด่วนๆ ฮาร์ดเซลล์ Call to Action แรงๆ')" class="text-sm bg-green-50 hover:bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border border-green-200 transition shadow-sm">💰 เน้นปิดการขาย</button>
+                        <button type="button" onclick="setFollowUpText('ขอไอเดีย Background และตั้งค่า Image Prompt ใหม่ให้ดูอลังการขึ้น')" class="text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-6 py-3 rounded-full border border-blue-200 transition shadow-sm">🎨 อัปเกรดฉากหลัง</button>
                     </div>
 
-                    <button id="btnFollowUp" class="mt-8 w-full btn-red text-white font-black py-5 rounded-2xl text-xl shadow-xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
+                    <button id="btnFollowUp" class="mt-8 w-full btn-red text-white font-black py-5 rounded-2xl text-xl shadow-xl flex justify-center items-center gap-3 transition hover:scale-[1.01]">
                         <span class="text-3xl">✨</span> <span id="btnFollowUpText">ส่งคำสั่งให้ทีมงานแก้ไข</span>
                     </button>
                 </div>
@@ -168,14 +175,14 @@
                             <span class="text-4xl animate-spin">⚙️</span>
                             <h4 class="text-2xl font-black text-red-600 uppercase tracking-tighter">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap font-medium">สแกนหาคำต้องห้าม 480 คำ...</div>
+                        <div id="analysisText" class="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap font-medium">กำลังสแกนหาข้อบกพร่อง...</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <aside id="mainSidebar" class="fixed lg:relative inset-y-0 right-0 z-50 w-[85%] sm:w-[440px] glass-panel border-l border-yellow-200 flex flex-col sidebar-closed transition-transform duration-300 shadow-2xl bg-white/95 backdrop-blur-xl">
+    <aside id="mainSidebar" class="fixed lg:relative inset-y-0 right-0 z-50 w-[85%] sm:w-[440px] h-full glass-panel border-l border-yellow-200 flex flex-col sidebar-closed transition-transform duration-300 shadow-2xl bg-white/95 backdrop-blur-xl">
         <div class="lg:hidden flex justify-between items-center p-5 border-b border-yellow-200 bg-yellow-50">
             <span class="font-black text-yellow-600 tracking-widest text-lg">⚙️ แผงควบคุม</span>
             <button onclick="toggleSidebar()" class="text-slate-400 text-2xl font-bold bg-white w-10 h-10 rounded-full flex items-center justify-center border border-slate-200">✕</button>
@@ -183,29 +190,22 @@
 
         <div class="p-5 md:p-8 overflow-y-auto flex-1 space-y-6 scroll-smooth">
             
-            <div class="bg-red-50 p-5 rounded-3xl border-2 border-red-200 shadow-sm">
-                <label class="block text-xs font-black text-red-600 mb-2 tracking-widest uppercase flex justify-between items-center">
-                    <span>🔑 Gemini API Key (บังคับ)</span>
-                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] font-bold text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full transition">รับคีย์ฟรี ✨</a>
+            <div class="bg-yellow-50 p-5 rounded-3xl border border-yellow-400 shadow-sm">
+                <label class="flex items-center gap-2 text-sm font-black text-slate-800 mb-3 uppercase tracking-wide">
+                    <span>🅰️</span> ดีไซน์ข้อความบนปก (Typography)
                 </label>
-                <input type="password" id="userApiKey" class="w-full glass-input bg-white rounded-xl p-3 text-sm focus:border-red-500 font-mono shadow-inner" placeholder="วาง Gemini API Key ของบอสตรงนี้...">
+                <select id="valTextDesign" class="w-full glass-input bg-white rounded-2xl p-3.5 text-sm font-bold text-slate-700 outline-none border-2 border-yellow-200">
+                    <option value="Modern 3D bold typography, popping out, glossy plastic texture, vibrant colors, heavy shadows, dynamic design">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
+                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated white space">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
+                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, vibrant halftone dots">🎨 ป๊อปอาร์ต คอมมิค (สีจัดจ้าน วัยรุ่น)</option>
+                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
+                </select>
+                <p class="text-[10px] text-yellow-700 mt-2 font-medium leading-tight">*ทีม Graphic Designer ใน Mastermind จะนำสไตล์นี้ไปใช้ออกแบบปกโดยอัตโนมัติ</p>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm font-black text-slate-800 mb-3 uppercase tracking-wide">
-                    <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
-                </label>
-                <select id="valTextDesign" class="w-full glass-input bg-slate-50 rounded-2xl p-3 text-sm font-bold text-slate-600 outline-none border border-yellow-200">
-                    <option value="Modern 3D bold typography, popping out, glossy finish, highly readable, vibrant design">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
-                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
-                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, dynamic design">🎨 ป๊อปอาร์ต คอมมิค (วัยรุ่น สีจัดจ้าน)</option>
-                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
-                </select>
-            </div>
-
-            <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
                 <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🎬</span> 1. ตั้งค่าพื้นฐาน
+                    <span>🎬</span> 1. ตั้งค่าเป้าหมาย
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="radio" name="goal" id="goal1" value="1">
@@ -213,9 +213,17 @@
                     <input type="radio" name="goal" id="goal2" value="2" checked>
                     <label for="goal2" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">💰 ขายของ</label>
                 </div>
-                <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3 border border-slate-200">
-                    <span class="text-xs font-bold text-slate-600">จำนวนฉาก:</span>
-                    <input type="number" id="valScenes" value="6" min="1" max="50" class="w-16 bg-white border border-slate-300 rounded-lg text-center font-black text-red-500 text-lg outline-none">
+                
+                <div class="grid grid-cols-1 gap-3 mb-4">
+                    <input type="radio" name="platform" id="plat1" value="1" checked>
+                    <label for="plat1" class="glass-input rounded-xl py-3 px-3 text-center cursor-pointer border-green-400 bg-green-50 text-green-700 shadow-sm">
+                        <div class="font-bold text-sm md:text-base">🌊 Google Flow (8 วินาที / ซีน)</div>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3 px-4 border border-slate-200">
+                    <span class="text-xs md:text-sm text-slate-600 font-bold">จำนวนฉาก (ซีน):</span>
+                    <input type="number" id="valScenes" value="6" min="1" max="100" class="w-16 bg-white border border-slate-300 rounded-lg text-center font-black text-red-500 text-lg md:text-xl outline-none focus:border-red-500">
                 </div>
             </div>
 
@@ -223,7 +231,7 @@
                 <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
                     <span>💡</span> 2. ไอเดีย/พล็อตเรื่อง
                 </label>
-                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-sm font-medium resize-none" placeholder="พิมพ์ไอเดียบอสที่นี่..."></textarea>
+                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-sm font-medium resize-none leading-relaxed" placeholder="พิมพ์ไอเดีย, หัวข้อคลิป, หรือพล็อตเรื่องที่บอสต้องการ..."></textarea>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
@@ -232,73 +240,150 @@
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="radio" name="style" id="styleA" value="A" checked>
-                    <label for="styleA" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">👱‍♀️ คนจริง</label>
+                    <label for="styleA" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">👱‍♀️ คนจริง (Real)</label>
                     <input type="radio" name="style" id="styleB" value="B">
                     <label for="styleB" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">🧸 การ์ตูน 3D</label>
                 </div>
                 <div class="flex gap-3 mb-4">
-                    <div id="charUpload" class="w-20 h-20 upload-box rounded-xl flex flex-col items-center justify-center relative group" onclick="document.getElementById('imgChar').click()">
-                        <span class="text-xl">📸</span><span class="text-[8px] font-bold text-slate-500">แนบรูป</span>
+                    <div id="charUpload" class="w-20 h-20 md:w-24 md:h-24 upload-box rounded-xl flex flex-col items-center justify-center relative group" onclick="document.getElementById('imgChar').click()">
+                        <span class="text-xl md:text-2xl mb-1 text-slate-400 drop-shadow-sm">📸</span>
+                        <span class="text-[10px] text-slate-500 font-bold">แนบรูป</span>
                         <input type="file" id="imgChar" class="hidden" accept="image/*" onchange="previewImg(this, 'prevChar', 'btnRmChar')">
                         <img id="prevChar" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmChar" onclick="removeImg(event, 'imgChar', 'prevChar', 'btnRmChar')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden z-10">✕</button>
+                        <button id="btnRmChar" onclick="removeImg(event, 'imgChar', 'prevChar', 'btnRmChar')" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition shadow-md hidden z-10">✕</button>
                     </div>
-                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input bg-slate-50 rounded-2xl p-3 text-xs font-medium resize-none h-20" placeholder="อธิบายรูปลักษณ์..."></textarea>
+                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input bg-slate-50 rounded-2xl p-3 text-xs md:text-sm font-medium resize-none h-20 md:h-24" placeholder="อธิบายรูปลักษณ์ (เช่น คนหน้าบึ้ง ใส่ชุดนักศึกษา)..."></textarea>
                 </div>
                 
                 <div class="grid grid-cols-4 gap-2 mb-3">
-                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd1').click()">
-                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                    <div class="h-14 md:h-16 upload-box rounded-xl flex items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd1').click()">
+                        <div class="text-center pointer-events-none flex flex-col items-center">
+                            <span class="text-sm md:text-base text-slate-400">🖼️</span><span class="text-[8px] md:text-[10px] text-slate-500 font-bold">รูป 1</span>
+                        </div>
                         <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd1', 'btnRmProd1')">
                         <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
                     </div>
-                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd2').click()">
-                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                    <div class="h-14 md:h-16 upload-box rounded-xl flex items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd2').click()">
+                        <div class="text-center pointer-events-none flex flex-col items-center">
+                            <span class="text-sm md:text-base text-slate-400">🖼️</span><span class="text-[8px] md:text-[10px] text-slate-500 font-bold">รูป 2</span>
+                        </div>
                         <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
                         <img id="prevProd2" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
                     </div>
-                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd3').click()">
-                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                    <div class="h-14 md:h-16 upload-box rounded-xl flex items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd3').click()">
+                        <div class="text-center pointer-events-none flex flex-col items-center">
+                            <span class="text-sm md:text-base text-slate-400">🖼️</span><span class="text-[8px] md:text-[10px] text-slate-500 font-bold">รูป 3</span>
+                        </div>
                         <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd3', 'btnRmProd3')">
                         <img id="prevProd3" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
                     </div>
-                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd4').click()">
-                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                    <div class="h-14 md:h-16 upload-box rounded-xl flex items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd4').click()">
+                        <div class="text-center pointer-events-none flex flex-col items-center">
+                            <span class="text-sm md:text-base text-slate-400">🖼️</span><span class="text-[8px] md:text-[10px] text-slate-500 font-bold">รูป 4</span>
+                        </div>
                         <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd4', 'btnRmProd4')">
                         <img id="prevProd4" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
                     </div>
                 </div>
-                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-xs font-medium resize-none" placeholder="ชื่อและจุดเด่นสินค้า..."></textarea>
+                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-xs md:text-sm font-medium resize-none" placeholder="ชื่อและจุดเด่นสินค้า..."></textarea>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
                 <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
                     <span>🪄</span> 4. โทนเสียง & บรรยากาศ
                 </label>
+                <select id="valTypo" class="w-full glass-input bg-slate-50 rounded-xl p-3 text-xs md:text-sm font-semibold mb-3 border border-slate-200">
+                    <option value="3">🔥 ทุกฉากมี Text ฮุกดึงดูด</option>
+                    <option value="2">🖼️ มี Text เฉพาะปก (Scene 1)</option>
+                    <option value="1">🚫 ทุกฉากไม่มี Text เลย</option>
+                </select>
                 <div class="grid grid-cols-2 gap-2 mb-3">
-                    <select id="valDialect" class="glass-input rounded-xl p-2.5 text-xs font-bold text-teal-600">
+                    <select id="valDialect" class="glass-input rounded-xl p-2.5 text-xs md:text-sm font-bold text-teal-600 border-2 border-slate-100">
                         <option value="กลาง">🇹🇭 ถิ่น: กลาง</option><option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
                         <option value="เหนือ">⛰️ ถิ่น: เหนือ</option><option value="ใต้">🌊 ถิ่น: ใต้</option>
                     </select>
-                    <select id="valTone" class="glass-input rounded-xl p-2.5 text-xs font-bold text-slate-700">
+                    <select id="valTone" class="glass-input rounded-xl p-2.5 text-xs md:text-sm font-bold text-slate-700 border-2 border-slate-100">
                         <option value="2">💬 โทน: ธรรมชาติ</option><option value="4">🌶️ โทน: ปากแซ่บ</option>
                         <option value="3">👯‍♀️ โทน: กู-มึง</option><option value="1">👔 โทน: สุภาพ</option>
+                        <option value="5">🎧 โทน: ASMR</option>
                     </select>
                 </div>
-                <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs font-bold mb-2">
+                <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs md:text-sm font-medium mb-2 border border-slate-200">
                     <option value="Auto">⚪ อารมณ์: ปล่อยจอย AI</option>
-                    <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
-                    <option value="Bright and airy, minimalist, clean light">🌤️ โปร่งสบาย (Airy Clear)</option>
+                   <option value="Cinematic lighting, dramatic shadows, blockbuster movie style">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
+                        <option value="Bright and airy, minimalist, clean lighting, morning sunlight">🌤️ โปร่งสบาย (Airy Clear)</option>
+                        <option value="Warm and cozy, inviting lighting, golden hour, homey vibe">☕ ละมุนใจ (Soft & Warm)</option>
+                        <option value="Dark and gritty, high contrast, moody lighting, raw atmosphere">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
+                        <option value="Luxury, glamorous gold, sparkling, rich and elegant lighting">💎 เศรษฐีดูไบ (Rich & Shine)</option>
+                        <option value="Pastel dreamy, soft color palette, magical light, cotton candy colors">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
+                        <option value="Wes Anderson style, symmetrical composition, quirky pastel palette">🎨 อินดี้สมมาตร (Symmetric Pastel)</option>
+                        <option value="Earth tone, muted colors, Korean cafe aesthetic, soft natural light">🤎 สายคาเฟ่ (Muted Earth)</option>
+                        <option value="Horror, eerie atmosphere, psychological thriller, scary vibe">🩸 ขนหัวลุก (Nightmare)</option>
+                        <option value="High-octane action, explosive, dynamic movement, intense energy">💥 เดือดปุดๆ (Explosive Action)</option>
+                        <option value="Nature healing, organic, lush greenery, dappled sunlight">🍃 รับพลังธรรมชาติ (Green Oasis)</option>
+                        <option value="Melancholy, rainy day, overcast, gray and blue tones, lonely vibe">☔ คนเจ้าน้ำตา (Gloomy Rain)</option>
+                        <option value="Old money aesthetic, classic elegance, understated luxury, sophisticated">🕰️ ผู้ดีลูกคุณ (Quiet Luxury)</option>
+                        <option value="Lo-Fi chillhop, midnight vibe, dim lighting, purple and blue neon">🎧 คนนอนดึก (Midnight Chill)</option>
+                        <option value="Cyberpunk, neon lights, dystopian futuristic city, vibrant nightlife">🌃 เมืองล้ำยุค (Neon Cyberpunk)</option>
+                        <option value="Futuristic sci-fi, advanced technology, holographic elements, high-tech">🛸 ล้ำอวกาศ (Sci-Fi World)</option>
+                        <option value="Mystical, esoteric, candlelight, incense smoke, sacred atmosphere">🔮 สายมูเตลู (Sacred Vibe)</option>
+                        <option value="90s retro, vintage film look, warm nostalgic glow, film grain">📼 วัยรุ่นยุค 90 (Retro Film)</option>
+                        <option value="Y2K aesthetic, vibrant pop colors, trendy 2000s style, flashy">💿 ตัวจี๊ด Y2K (Trendy 2000s)</option>
+                        <option value="Thai street night market, raw fluorescent lighting, food smoke, authentic local">🍢 หิวตอนดึก (Local Street)</option>
+                        <option value="Bodycam POV, shaky camera, first-person action view, realistic motion blur">🏃‍♂️ สายลุย (POV Shaky)</option>
+                        <option value="Paparazzi flash photography, harsh direct flash, unpolished, celebrity candid">📸 โดนแอบถ่าย (Harsh Flash)</option>
+                        <option value="UGC raw photo, unedited smartphone camera, authentic casual shot">📱 กล้องสดมือถือ (Casual Snap)</option>
+                        <option value="Hyper-macro photography, extreme close-up, satisfying textures, high detail">🔬 ซูมตาแตก (Extreme Close-up)</option>
+                        <option value="Fire, inferno, burning blaze, intense heat, red and orange tones">🔥 นรกส่งมาเกิด (Inferno Blaze)</option>
+                        <option value="Freezing cold, snowy, ice frost, cool blue tones, winter wonderland">❄️ หนาวจับใจ (Arctic Frost)</option>
+                        <option value="Desert dunes, harsh sun, dusty safari, golden sand, adventurous">🏜️ ผจญภัยแดนเถื่อน (Desert Safari)</option>
+                        <option value="Clubbing, laser lights, disco ball, energetic party vibe, blurry movement">🥂 ปาร์ตี้สุดเหวี่ยง (Party Animal)</option>
+                        <option value="Zen garden, peaceful silence, soft light filtering through, mindful meditation">🧘 สงบจิตสงบใจ (Zen Temple)</option>
                 </select>
+                <select id="valVisual" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs md:text-sm font-medium border border-slate-200">
+                    <option value="Auto">⚪ งานศิลป์: ตามใจ AI</option>
+                    <option value="Ultra-realistic, hyper-detailed, photorealistic, 8k resolution, highly textured">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
+                        <option value="3D animation, Pixar style, Disney style, cute stylized 3D render">🏰 การ์ตูนฝรั่ง (Cute 3D)</option>
+                        <option value="Next-gen game graphics, Unreal Engine 5 render, ray tracing, cinematic game art">🎮 เกมภาพสวย (Unreal Engine)</option>
+                        <option value="Studio Ghibli style, soft anime art, watercolor background, nostalgic anime">🌸 อนิเมะใจฟู (Soft Anime)</option>
+                        <option value="Shonen action anime style, sharp lines, dynamic comic art, intense shading">⚔️ อนิเมะสายบวก (Fierce Anime)</option>
+                        <option value="Modern Manhwa style, Korean webtoon art, beautiful stylized characters, clean lines">📖 มันฮวาสายเกา (Webtoon Art)</option>
+                        <option value="Pop art, vintage comic book style, bold colors, halftone dots, thick outlines">💥 คอมมิคสายฝอ (Retro Pop-Art)</option>
+                        <option value="Watercolor painting, fluid brushstrokes, soft and artistic, gentle washes of color">🖌️ พู่กันสีน้ำ (Flowing Watercolor)</option>
+                        <option value="Classic oil painting, impasto brushstrokes, fine art masterpiece, textured canvas">🖼️ งานสีน้ำมัน (Masterpiece Oil)</option>
+                        <option value="Amigurumi, crochet art, knitted texture, fluffy yarn, handmade craft style">🧶 งานถักนุ่มนิ่ม (Yarn Crochet)</option>
+                        <option value="Papercut art, layered paper diorama, intricate 3D paper craft, paper textures">✂️ ศิลปะกระดาษ (Layered Paper)</option>
+                        <option value="Claymation style, stop-motion animation look, plasticine models, tactile texture">🗿 งานปั้นดินน้ำมัน (Stop-Motion Clay)</option>
+                        <option value="Pixel art, 8-bit retro gaming style, nostalgic arcade graphics, blocky pixels">👾 เกมตู้เรโทร (Pixel Block)</option>
+                        <option value="Glitch art, vaporwave aesthetic, digital distortion, VHS tracking errors, neon wave">📺 ทีวีพัง (Glitch Wave)</option>
+                        <option value="Lego style, constructed from toy building bricks, plastic block world, stud textures">🧱 เมืองตัวต่อ (Block Toys)</option>
+                        <option value="Steampunk aesthetic, Victorian machinery, brass gears, steam-powered inventions">⚙️ ยุคฟันเฟือง (Steam Machine)</option>
+                        <option value="Risograph print style, halftone textures, slightly misaligned ink, indie zine look">🖨️ งานสกรีนเท่ๆ (Riso Print)</option>
+                        <option value="Modern Thai temple mural art, intricate Thai traditional patterns, elegant gold accents">🛕 ลายไทยโมเดิร์น (Thai Art)</option>
+                        <option value="Vintage Thai movie poster, hand-painted style, bold vibrant colors, dramatic retro">🎬 ใบปิดหนังเรโทร (Thai Poster)</option>
+                        <option value="Thai cheap horror comic style, rough black and white ink drawing, raw spooky art">👻 การ์ตูนผีไทย (Thai Ghost)</option>
+                        <option value="Pencil sketch, graphite drawing, rough lines, black and white artistic sketch">✒️ สเก็ตช์ดินสอ (Pencil Sketch)</option>
+                        <option value="Stained glass art, church window style, glowing colorful light, geometric panes">🌈 กระจกสี (Stained Glass)</option>
+                        <option value="Embroidery art, needlework, stitched fabric texture, cross-stitch">🧵 งานปักผ้า (Embroidery Art)</option>
+                        <option value="Crayon drawing, childlike doodle, messy coloring, bright playful colors">🖍️ สีเทียนเด็กอนุบาล (Crayon Doodle)</option>
+                        <option value="Made of crystal glass, transparent, refracting light, shiny and fragile texture">🧊 คริสตัลแก้ว (Glass/Crystal)</option>
+                </select>
+            </div>
+
+            <div class="mt-2 pt-4 border-t-2 border-slate-100">
+                <label class="block text-xs font-bold text-slate-400 mb-2 tracking-wide uppercase flex justify-between items-center">
+                    <span>🔑 Custom API Key (เผื่อคีย์หลักเต็ม)</span>
+                </label>
+                <input type="password" id="userApiKey" class="w-full glass-input bg-white rounded-xl p-3 text-sm outline-none text-center focus:border-red-500 shadow-inner" placeholder="วาง API Key ส่วนตัวที่นี่ (ถ้ามี)...">
             </div>
             
         </div>
 
-        <div class="p-6 bg-white border-t-2 border-yellow-300 z-10">
+        <div class="p-6 bg-white border-t-2 border-yellow-300 z-10 backdrop-blur-md">
             <button id="btnGenerate" class="w-full btn-super font-black py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 shadow-2xl transition hover:scale-[1.02]">
                 <span class="text-3xl">✨</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
@@ -308,69 +393,74 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        
-        // 🚨 ฝัง Firebase Config ของบอส 🚨
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
             projectId: "jossai-5a857",
             storageBucket: "jossai-5a857.firebasestorage.app",
             messagingSenderId: "1080088885354",
-            appId: "1:1080088885354:web:693ae4350e49fe37c53213"
+            appId: "1:1080088885354:web:693ae4350e49fe37c53213",
+            measurementId: "G-7PHD69E0W7"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+
+        // 🚨 ระบุอีเมลแอดมินของบอส (เข้าได้ตลอด ไม่ต้องเช็ก DB)
+        const ADMIN_EMAIL = "admin@gmail.com"; 
 
         window.loginWithGoogle = async function() {
             try {
                 const result = await signInWithPopup(auth, provider);
-                const userEmail = result.user.email.toLowerCase();
-                
-                // เข้าสู่ระบบทันที (ไม่มีรายชื่อฝังในโค้ด)
-                enterStudio(userEmail);
-                
+                await checkAccess(result.user.email.toLowerCase());
             } catch (error) {
-                console.error("Login Error:", error);
-                showToast("ล็อกอินไม่สำเร็จ กรุณาลองใหม่", "error");
+                showToast("ล็อกอินล้มเหลว กรุณาปิดตัวบล็อกป๊อปอัป", "error");
             }
         };
+
+        async function checkAccess(email) {
+            if (email === ADMIN_EMAIL || email.includes("admin")) {
+                enterStudio(email); return;
+            }
+            // วิ่งไปเช็กอีเมลใน Firestore Database ที่บอสเพิ่มไว้หลังบ้าน
+            const q = query(collection(db, "allowed_users"), where("email", "==", email));
+            const snap = await getDocs(q);
+            if (!snap.empty) { 
+                enterStudio(email); 
+            } else {
+                document.getElementById('pendingForm').classList.remove('hidden');
+                document.getElementById('loginForm').classList.add('hidden');
+            }
+        }
 
         function enterStudio(email) {
             document.getElementById('authScreen').classList.add('hidden');
-            document.getElementById('mainSidebar').classList.remove('hidden');
             document.getElementById('mainArea').classList.remove('hidden');
             document.getElementById('userEmailDisplay').innerText = email;
-            showToast(`ยินดีต้อนรับ ${email} เข้าสู่สตูดิโอครับ! 🦆`, "success");
+            showToast("ยินดีต้อนรับสู่สตูดิโอครับบอส! 🦆", "success");
         }
 
-        window.resetLogin = function() {
+        window.logout = () => signOut(auth).then(() => location.reload());
+        window.resetLogin = () => {
+            document.getElementById('pendingForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
             signOut(auth);
         };
 
-        window.logout = function() {
-            signOut(auth).then(() => {
-                document.getElementById('mainArea').classList.add('hidden');
-                document.getElementById('authScreen').classList.remove('hidden');
-                document.getElementById('mainSidebar').classList.add('sidebar-closed');
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('dynamicOutput').innerHTML = '';
-                document.getElementById('resultContainer').classList.add('hidden');
-                document.getElementById('analysisOutput').classList.add('hidden');
-            });
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                enterStudio(user.email.toLowerCase());
-            }
-        });
+        onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase()); });
     </script>
 
     <script>
-        // --- ระบบพื้นฐาน UI ---
-        let currentScript = ""; let workingModel = "gemini-1.5-flash"; 
+        // --- Core Logic & UI ---
+        const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU'; // กุญแจหลักจากต้นฉบับ
+        let currentScript = ""; 
+        let workingModel = "gemini-1.5-flash"; 
+        window.LAST_API_PARTS = []; // 🧠 ระบบจำ History จากต้นฉบับ
+
         const Toast = Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
             background: '#ffffff', color: '#334155', customClass: { popup: 'border-2 border-yellow-400 rounded-2xl shadow-lg font-black' }
@@ -415,7 +505,7 @@
             autoResize(el); el.focus();
         }
 
-        // 🌟 ฟังก์ชันคัดลอกแบบซ่อนโค้ด (มินิมอล) 🌟
+        // 🌟 ระบบคัดลอกแบบซ่อนโค้ด (สวยงาม ไม่เกะกะสายตา) 🌟
         window.copyHiddenPrompt = (btn) => {
             const txt = btn.querySelector('.hidden-prompt').value;
             navigator.clipboard.writeText(txt).then(() => {
@@ -432,26 +522,27 @@
         }
 
         // 🌟 วาดกล่องผลลัพธ์ (การ์ด 3D สวยๆ) 🌟
-        function renderGeminiBoxes(rawText) {
+        function renderOutput(raw) {
             const container = document.getElementById('dynamicOutput'); container.innerHTML = ''; 
-            const parts = rawText.split(/(?=SCENE\s*\d+\s*:)/gi);
+            const scenes = raw.split(/(?=SCENE\s*\d+\s*:)/gi);
 
-            parts.forEach(part => {
+            scenes.forEach(part => {
                 if (!part.trim()) return;
-                const sceneMatch = part.match(/SCENE\s*(\d+)\s*:/i);
+                const match = part.match(/SCENE\s*(\d+)\s*:/i);
                 
-                if (!sceneMatch) {
+                if (!match) {
                     let preText = escapeHTML(part.trim())
                         .replace(/(\[STEP -1:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-red-500 block mb-2 pb-2 border-b-2 border-red-100">$1</span>')
-                        .replace(/(\[STEP 0:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-yellow-600 block mt-4 mb-2 pb-2 border-b-2 border-yellow-200">$1</span>');
+                        .replace(/(\[STEP 0:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-yellow-600 block mt-4 mb-2 pb-2 border-b-2 border-yellow-200">$1</span>')
+                        .replace(/(\[STEP 0\.5:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-teal-600 block mt-4 mb-2 pb-2 border-b-2 border-teal-200">$1</span>');
                     container.innerHTML += `<div class="mb-8 p-8 bg-white rounded-[2.5rem] border-2 border-yellow-300 text-slate-700 text-base font-medium leading-relaxed shadow-lg">${preText}</div>`;
                     return;
                 }
 
-                const sNum = sceneMatch[1];
+                const sNum = match[1];
                 let textOnly = escapeHTML(part.replace(/```[\s\S]*?```/g, '').trim())
                     .replace(/(SCENE\s*\d+\s*:[^\n]*)/i, '<span class="text-3xl md:text-4xl font-black text-red-500 block mb-6 pb-2 border-b-2 border-red-100">$1</span>')
                     .replace(/(Speaker:|Dialogue:|Action:|Background:|BGM\/SFX:|💡 Director's Note)/g, '<span class="text-yellow-600 font-black">$1</span>');
 
-                const codeBlocks = [...part.matchAll(/
+                const codes = [...part.matchAll(/
 http://googleusercontent.com/immersive_entry_chip/0
