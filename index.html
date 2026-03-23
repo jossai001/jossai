@@ -6,6 +6,7 @@
     <title>Joss Ai 🦆 Web Studio (God Mode V.16 - Golden Duck Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
@@ -59,6 +60,12 @@
         .btn-super:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 50; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
+        
+        .sidebar-open { transform: translateX(0%); }
+        .sidebar-closed { transform: translateX(100%); }
+        @media (min-width: 768px) {
+            .sidebar-closed { transform: translateX(0%); } 
+        }
     </style>
 </head>
 <body class="h-screen flex flex-row text-base">
@@ -158,6 +165,18 @@
     <aside class="w-[480px] h-full glass-panel border-l border-slate-700/50 flex flex-col hidden z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]" id="mainSidebar">
         <div class="p-6 overflow-y-auto flex-1 space-y-7 scroll-smooth">
             
+            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 mb-2">
+                <label class="flex items-center gap-2 text-base font-bold text-yellow-300 mb-3 uppercase tracking-wide">
+                    <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
+                </label>
+                <select id="valTextDesign" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-white bg-slate-900/80 border-orange-400">
+                    <option value="Modern 3D bold typography, popping out, glossy plastic texture, vibrant colors, heavy drop shadows, dynamic perspective">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
+                    <option value="Minimalist editorial typography, elegant fashion magazine layout, clean sans-serif fonts, sophisticated white space">📖 เรียบหรู นิตยสาร (High-End)</option>
+                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout, sharp vibrant electric lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
+                    <option value="Retro pop-art style typography, bold comic outlines, vibrant halftone dots, speech bubble graphic design">🎨 ป๊อปอาร์ต วัยรุ่น (จัดจ้าน)</option>
+                </select>
+            </div>
+
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50">
                 <label class="flex items-center gap-2 text-base font-bold text-yellow-300 mb-4 uppercase tracking-wide">
                     <span>🎬</span> 1. โหมดคลิป (เป้าหมาย)
@@ -299,7 +318,7 @@
                 </label>
                 
                 <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-400 mb-2">อารมณ์และบรรยากาศ (Mood & Tone)</label>
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">อารมณ์และบรรยากาศ (Mood & Tone)</label>
                     <select id="valMood" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
                         <option value="Auto">⚪ ปล่อยจอย (Random Vibe)</option>
                         <option value="Cinematic lighting, dramatic shadows, blockbuster movie style">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
@@ -335,7 +354,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-2">สไตล์ภาพและงานศิลปะ (Visual / Art Style)</label>
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">สไตล์ภาพและงานศิลปะ (Visual / Art Style)</label>
                     <select id="valVisual" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
                         <option value="Auto">⚪ ตามใจ AI (Any Style)</option>
                         <option value="Ultra-realistic, hyper-detailed, photorealistic, 8k resolution, highly textured">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
@@ -387,6 +406,7 @@
     </aside>
 
     <script>
+        // --- 🚨 ข้อมูลตั้งต้นของบอส (ห้ามตัด ห้ามลบ) 🚨 ---
          const ALLOWED_EMAILS = [
             "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
             "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
@@ -436,7 +456,7 @@
             "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "boonratchaiwat@gmail.com"
         ];
 
-        // 🚨 เอา URL จาก Google Apps Script มาใส่ตรงนี้ครับ (ห้ามลบเครื่องหมายฟันหนูเดี่ยว) 🚨
+        // 🚨 URL แจ้งเตือนบอส (ห้ามลบ) 🚨
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
         function simulateGoogleLogin() {
@@ -452,7 +472,6 @@
                     document.getElementById('userEmailDisplay').innerText = email;
                 } else {
                     document.getElementById('pendingForm').classList.remove('hidden');
-                    // 🔥 แอบส่งอีเมลไปเก็บที่ Google Sheets 🔥
                     if(GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'ใส่_URL_ของ_GOOGLE_APPS_SCRIPT_ตรงนี้') {
                         const formData = new FormData();
                         formData.append('email', email);
@@ -499,13 +518,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('jossApiKey');
             const apiKeyInput = document.getElementById('userApiKey');
-            if(savedKey && apiKeyInput) {
-                apiKeyInput.value = savedKey;
-            }
+            if(savedKey && apiKeyInput) { apiKeyInput.value = savedKey; }
             if(apiKeyInput) {
-                apiKeyInput.addEventListener('input', (e) => {
-                    localStorage.setItem('jossApiKey', e.target.value.trim());
-                });
+                apiKeyInput.addEventListener('input', (e) => { localStorage.setItem('jossApiKey', e.target.value.trim()); });
             }
         });
 
@@ -564,9 +579,9 @@
         }
 
         window.copyCode = function(btn) {
-            const codeBlock = btn.parentElement.nextElementSibling;
+            const codeBlock = btn.parentElement.nextElementSibling.innerText;
             if(codeBlock) {
-                navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                navigator.clipboard.writeText(codeBlock).then(() => {
                     const originalHTML = btn.innerHTML;
                     btn.innerHTML = '✨ Copied!';
                     btn.classList.add('text-orange-400');
@@ -615,105 +630,102 @@
             });
         }
 
-        // 🚨🔥 SYSTEM PROMPT V.15 (VIRAL MASTERPIECE: BRAINSTORM & SOFT SELL) 🔥🚨
+        // 🚨🔥 SYSTEM PROMPT V.16 (MASTERMIND AUTOPILOT + DICTIONARY 500 LINES) 🔥🚨
         const SYSTEM_PROMPT = `[SYSTEM INSTRUCTION]
-คุณคือ "จอส Ai" (Adaptive Video Director) ผู้เชี่ยวชาญระดับ God Mode ในการสร้างสรรค์ Content วิดีโอสั้น (TikTok/Reels) สายสุขภาพและบิวตี้ที่พร้อมไวรัล
-การตอบโต้ทุกครั้งให้เรียกตัวเองว่า "จอส Ai" และเรียกผู้ใช้ว่า "พี่" เสมอ
+คุณคือ "Joss Ai Mastermind" ซึ่งเป็นการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:
+1. Joss Ai (ปรมาจารย์ไวรัล Hook)
+2. นักขายมือทอง (กระตุ้นยอดขายแบบ Soft Sell ปิดการขายเนียนๆ)
+3. นักเล่าเรื่อง (สร้างอารมณ์ร่วม Storytelling)
+4. สายฮาตัวตึง (ตลก เอนเตอร์เทนคนดู)
+5. Pro Graphic Designer (ผู้เชี่ยวชาญศิลปะ Typography ออกแบบภาพปก)
+**Status:** 🚀 GOD MODE MASTERMIND ACTIVATED
 
+พวกคุณทั้ง 5 คนต้องรวมหัวกันสร้างสคริปต์ที่ดีที่สุด ดึงจุดเด่นของแต่ละคนออกมาใช้
 [CORE DIRECTIVES: กฎเหล็กสูงสุดที่ห้ามละเมิดเด็ดขาด]
-1. INPUT LOYALTY: ซื่อสัตย์ต่อคำสั่งและ Input (UI Payload) ล่าสุดเท่านั้น ห้ามคิดสินค้าเอง
-2. ⚠️ DIALOGUE SEPARATION (แยกบทพูดเด็ดขาด): "บทพูด (Dialogue)" มีไว้สำหรับคนพากย์เท่านั้น ห้าม!! นำประโยคบทพูดไปใส่ในกล่อง Code Block ของ "สร้างรูป (GEN IMAGE)" เด็ดขาด
-3. ⚠️ STRICT TONE & PERSONA LOCK (ปลดล็อกความดิบเถื่อน): 
-   - บังคับใช้ระดับภาษาตามที่ผู้ใช้กำหนดใน Payload อย่างเคร่งครัด! ห้ามสุภาพเกินเหตุหากไม่ได้สั่ง!
-   - หากโหมด "เพื่อนสนิท" หรือ "ปากแซ่บ" ถูกเลือก: **บังคับให้ AI ใช้คำสรรพนามว่า กู, มึง, วะ, โว้ย, แม่ง, โคตร** ปรากฏในบทพูดจริงๆ ห้ามเลี่ยงไปใช้คำสุภาพเด็ดขาด ให้สมบทบาทที่สุด
-4. ⚠️ PRODUCT VISIBILITY RULE (กฎการโชว์สินค้า / Soft Sell): 
-   - เพื่อไม่ให้คลิปดูขายตรงเกินไป **ห้ามให้สินค้าโผล่มาในทุกซีน!**
-   - ซีนช่วงแรก (Hook & Problem): ห้ามมีสินค้าเข้าฉากเด็ดขาด ให้เน้นที่ตัวละครและอารมณ์
-   - ซีนช่วงหลัง (Solution & CTA): ถึงจะอนุญาตให้โชว์สินค้าได้ 
-   - (ข้อยกเว้น: หากเป็นคลิปรีวิวแกะกล่องที่ต้องมีสินค้าแต่แรก ให้โชว์ได้ แต่ต้องเขียนหมายเหตุไว้)
-5. ⚠️ TYPOGRAPHY & ZERO TEXT (CRITICAL):
-   - ฝั่ง GEN IMAGE (ภาพนิ่ง): บังคับทำตามโหมด Typography (1,2,3) อย่างเคร่งครัด ห้ามซ้ำซาก
-   - ฝั่ง GEN VIDEO (วิดีโอ): ห้ามมีตัวหนังสือ ตัวอักษร สติ๊กเกอร์ หรือโลโก้ใดๆ ลอยบนจอวิดีโอเด็ดขาด (ZERO TEXT 100%)
-6. ⚠️ STRICT PRODUCT LOCK: เมื่ออนุญาตให้โชว์สินค้าในซีนนั้นๆ ภาพสินค้าต้องตรงตามเรฟเป๊ะ 100% ห้ามมีตัวหนังสือภาษาต่างดาว (No gibberish)
-7. โหมด Google Flow (8 วินาที/ซีน): บทพูด 23-28 คำ ปลอดภัย เล่าเรื่องสมูท ห้ามขาดห้ามเกิน และห้ามมีเครื่องหมายวรรคตอน . ? ! ในบทพูด
+1. INPUT LOYALTY: ซื่อสัตย์ต่อคำสั่งและ Input ล่าสุดเท่านั้น ห้ามคิดสินค้าเอง
+2. ⚠️ DIALOGUE SEPARATION: "บทพูด" มีไว้สำหรับคนพากย์เท่านั้น ห้ามนำประโยคบทพูดไปใส่ในกล่อง Code Block ของ "สร้างรูป" เด็ดขาด
+3. ⚠️ TONE LOCK: บังคับใช้ระดับภาษาตามที่ผู้ใช้กำหนด (เช่น โหมดเพื่อนสนิท ให้ใช้ กู มึง วะ โว้ย ห้ามสุภาพเด็ดขาด)
+4. ⚠️ PRODUCT VISIBILITY (Soft Sell): ห้ามให้สินค้าโผล่มาในทุกซีน! ซีนแรกห้ามมีสินค้าเด็ดขาด (ยกเว้นแกะกล่อง)
+5. ⚠️ TYPOGRAPHY: Graphic Designer ต้องนำสไตล์ Typography ที่บอสเลือก มาออกแบบ Prompt ใส่ในเฉพาะ SCENE 1 เสมอ
+6. ZERO TEXT IN VIDEO: ฝั่ง GEN VIDEO ห้ามมีตัวหนังสือ ตัวอักษร สติ๊กเกอร์ ในวิดีโอเด็ดขาด (ZERO TEXT 100%)
+7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น "ภาษาไทย" 100% ห้ามใช้ภาษาอังกฤษ
+8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน
+9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน
+10. ⚠️ STRICT PRODUCT MOCKUP: ภาพนิ่งต้องเจนเป็น "Blank Mockup" เสมอ ห้ามสั่ง AI เจนฉลาก
 
 [DICTIONARY CONTROL: พจนานุกรมคำต้องห้าม 480 กว่าคำ]
-⚠️ ห้ามใช้คำเคลมเกินจริงเด็ดขาด ให้ใช้ Metaphor (การเปรียบเปรย) แทน
-บัญชีดำ: 100%, การันตี, รับรอง, Best Seller, No.1, อันดับหนึ่ง, ถูกที่สุด, Before After, ก่อนหลัง, หาย, หายขาด, รักษา, เห็นผลทันที, ขาว, หน้าเด็ก, ยกกระชับทันที, ไม่มีผลข้างเคียง, ไม่ต้องพบแพทย์, ดีกว่ายา, หมอรับรอง, อย., FDA, ดีท็อกซ์, ลดน้ำหนัก, ผอม, เผาผลาญไขมัน, สลายไขมัน, ละลายไขมัน, ภูมิคุ้มกัน, ของแท้ 100% ฯลฯ
+⚠️ ห้ามใช้คำเหล่านี้เด็ดขาด ให้ใช้ Metaphor (การเปรียบเปรย) แทน:
+100%, 100% เห็นผล, การันตี, รับรอง, รับประกัน, Certified, Best Seller, No.1, อันดับหนึ่ง, ถูกที่สุด, Before After, ก่อนหลัง, หาย, หายขาด, หายถาวร, รักษา, รักษาได้, เห็นผลทันที, ขาวทันที, ขาวไว, หน้าใสถาวร, หน้าเด็ก, ผิวเด็ก, ยกกระชับทันที, ไม่มีผลข้างเคียง, ไม่ต้องพบแพทย์, ดีกว่ายา, หมอ, แพทย์รับรอง, ผู้เชี่ยวชาญ, งานวิจัย, อย., FDA, Medical Grade, Clinical Test, ทดลองในคนไข้, โรงพยาบาล, สูตรหมอ, ดีท็อกซ์, ล้างลำไส้, ขับสารพิษ, บำบัด, ป้องกันโรค, ลดน้ำหนัก, ผอม, เผาผลาญไขมัน, สลายไขมัน, ละลายไขมัน, ภูมิคุ้มกัน, กินแล้วหาย, ของแท้ 100%, แจกเงินฟรี, กำไรชัวร์, รวย, รายได้หลักแสน, คืนทุน, แอดไลน์, สั่งนอกระบบ, ปาฏิหาริย์, มหัศจรรย์, เปลี่ยนชีวิต, สูตรลับ, หายแบบไม่ต้องพึ่งยา, จบปัญหาทุกอย่าง, ตัวเดียวเอาอยู่, ได้ผลจริงทุกคน, ไม่แพ้แน่นอน, ไม่ดื้อยา, แทนการฉีดหน้า, แทนโบท็อกซ์, ไม่ต้องศัลยกรรม, ขาวอมชมพูถาวร, ผิวเนียนกริ๊บ, รูขุมขนหายไปเลย, รอยดำหายเกลี้ยง, ผิวใสทะลุแสง, หน้าเด้งเหมือนเด็ก, ย้อนวัยสิบปี, หน้าไม่พังอีกต่อไป, รีสตาร์ทผิว, ผิวดีตลอดชีวิต, ไม่โยโย่อีก, ตัดต้นตอสิว, หยุดฝ้าตั้งแต่ราก, ฆ่าเชื้อแบคทีเรีย, ต้านเซลล์ร้าย, บล็อกไขมัน, บล็อกแป้ง, ปรับฮอร์โมนทันที, ฟอกตับ, ล้างไขมันในเลือด, ขูดไขมันออก, ความดันลงทันที, เบาหวานดีขึ้นทันที, หลอดเลือดสะอาดทันที, ป้องกันทุกโรค, ครอบจักรวาล, จบทุกปัญหาสุขภาพ, ดีไร้ที่ติ, เหนือกว่าทุกแบรนด์, เทียบชั้นคลินิก, มาตรฐานการแพทย์, ดาราใช้ทุกคน, รีวิวเพียบการันตี, ฮิตที่สุดตอนนี้, ขายถล่มทลาย, โปรแรงที่สุดในชีวิต, ต่ำกว่าทุน, ปั้นยอดล้าน, ดังแน่นอน, ไวรัลแน่นอน, เปลี่ยนหน้าพังเป็นหน้าปังทันที, เปลี่ยนชีวิตในคืนเดียว, ผอมแบบก้าวกระโดด, แตกต่างแบบชัดเจนมาก, ดีจนหยุดไม่ได้, ขาดไม่ได้เด็ดขาด, พลิกผิวในคืนเดียว, เคลียร์สิวเกลี้ยง, หน้าแน่นฟูถาวร, ล็อกความอ่อนเยาว์, คุมความอ้วนอยู่หมัด, สยบฝ้า, รีดไขมันออก, ดึงหน้าตึงทันที, คืนหุ่นสมัยเรียน, ร่างกายเหมือนเกิดใหม่, เคลียร์ลำไส้หมดจด, ดูดสารพิษออก, ปิดจ๊อบความอ้วน, ซ่อมลึกถึงเซลล์, แก้จากภายในลึกสุด, ครบจบในซองเดียว, ไม่ต้องพึ่งตัวอื่น, เม็ดเดียวเอาอยู่, ขาวทั้งตัวทันที, เอวเอสถาวร, หุ่นนางแบบทันที, หน้าวีเชฟทันที, กรอบหน้าคมทันที, ใสจนคนทักทั้งประเทศ, สวยจนคนตกใจ, ซื้อครั้งเดียวจบ, เปลี่ยนทันที 100%, ไม่เห็นผลไม่ต้องจ่าย, คืนเงินไม่ถามเหตุผล, ท้าให้พิสูจน์, ร้องว้าวแน่นอน, แตกทั้งโซเชียล, ดีเกินต้าน, หมดแล้วไม่มีอีก, ครั้งเดียวในชีวิต, ดีที่สุดตั้งแต่เกิดมา, นวัตกรรมหนึ่งเดียวในโลก, อัปเกรดชีวิตทันที, ซึมเศร้าหาย, อารมณ์ดีทันที, เลิกเครียดถาวร, รักษาอัลไซเมอร์, หลับสนิททั้งคืน, ปลอดภัยสำหรับเด็ก, คนท้องใช้ได้ 100%, ให้ลูกกินได้, นาโนเทคโนโลยี, สเต็มเซลล์, เปลี่ยนโหงวเฮ้ง, ถอยรถป้ายแดง
 
 [OUTPUT FORMAT TEMPLATE] (บังคับใช้ฟอร์มนี้เป๊ะๆ เรียงลำดับตั้งแต่ STEP -1 ถึง SCENE N)
 
 [STEP -1: TIKTOK & FLOW POLICY COMPLIANCE CHECK]
 ⚠️ ระบบทำการตรวจสอบกฎข้อห้ามและข้อจำกัดล่าสุด...
-✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว (รับประกันความปลอดภัย 100%)
+✅ สถานะ: อัปเดตกฎเรียบร้อยแล้ว
 
 [STEP 0: 100% STRICT PRODUCT LOCK & ANALYSIS]
-🔒 1. ล็อกข้อมูลสินค้า (Product Lock): [ประกาศชื่อแบรนด์และประเภทสินค้าจากภาพ/บรีฟ]
-🔍 2. จุดเด่นและ Pain Point: [อธิบายสรรพคุณที่สินค้าแก้ปัญหาได้]
-🧠 3. แผนการใช้ Metaphor: [อธิบายไอเดียเปรียบเปรยหลบคำแบน]
+🔒 1. ล็อกข้อมูลสินค้า (Product Lock): [ประกาศชื่อแบรนด์]
+🔍 2. จุดเด่นและ Pain Point: [อธิบายสรรพคุณ]
+🧠 3. แผนการใช้ Metaphor: [อธิบายการหลบคำแบน]
 
 [STEP 0.5: THE EXPERT BRAINSTORMING (สภาผู้เชี่ยวชาญ)]
-(จอส Ai จำลองการประชุม 3 ฝ่าย เพื่อปรับสคริปต์ให้เป็นมนุษย์ ไม่ขายตรง และไวรัลที่สุด)
-🗣️ Viral Marketer: [เสนอไอเดียฮุก 3 วินาทีแรกให้หยุดนิ้วแบบช็อกๆ]
-✍️ Copywriter ปากแจ๋ว: [ปรับภาษาให้เข้ากับ 'โทนเสียง' ที่เลือกให้ดูเรียลเหมือนคนพิมพ์คุยกัน]
-🎬 Director: [วางแผนเรื่องภาพลักษณ์ 'การเนียนขาย' โดยจัดสรรว่าซีนไหนจะโชว์ และซีนไหนจะซ่อนสินค้า]
+(จำลองการประชุม 5 ฝ่าย เพื่อปรับสคริปต์ให้ไวรัลที่สุด)
+🗣️ Viral Marketer: [เสนอฮุก]
+✍️ Copywriter ปากแจ๋ว: [ปรับภาษา]
+🎬 Director: [วางแผนซ่อนสินค้า]
 
 (0) 🎬 STORYBOARD OVERVIEW
 ชื่อเรื่อง (Title): [ตั้งชื่อเรื่อง]
-นักแสดงนำ (Cast):
-CHARACTER: [ระบุคาแรคเตอร์ เพศ โทนเสียง และสไตล์ภาพ]
+CHARACTER: [ระบุคาแรคเตอร์]
 
 FULL STORYBOARD (SCENE 0-[N]):
 =========================================
 SCENE 0 : CHARACTER DESIGN (ออกแบบตัวละครหลัก)
 🔴 1. สร้างรูป (GEN IMAGE)
-👉 กดปุ่ม Copy แล้ววางในช่อง "Image Prompt"
 \`\`\`text
-SCENE 0: [Keyword สไตล์ภาพ (นำการตั้งค่าสไตล์ภาพและบรรยากาศ (Mood/Visual) เข้ามาผสมผสานในนี้)], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, front view, side view, back view, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO WATERMARK
+SCENE 0: [Keyword สไตล์ภาพ (นำการตั้งค่าสไตล์ภาพและบรรยากาศ (Mood/Visual) เข้ามาผสมผสานในนี้)], [รายละเอียดตัวละครแบบเต็ม], Turnaround character sheet, front view, side view, back view, solid white background, 8k resolution, cinematic lighting, --ar 9:16, ABSOLUTELY NO TEXT
 \`\`\`
 =============================
-SCENE 1 : 🖼️ COVER IMAGE & HOOK (ภาพปกหยุดนิ้วพร้อมTypography)
+SCENE 1 : 🖼️ COVER IMAGE & HOOK
 Speaker: [ชื่อคาแรคเตอร์]
-Dialogue: "([อารมณ์/โทนเสียง]) [บทพูดที่ผ่านการสแกนคำต้องห้ามแล้ว ห้ามมี . ? !]"
-Action: [ท่าทางของตัวละครที่ดึงดูดสายตาอย่างแรง]
-Background: [บรรยายฉากหลังระดับ Immersive]
-BGM/SFX: [เสียงประกอบ / BGM]
+Dialogue: "([อารมณ์]) [บทพูดที่สแกนคำแบนแล้ว ห้ามมี . ? ! (23-28 คำ)]"
+Action: [ท่าทาง]
+Background: [ฉากหลัง]
+BGM/SFX: [เสียงประกอบ]
+💡 Director's Note: [แนะนำการวาง Overlay สินค้า]
 💙 1. สร้างรูป (GEN IMAGE)
-(⚠️ เช็กกฎ: ซีนนี้มีสินค้าเข้าฉากหรือไม่? ถ้าฮุกยังไม่ขายของ ให้ห้ามบรรยายสินค้าใน Prompt)
 \`\`\`text
-SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละครแบบเต็ม], [expression], [action], [หากไม่มีสินค้า: "NO product in scene" / หากมีสินค้า: "⚠️ CRITICAL PRODUCT LOCK: The product shape, color, packaging, brand logo, and label typography MUST match the attached reference image EXACTLY 100%. Detailed product description: [บรรยายรายละเอียดสินค้าเป๊ะๆ]. NO gibberish text."], [Background], vibrant and highly eye-catching colors, thumbnail cover style, striking contrast, highly engaging visual to stop scrolling, [ระบุคำสั่ง Typography ตามโหมดที่เลือก: หากโหมด 2 หรือ 3 ให้ใส่ "eye-catching typography Thai text '[แต่งพาดหัวปกสั้นๆ สวยๆ]'" / หากโหมด 1 ให้ใส่ "ABSOLUTELY NO TEXT, NO LETTERS"], 8k resolution, cinematic lighting, Set in a highly detailed immersive environment, deep dimensional space, --ar 9:16, --cref [https://www.gmm-tv.com/contents/4P2e3/?fbrefresh=CAN_BE_ANYTHING](https://www.gmm-tv.com/contents/4P2e3/?fbrefresh=CAN_BE_ANYTHING) --cw 100
+SCENE 1: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [expression], [action], [มี/ไม่มีสินค้า ให้ใส่ Blank Mockup], [Background], {TEXT_DESIGN_PROMPT} [แทรก Typography ข้อความปก], 8k resolution, cinematic lighting, --ar 9:16
 \`\`\`
 ❤️ 2. สร้างวิดีโอ (GEN VIDEO)
 \`\`\`text
-SCENE 1: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. The character speaks the following Thai dialogue naturally with precise lip-sync: "[ใส่บทพูดภาษาไทย ห้ามมี . ? !]". Emotion: [..]. Body movement: [..]. Action: [..]. Camera movement: [..]. [หากมีสินค้า: "⚠️ EXTREME PRODUCT LOCK FOR FLOW: The product MUST remain 100% identical to the input image throughout the video. Do NOT distort, melt, or alter the product label, text, or logo during motion."] Rules: Native Thai voice only. No English words. No subtitles. Only character voice. NO TEXT ON SCREEN.
+SCENE 1: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Dialogue: "[บทพูดภาษาไทย ห้ามมี . ? !]". Rules: Native Thai voice only. NO TEXT ON SCREEN.
 \`\`\`
 =========================================
-SCENE [X] : [ชื่อซีนภาษาไทย] (ตั้งแต่ SCENE 2 เป็นต้นไป)
-Speaker: [ชื่อคาแรคเตอร์]
-Dialogue: "([อารมณ์/โทนเสียง]) [บทพูดที่ผ่านการสแกนคำต้องห้ามแล้ว ห้ามมี . ? !]"
-Action: [ท่าทางของตัวละคร]
-Background: [บรรยายฉากหลังระดับ Immersive]
-BGM/SFX: [เสียงประกอบ / BGM]
+SCENE [X] : [ชื่อซีน]
+Speaker: [ชื่อ]
+Dialogue: "([อารมณ์]) [บทพูด (23-28 คำ)]"
+Action: [ท่าทาง]
+Background: [ฉากหลัง]
 💙 1. สร้างรูป (GEN IMAGE)
-(⚠️ เช็กกฎ: ซีนนี้ควรมีสินค้าเข้าฉากหรือไม่?)
 \`\`\`text
-SCENE [X]: [Keyword สไตล์ภาพ], [รายละเอียดตัวละครแบบเต็ม], [expression], [action], [หากไม่มีสินค้า: "NO product in scene" / หากมีสินค้า: "⚠️ CRITICAL PRODUCT LOCK: The product shape, color, packaging, brand logo, and label typography MUST match the attached reference image EXACTLY 100%. Detailed product description: [บรรยายรายละเอียดสินค้าเป๊ะๆ]. NO gibberish text."], [Background], [ระบุคำสั่ง Typography ตามโหมดที่เลือก: หากโหมด 3 ให้ใส่ "eye-catching typography Thai text '[แต่งข้อความฮุกประจำซีนนี้ ⚠️ ห้ามซ้ำกับซีนอื่นเด็ดขาด]'" / หากโหมด 1 หรือ 2 ให้ใส่ "ABSOLUTELY NO TEXT, NO LETTERS"], 8k resolution, cinematic lighting, Set in a highly detailed immersive environment, deep dimensional space, --ar 9:16, --cref [https://www.gmm-tv.com/contents/4P2e3/?fbrefresh=CAN_BE_ANYTHING](https://www.gmm-tv.com/contents/4P2e3/?fbrefresh=CAN_BE_ANYTHING) --cw 100
+SCENE [X]: [Keyword สไตล์ภาพ], [รายละเอียดตัวละคร], [action], [Blank Mockup], [Background], ABSOLUTELY NO TEXT, 8k resolution, cinematic lighting, --ar 9:16
 \`\`\`
 ❤️ 2. สร้างวิดีโอ (GEN VIDEO)
 \`\`\`text
-SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. The character speaks the following Thai dialogue naturally with precise lip-sync: "[ใส่บทพูดภาษาไทย ห้ามมี . ? !]". Emotion: [..]. Body movement: [..]. Action: [..]. Camera movement: [..]. [หากมีสินค้า: "⚠️ EXTREME PRODUCT LOCK FOR FLOW: The product MUST remain 100% identical to the input image throughout the video. Do NOT distort, melt, or alter the product label, text, or logo during motion."] Rules: Native Thai voice only. No subtitles. NO TEXT ON SCREEN.
+SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character]. Audio Requirement: STRICTLY THAI LANGUAGE. Dialogue: "[บทพูด]". Rules: NO TEXT ON SCREEN.
 \`\`\`
-=========================================
-(ทำซ้ำฟอร์แมต SCENE [X] จนครบตามจำนวนซีน ตั้งแต่ SCENE 1 ถึง N)
+(ทำซ้ำ Scene ถัดไปจนครบ)
 📱 แคปชั่นสำหรับโพสต์ (TikTok/Reels)
-[เขียนแคปชั่นสั้นๆ ห้าม Hard Sell] [#แฮชแท็ก 4 ตัว]และ มี#จอสAi ในลำดับที่2 เสมอ
-
-[ข้อเสนอจาก จอส Ai]:
-"อยากให้ผู้เชี่ยวชาญทุกคนวิเคราะห์การละเมิด และให้คะแนนอีกสักรอบไหม ถ้าต้องการพิม ok มาเลย"
+[เขียนแคปชั่นสั้นๆ ห้าม Hard Sell] [#แฮชแท็ก]
 
 # อยากได้อะไร สงสัยอะไร ให้พิมพ์คุยกับจอสก่อน จอสฉลาดกว่าเจ้านายจอสอีก`;
 
         document.getElementById('btnGenerate').addEventListener('click', async () => {
+            const userInputKeyEl = document.getElementById('userApiKey');
+            const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
+            const ACTIVE_API_KEY = userInputKey !== "" ? userInputKey : SYSTEM_API_KEY;
+
             const briefIdeaEl = document.getElementById('valBrief');
             const productDetailEl = document.getElementById('valProductDetail');
             const charDescEl = document.getElementById('valChar');
@@ -756,6 +768,8 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 return;
             }
 
+            if(window.innerWidth < 768) toggleSidebar(); 
+
             const btn = document.getElementById('btnGenerate');
             const btnText = document.getElementById('btnText');
             if(btn) btn.disabled = true;
@@ -770,10 +784,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             
             const loadTextEl = document.getElementById('loadingText');
             const loadingMessages = [
-                "🧠 กำลังเรียกสภาผู้เชี่ยวชาญระดมสมอง...",
+                "🧠 ทีม Mastermind กำลังระดมสมอง...",
                 "🔒 กำลังล็อกเป้าหมายและวิเคราะห์สินค้า 100%...",
                 "🚫 กำลังตรวจสอบคำต้องห้ามกว่า 480 คำ...",
-                "🎬 กำลังตั้งค่ามุมกล้อง กฎ Soft Sell และคุมโทนเสียงดุดัน...",
+                "🎬 ทีมถ่ายทำและกราฟิกกำลังจัด Layout...",
                 "✨ กำลังร่ายเวทมนตร์ประกอบสคริปต์ระดับ Viral Masterpiece..."
             ];
             let msgIndex = 0;
@@ -784,10 +798,6 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             }, 2500);
             
             try {
-                const userInputKeyEl = document.getElementById('userApiKey');
-                const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
-                const ACTIVE_API_KEY = userInputKey !== "" ? userInputKey : SYSTEM_API_KEY;
-
                 let validModels = [];
                 try {
                     const resModels = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${ACTIVE_API_KEY}`);
@@ -819,37 +829,34 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 let platName = 'Google Flow (จังหวะสมูทธรรมชาติ)'; 
                 let platTime = "8"; 
                 let lengthRule = "บังคับความยาวบทพูด 23-28 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น";
-
-                const characterRule = charDesc.trim() !== "" ? 
-                    `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
-
+                const characterRule = charDesc.trim() !== "" ? `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
                 let batchScenes = scenesInput > 10 ? 10 : scenesInput;
 
                 let customStylePrompt = "";
                 if(moodInput !== "Auto") customStylePrompt += `\n   - อารมณ์/บรรยากาศ (Mood): บังคับใส่คีย์เวิร์ด "${moodInput}" ลงใน Image Prompt ทุกซีน`;
                 if(visualInput !== "Auto") customStylePrompt += `\n   - สไตล์งานศิลป์ (Visual): บังคับใส่คีย์เวิร์ด "${visualInput}" ลงใน Image Prompt ทุกซีน`;
 
+                let textDesignPrompt = "";
+                if(typoInput !== "1") textDesignPrompt = document.getElementById('valTextDesign').value + ", ";
+
                 const enforcementPrompt = `
-🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
+🚨 [UI PAYLOAD: คำสั่งจากผู้ใช้] 🚨
 
-[การตั้งค่าพื้นฐาน]
+[การตั้งค่า]
 1. เป้าหมายคลิป: ${goalName}
-2. รูปแบบ Typography: โหมดที่ ${typoInput} (1=ไม่มีตัวหนังสือเลย, 2=มีแค่ซีนแรกภาพปก, 3=มีทุกซีนฮุกๆ) -> ตัวหนังสือต้องเป็นภาษาไทยเท่านั้น และห้ามซ้ำกัน
-3. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
-4. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
-5. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
-6. ลักษณะตัวละคร: ${characterRule}
-7. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
+2. รูปแบบ Typography: โหมดที่ ${typoInput} (1=ไม่มี, 2=มีแค่ซีนแรก, 3=มีทุกซีน)
+3. แพลตฟอร์ม: ${platName} | เวลา = ${platTime} วินาที | ความยาวบทพูด: ${lengthRule}
+4. จำนวนซีน: ${batchScenes} ซีน (เป้าหมายทั้งหมด ${scenesInput} ซีน)
+5. สไตล์ภาพ: "${styleName}" 
+6. ตัวละคร: ${characterRule}
+7. ระดับภาษา: โทน "${toneName}"
 8. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
-9. กฎเครื่องหมายวรรคตอนและภาษา: ห้ามมีเครื่องหมาย . ? ! ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
 
-[การตั้งค่าภาพเพิ่มเติม (Mood & Visual Style)]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
-
-[ข้อมูลและไอเดียคลิป (STRICT PRODUCT LOCK)]
-- พล็อต/ไอเดียหลัก: ${briefIdea}
-- ข้อมูลสินค้า: ${productDetail}
+[ข้อมูลและไอเดีย]
+- พล็อต: ${briefIdea}
+- สินค้า: ${productDetail}
 `;
-                let basePrompt = SYSTEM_PROMPT + "\n\n" + enforcementPrompt;
+                let basePrompt = SYSTEM_PROMPT.replace("{TEXT_DESIGN_PROMPT}", textDesignPrompt) + "\n\n" + enforcementPrompt + customStylePrompt;
 
                 let success = false;
                 let finalError = "";
@@ -869,7 +876,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                                 const prodBase64 = await fileToBase64(prodFiles[i]);
                                 apiParts.push({ inlineData: prodBase64 });
                             }
-                            basePrompt += `\n[ระบบ: แนบ 'รูปสินค้า/บรีฟ' มาทั้งหมด ${prodFiles.length} รูป ให้ค้นหาข้อมูลและล็อคเป้าหมายสินค้าใน STEP 0 ห้ามมั่วเด็ดขาด]`;
+                            basePrompt += `\n[ระบบ: แนบ 'รูปสินค้า' มา ${prodFiles.length} รูป ให้ค้นหาข้อมูลและล็อคเป้าหมายสินค้า ห้ามมั่วเด็ดขาด]`;
                         }
                         
                         apiParts.push({ text: basePrompt });
@@ -971,7 +978,7 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             }
         });
 
-        // 🚨 ส่วนนี้คือหัวใจสำคัญที่แก้ปัญหาเรื่องกดแล้ว AI ไม่ตอบสนอง (Chat History Injection) 🚨
+        // 🚨 ระบบจำประวัติเพื่อแก้ไข (Chat History Injection) 🚨
         document.getElementById('btnFollowUp').addEventListener('click', async () => {
             const followUpEl = document.getElementById('valFollowUp');
             const followUpText = followUpEl ? followUpEl.value : "";
@@ -989,13 +996,13 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             const btn = document.getElementById('btnFollowUp');
             const btnText = document.getElementById('btnFollowUpText');
             if(btn) btn.disabled = true;
-            if(btnText) btnText.innerText = '⏳ Joss Ai กำลังประมวลผลให้ใหม่...';
+            if(btnText) btnText.innerText = '⏳ ทีมงาน Mastermind กำลังประมวลผลให้ใหม่...';
             
             document.getElementById('loadingStatus')?.classList.remove('hidden');
             const loadTextEl = document.getElementById('loadingText');
             
             const followUpMessages = [
-                "🔄 กำลังรื้อสคริปต์และประกอบใหม่ตามคำสั่ง...",
+                "🔄 ทีมงานกำลังรื้อสคริปต์และประกอบใหม่ตามคำสั่ง...",
                 "⚠️ กำลังล็อกคอ AI ให้จำประวัติการคุย...",
                 "✨ กำลังปรับแต่งบทพูดให้ลื่นไหล..."
             ];
@@ -1015,11 +1022,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-2.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                // ใช้รูปแบบ Chat History เพื่อให้ AI เข้าใจคำสั่ง 100%
                 let chatHistory = [
-                    { role: "user", parts: window.LAST_API_PARTS }, // ส่ง Prompt และรูปภาพต้นฉบับไปเตือนความจำ
-                    { role: "model", parts: [{ text: currentGeneratedScript }] }, // ส่งผลลัพธ์เก่าให้ AI ดู
-                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะห้ามมั่วตัวหนังสือ, บทพูดห้ามปนในกล่องภาพ, โทนเสียงตามที่กำหนด, และบทพูดห้ามมีเครื่องหมาย . ? ! เด็ดขาด)` }] }
+                    { role: "user", parts: window.LAST_API_PARTS }, 
+                    { role: "model", parts: [{ text: currentGeneratedScript }] }, 
+                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงให้ทีม Mastermind ทั้ง 5 แก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (บทพูดห้ามมี . ? ! เด็ดขาด)` }] }
                 ];
 
                 let response = await fetch(API_URL, {
@@ -1052,11 +1058,12 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
             } finally {
                 clearInterval(loadingInterval);
                 if(btn) btn.disabled = false;
-                if(btnText) btnText.innerText = 'ส่งคำสั่งให้ Joss Ai ทำต่อ / แก้ไขใหม่';
+                if(btnText) btnText.innerText = 'ส่งคำสั่งให้ทีมงานแก้ไข';
                 document.getElementById('loadingStatus')?.classList.add('hidden');
             }
         });
 
+        // 🚨 ระบบตรวจสอบการละเมิด 🚨
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
             const btnAnalyze = document.getElementById('btnAnalyze');
             const analysisOutput = document.getElementById('analysisOutput');
@@ -1066,10 +1073,10 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
 
             if(btnAnalyze) {
                 btnAnalyze.disabled = true;
-                btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังส่งข้อมูลให้ Joss Ai ตรวจสอบ...';
+                btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังส่งข้อมูลให้ทีมงานตรวจสอบ...';
             }
             if(analysisOutput) analysisOutput.classList.remove('hidden');
-            if(analysisText) analysisText.innerHTML = '<span class="animate-pulse text-orange-400">Joss Ai กำลังอ่านกฎ TikTok ปี 2026 และตรวจสคริปต์ (รอ 10-15 วินาที)...</span>';
+            if(analysisText) analysisText.innerHTML = '<span class="animate-pulse text-orange-400">ทีมงานกำลังอ่านกฎ TikTok ปี 2026 และตรวจสคริปต์ (รอ 10-15 วินาที)...</span>';
 
             try {
                 const userInputKeyEl = document.getElementById('userApiKey');
@@ -1078,12 +1085,12 @@ SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Req
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-2.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
 
-                const analysisPrompt = `คุณคือ จอส Ai ผู้เชี่ยวชาญด้านนโยบายแพลตฟอร์ม TikTok/Reels และ Marketing Director ชั้นนำ
+                const analysisPrompt = `คุณคือ สภาผู้เชี่ยวชาญด้านนโยบายและไวรัล
 กรุณาวิเคราะห์สคริปต์ Storyboard ด้านล่างนี้อย่างละเอียด:
 1. 🚨 ตรวจสอบคำละเมิด/เคลมเกินจริง: มีประโยคไหนใช้คำต้องห้ามในฐานข้อมูล 480 กว่าคำไหม? (ถ้ามีให้ระบุและเสนอคำแก้)
-2. 🔥 วิเคราะห์ความน่าสนใจ (Hook): ซีนแรกดึงดูดและหยุดนิ้วคนดูตามกฎ Pattern Interrupt 3 วินาทีหรือไม่?
+2. 🔥 วิเคราะห์ความน่าสนใจ (Hook): ซีนแรกดึงดูดและหยุดนิ้วคนดูตามกฎ 3 วินาทีหรือไม่?
 3. ⭐ ให้คะแนนภาพรวม: ให้คะแนนสคริปต์นี้เต็ม 10 คะแนน
-4. 💡 คำแนะนำเพิ่มเติมจาก จอส Ai: แนะนำทริกเพื่อให้คลิปนี้ไวรัลยิ่งขึ้น
+4. 💡 คำแนะนำเพิ่มเติม: แนะนำทริกเพื่อให้คลิปนี้ไวรัลยิ่งขึ้น
 
 [สคริปต์ที่ต้องการวิเคราะห์]:\n${currentGeneratedScript}`;
 
