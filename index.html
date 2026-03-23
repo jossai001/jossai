@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joss Ai 🦆 Studio (Expert Team Edition)</title>
+    <title>Joss Ai 🦆 Web Studio (Pro Master Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -21,7 +21,7 @@
         .glass-panel { 
             background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(16px); 
-            border: 1px solid rgba(253, 224, 71, 0.5); 
+            border: 1px solid rgba(253, 224, 71, 0.6); 
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
         }
         .glass-input { 
@@ -40,7 +40,7 @@
             border-color: #ef4444; 
             background: linear-gradient(135deg, #fef08a, #fde047); 
             color: #78350f; 
-            font-weight: bold;
+            font-weight: 800;
         }
         .upload-box { 
             border: 1.5px dashed #fcd34d; 
@@ -61,389 +61,396 @@
             transform: translateY(-2px); 
             box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.4); 
         }
-        .btn-super:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; color: #64748b;}
-        
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; }
+        .btn-red:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3); }
+
+        .auth-overlay { position: fixed; inset: 0; background: rgba(255, 251, 235, 0.95); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) { .sidebar-closed { transform: translateX(0%); } }
+
+        .scene-card {
+            background: #ffffff;
+            border: 2px solid #fde047;
+            border-radius: 2.5rem;
+            box-shadow: 0 15px 35px -10px rgba(251, 191, 36, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .scene-card:hover { transform: scale(1.01); }
     </style>
 </head>
 <body class="h-screen flex flex-row text-base relative">
 
-    <main class="flex-1 h-full flex flex-col relative" id="mainArea">
-        <header class="h-16 md:h-20 glass-panel flex items-center justify-between px-4 md:px-8 z-10 shadow-sm border-b border-yellow-200">
-            <div class="flex items-center gap-2 md:gap-3">
-                <span class="text-3xl md:text-4xl drop-shadow-sm">🦆</span>
-                <h1 class="text-xl md:text-2xl font-extrabold tracking-wide text-slate-800">Joss Ai <span class="text-red-500 font-bold hidden sm:inline">Solo</span></h1>
+    <div id="authScreen" class="auth-overlay flex flex-col items-center">
+        <div class="glass-panel p-8 md:p-12 rounded-[3rem] shadow-2xl w-[95%] md:w-[30rem] text-center border-yellow-400 border-2">
+            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500 mb-4">🦆 Joss Ai</h1>
+            <p class="text-slate-500 mb-10 text-lg font-medium">Digital Content Creator Studio</p>
+            <div id="loginForm">
+                <button onclick="loginWithGoogle()" class="w-full bg-white text-slate-800 border-2 border-yellow-400 font-black py-4 px-6 text-lg rounded-2xl flex items-center justify-center gap-3 hover:bg-yellow-50 transition shadow-xl hover:scale-105">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-7 h-7" alt="Google">
+                    ลงชื่อเข้าใช้ (ระบบลูกศิษย์)
+                </button>
             </div>
-            <div class="flex items-center gap-3 md:gap-6">
-                <div class="hidden md:flex bg-yellow-100 border border-yellow-400 text-yellow-700 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-sm"></span> Private Director
+            <div id="pendingForm" class="hidden">
+                <div class="text-red-500 mb-6 text-7xl animate-bounce">⏳</div>
+                <h2 class="text-2xl font-black text-slate-800 mb-3">ไม่พบสิทธิ์เข้าใช้งาน</h2>
+                <p class="text-slate-600 text-base mb-8">กรุณาสมัครคอร์สเรียนเพื่อขอเปิดใช้งานระบบนะครับ 💛</p>
+                <button onclick="resetLogin()" class="text-red-500 font-bold hover:underline">ลองบัญชีอื่น</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 h-full flex flex-col relative hidden" id="mainArea">
+        <header class="h-16 md:h-20 glass-panel flex items-center justify-between px-4 md:px-10 z-10 border-b border-yellow-200">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl md:text-4xl">🦆</span>
+                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800">JOSS AI <span class="text-red-500">STUDIO</span></h1>
+            </div>
+            <div class="flex items-center gap-3 md:gap-8">
+                <div class="hidden md:flex bg-yellow-400/20 border border-yellow-500/50 text-yellow-700 text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span> Personal Master
                 </div>
-                <div class="text-right border-l border-slate-300 pl-3 md:pl-6 hidden sm:block">
-                    <div class="text-sm md:text-base font-bold text-slate-600">ยินดีต้อนรับครับบอส! 🐤</div>
+                <div class="text-right border-l border-slate-300 pl-6 hidden sm:block">
+                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">boss@jossai.com</div>
                 </div>
-                <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300 shadow-sm">⚙️</button>
+                <button onclick="logout()" class="bg-white hover:bg-red-50 text-red-500 border border-red-200 font-bold px-4 py-2 rounded-xl transition shadow-sm">ออก</button>
+                <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300">⚙️</button>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-4 md:p-12 scroll-smooth relative" id="resultArea">
-            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center opacity-90 px-4 text-center">
-                <span class="text-7xl md:text-9xl mb-6 drop-shadow-md">🐤</span>
-                <h2 class="text-2xl md:text-4xl font-black text-slate-800 mb-4 tracking-wide">สตูดิโอส่วนตัวของ <span class="text-yellow-500 drop-shadow-sm">Joss Ai</span></h2>
-                <p class="text-slate-600 font-medium text-sm md:text-lg max-w-2xl leading-relaxed bg-white/60 p-4 rounded-2xl border border-yellow-200">
-                    ตั้งค่า API Key ที่แผงควบคุมด้านขวา เลือกทีมผู้เชี่ยวชาญ<br>แล้วกดปุ่ม <b class="text-red-500">"ร่ายมนต์สร้างสคริปต์"</b> ได้เลยครับ!
+            <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+                <span class="text-8xl md:text-[10rem] mb-8 drop-shadow-lg">🐤</span>
+                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมร่ายเวทมนตร์แล้วครับบอส!</h2>
+                <p class="text-slate-500 font-medium text-lg max-w-2xl leading-relaxed bg-white/40 p-5 rounded-3xl border border-yellow-200">
+                    ตั้งค่า API Key และปรับแต่งแผงควบคุมด้านขวา<br>ทีมงาน Mastermind รอรับคำสั่ง <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> อยู่ครับ!
                 </p>
-                <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-6 py-3 rounded-2xl font-bold text-white shadow-lg animate-bounce">เปิดแผงควบคุม ⚙️</button>
+                <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-10 py-4 rounded-2xl font-black text-white shadow-xl animate-bounce">เปิดแผงควบคุม ⚙️</button>
             </div>
 
             <div id="loadingStatus" class="hidden flex flex-col items-center justify-center h-full">
-                <div class="text-6xl md:text-8xl animate-bounce mb-6 drop-shadow-md">🪄</div>
-                <p id="loadingText" class="text-yellow-600 font-black text-xl md:text-3xl animate-pulse tracking-wide text-center px-4 bg-white/80 p-3 rounded-full border border-yellow-300 shadow-sm">กำลังเรียกทีมงานและประมวลผล...</p>
+                <div class="text-7xl md:text-9xl animate-bounce mb-8">🪄</div>
+                <p id="loadingText" class="text-red-500 font-black text-2xl md:text-4xl animate-pulse text-center px-8 bg-white/80 p-5 rounded-full border border-red-200 shadow-sm">ทีมงานกำลังระดมสมอง...</p>
             </div>
 
-            <div id="resultContainer" class="hidden max-w-5xl mx-auto pb-24 pt-4">
-                <h3 class="text-xl md:text-3xl font-black text-slate-800 flex items-center gap-3 mb-6 md:mb-10 bg-white p-4 md:p-6 rounded-3xl border border-yellow-300 shadow-sm">
-                    <span class="text-3xl md:text-5xl drop-shadow-sm">🎉</span> สคริปต์ของบอสพร้อมแล้ว!
-                </h3>
-                
-                <div id="dynamicOutput" class="space-y-6 md:space-y-8 text-sm md:text-base"></div>
+            <div id="resultContainer" class="hidden max-w-4xl mx-auto pb-32 pt-4">
+                <div id="dynamicOutput" class="space-y-10"></div>
 
-                <div class="mt-10 md:mt-14 bg-white p-6 md:p-8 rounded-3xl border border-blue-200 shadow-[0_10px_30px_rgba(250,204,21,0.15)]">
-                    <label class="flex items-center gap-2 text-base md:text-lg font-black text-yellow-600 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl md:text-3xl">💬</span> สั่งปรับแก้สคริปต์ / เขียนต่อ
+                <div class="mt-16 bg-white p-8 md:p-10 rounded-[3rem] border-2 border-blue-200 shadow-2xl">
+                    <label class="flex items-center gap-3 text-xl font-black text-blue-600 mb-6 uppercase tracking-widest">
+                        <span class="text-3xl">💬</span> ปรับแก้สคริปต์ / สั่งทำต่อ
                     </label>
-                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 md:p-5 text-sm md:text-base resize-none leading-relaxed font-medium" placeholder="พิมพ์สิ่งที่บอสต้องการปรับแก้ตรงนี้ หรือเลือกปุ่มด้านล่าง..."></textarea>
+                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน พิมพ์บอกจอสได้เลยครับ..."></textarea>
                     
-                    <div class="flex flex-wrap gap-2 md:gap-3 mt-4">
-                        <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-xs md:text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-full border border-slate-300 transition shadow-sm">➕ เพิ่มซีนต่อไป</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้แรงขึ้น ปากแซ่บ จิกกัด โดนใจคนดูมากขึ้น')" class="text-xs md:text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับคำพูดให้แรงขึ้น</button>
-                        <button type="button" onclick="setFollowUpText('เปลี่ยนให้เป็นสไตล์นักขายมือทอง ฮาร์ดเซลล์ ปิดการขายเด็ดขาด')" class="text-xs md:text-sm bg-yellow-50 hover:bg-yellow-100 text-yellow-700 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-full border border-yellow-300 transition shadow-sm">💰 เน้นฮาร์ดเซลล์</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ตลกขึ้น สายฮา เน้นมุกตลกเอนเตอร์เทนคนดู')" class="text-xs md:text-sm bg-purple-50 hover:bg-purple-100 text-purple-600 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-full border border-purple-200 transition shadow-sm">🤡 เน้นสายฮา</button>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-white hover:bg-yellow-50 text-slate-700 font-bold px-6 py-3 rounded-full border border-slate-300 transition shadow-sm">➕ ซีนถัดไป</button>
+                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น จิกกัด โดนใจไวรัลมากขึ้น')" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-6 py-3 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับให้แรงขึ้น</button>
+                        <button type="button" onclick="setFollowUpText('ขอเน้นการปิดการขายด่วนๆ Call to Action แรงๆ')" class="text-sm bg-green-50 hover:bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border border-green-200 transition shadow-sm">💰 เน้นปิดการขาย</button>
                     </div>
 
-                    <button id="btnFollowUp" class="mt-6 w-full btn-super text-white font-black py-4 md:py-5 text-base md:text-lg rounded-2xl shadow-lg flex justify-center items-center gap-2">
-                        <span class="text-2xl md:text-3xl">✨</span> <span id="btnFollowUpText">ส่งคำสั่งให้ทีมงานทำต่อ</span>
+                    <button id="btnFollowUp" class="mt-8 w-full btn-red text-white font-black py-5 rounded-2xl text-xl shadow-xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
+                        <span class="text-3xl">✨</span> <span id="btnFollowUpText">ส่งคำสั่งให้ทีมงานแก้ไข</span>
                     </button>
                 </div>
 
-                <div class="mt-10 border-t border-slate-300 pt-10">
-                    <button id="btnAnalyze" class="w-full bg-white hover:bg-yellow-50 text-red-500 font-black py-4 md:py-5 text-base md:text-lg rounded-2xl border-2 border-red-400 transition shadow-lg flex justify-center items-center gap-2">
-                        <span class="text-2xl md:text-3xl">🕵️‍♀️</span> <span>ให้ทีมงานตรวจสอบการละเมิดและให้คะแนน</span>
+                <div class="mt-12 border-t-2 border-yellow-300 pt-12">
+                    <button id="btnAnalyze" class="w-full bg-white hover:bg-red-50 text-red-500 font-black py-5 rounded-2xl text-xl border-2 border-red-500 transition shadow-lg flex justify-center items-center gap-3">
+                        <span class="text-3xl">🕵️‍♀️</span> <span>ให้ทีมงานตรวจสอบความปลอดภัย & ให้คะแนน</span>
                     </button>
-                    <div id="analysisOutput" class="hidden mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-yellow-300">
-                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-yellow-200">
-                            <span class="text-3xl md:text-4xl animate-spin drop-shadow-sm">⚙️</span>
-                            <h4 class="text-lg md:text-xl font-black text-red-500 uppercase tracking-widest">Analysis Report</h4>
+                    <div id="analysisOutput" class="hidden mt-10 bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border-2 border-yellow-300">
+                        <div class="flex items-center gap-4 mb-8 pb-4 border-b-2 border-yellow-100">
+                            <span class="text-4xl animate-spin">⚙️</span>
+                            <h4 class="text-2xl font-black text-red-600 uppercase tracking-tighter">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-700 text-sm md:text-base leading-relaxed whitespace-pre-wrap font-medium">กำลังสแกนหาข้อบกพร่อง...</div>
+                        <div id="analysisText" class="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap font-medium">สแกนหาคำต้องห้าม 480 คำ...</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <aside class="fixed lg:relative inset-y-0 right-0 z-50 w-[85%] sm:w-[420px] h-full glass-panel border-l border-white flex flex-col sidebar-closed transition-transform duration-300 shadow-[-10px_0_30px_rgba(0,0,0,0.05)] bg-white/90" id="mainSidebar">
-        <div class="lg:hidden flex justify-between items-center p-4 border-b border-yellow-300 bg-yellow-50">
-            <span class="font-black text-yellow-600">⚙️ แผงควบคุม</span>
-            <button onclick="toggleSidebar()" class="text-slate-500 text-2xl font-bold bg-white w-8 h-8 rounded-full flex items-center justify-center border border-slate-300">✕</button>
+    <aside id="mainSidebar" class="fixed lg:relative inset-y-0 right-0 z-50 w-[85%] sm:w-[440px] glass-panel border-l border-yellow-200 flex flex-col sidebar-closed transition-transform duration-300 shadow-2xl bg-white/95 backdrop-blur-xl">
+        <div class="lg:hidden flex justify-between items-center p-5 border-b border-yellow-200 bg-yellow-50">
+            <span class="font-black text-yellow-600 tracking-widest text-lg">⚙️ แผงควบคุม</span>
+            <button onclick="toggleSidebar()" class="text-slate-400 text-2xl font-bold bg-white w-10 h-10 rounded-full flex items-center justify-center border border-slate-200">✕</button>
         </div>
 
-        <div class="p-4 md:p-6 overflow-y-auto flex-1 space-y-5 md:space-y-6 scroll-smooth">
+        <div class="p-5 md:p-8 overflow-y-auto flex-1 space-y-6 scroll-smooth">
             
-            <div class="bg-white p-5 rounded-2xl border border-red-300 shadow-sm">
-                <label class="block text-xs md:text-sm font-black text-red-500 mb-2 tracking-wide uppercase flex justify-between items-center">
-                    <span>🔑 Gemini API Key</span>
-                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] font-bold text-red-600 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-full transition shadow-sm">รับคีย์ฟรี ✨</a>
+            <div class="bg-red-50 p-5 rounded-3xl border-2 border-red-200 shadow-sm">
+                <label class="block text-xs font-black text-red-600 mb-2 tracking-widest uppercase flex justify-between items-center">
+                    <span>🔑 Gemini API Key (บังคับ)</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] font-bold text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full transition">รับคีย์ฟรี ✨</a>
                 </label>
-                <input type="password" id="userApiKey" class="w-full glass-input rounded-xl p-3 text-sm focus:border-red-500 font-mono" placeholder="วาง API Key ตรงนี้ (ระบบจำไว้ให้)...">
+                <input type="password" id="userApiKey" class="w-full glass-input bg-white rounded-xl p-3 text-sm focus:border-red-500 font-mono shadow-inner" placeholder="วาง Gemini API Key ของบอสตรงนี้...">
             </div>
 
-            <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-5 rounded-3xl border border-yellow-300 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-800 mb-3 uppercase tracking-wide">
-                    <span>👥</span> ทีมผู้เชี่ยวชาญ (AI Persona)
-                </label>
-                <select id="valExpert" class="w-full glass-input bg-white rounded-xl p-3 text-xs md:text-sm font-bold text-slate-700 outline-none">
-                    <option value="JossAi">🦄 Joss Ai (ปรมาจารย์ไวรัล สายบิวตี้/สุขภาพ)</option>
-                    <option value="Seller">💰 นักขายมือทอง (ฮาร์ดเซลล์ ปิดการขายดุดัน)</option>
-                    <option value="Storyteller">📖 นักเล่าเรื่อง (เน้นสร้างอารมณ์ร่วม อินตาม)</option>
-                    <option value="Comedian">🤡 สายฮาตัวตึง (ตลก โปกฮา ดึงดูดความสนใจ)</option>
-                </select>
-            </div>
-
-            <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-3 uppercase tracking-wide">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                <label class="flex items-center gap-2 text-sm font-black text-slate-800 mb-3 uppercase tracking-wide">
                     <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
                 </label>
-                <select id="valTextDesign" class="w-full glass-input bg-slate-50 rounded-xl p-3 text-xs md:text-sm font-semibold text-slate-700 outline-none">
-                    <option value="Bold modern 3D typography, popping out, highly readable, vibrant text box, dynamic graphic design">💥 3D ตัวหนาทะลุจอ (ดึงดูดสายตา)</option>
-                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated graphic design">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
-                    <option value="Glowing neon typography, cyberpunk style text, luminous letters, futuristic graphic design">💡 นีออน สว่างวาบ (สายกลางคืน/เท่ๆ)</option>
-                    <option value="Retro pop-art typography, comic book style dialogue bubbles, thick outlines, bold colors layout">🎨 ป๊อปอาร์ต คอมมิค (สีจัดจ้าน วัยรุ่น)</option>
+                <select id="valTextDesign" class="w-full glass-input bg-slate-50 rounded-2xl p-3 text-sm font-bold text-slate-600 outline-none">
+                    <option value="Modern 3D bold typography, popping out, glossy finish, highly readable, dynamic graphic design">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
+                    <option value="Minimalist editorial typography, elegant magazine layout, clean sans-serif fonts, sophisticated design">📖 มินิมอล นิตยสาร (เรียบหรู ดูแพง)</option>
+                    <option value="Retro pop-art style typography, comic book captions, bold stroke outlines, dynamic comic design">🎨 ป๊อปอาร์ต คอมมิค (วัยรุ่น สีจัดจ้าน)</option>
+                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
                 </select>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🎬</span> 1. โหมดคลิป (เป้าหมาย)
+                <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
+                    <span>🎬</span> 1. ตั้งค่าพื้นฐาน
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="radio" name="goal" id="goal1" value="1">
-                    <label for="goal1" class="glass-input rounded-xl p-3 text-center cursor-pointer text-xs md:text-sm font-medium">🌟 สร้างตัวตน</label>
+                    <label for="goal1" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">🌟 สร้างตัวตน</label>
                     <input type="radio" name="goal" id="goal2" value="2" checked>
-                    <label for="goal2" class="glass-input rounded-xl p-3 text-center cursor-pointer text-xs md:text-sm font-medium">💰 ขายของ</label>
+                    <label for="goal2" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">💰 ขายของ</label>
                 </div>
-                <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3 px-4 border border-slate-200">
-                    <span class="text-xs md:text-sm text-slate-600 font-bold">จำนวนฉาก (ซีน):</span>
-                    <input type="number" id="valScenes" value="6" min="1" max="100" class="w-16 bg-white border border-slate-300 rounded-lg text-center font-black text-red-500 text-lg outline-none focus:border-red-500">
+                <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3 border border-slate-200">
+                    <span class="text-xs font-bold text-slate-600">จำนวนฉาก:</span>
+                    <input type="number" id="valScenes" value="6" min="1" max="50" class="w-16 bg-white border border-slate-300 rounded-lg text-center font-black text-red-500 text-lg outline-none">
                 </div>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>💡</span> 2. ไอเดียที่คิดเอาไว้
+                <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
+                    <span>💡</span> 2. ไอเดีย/พล็อตเรื่อง
                 </label>
-                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-xl p-3 md:p-4 text-xs md:text-sm resize-none font-medium" placeholder="พิมพ์ไอเดีย, หัวข้อคลิป, หรือพล็อตเรื่อง..."></textarea>
+                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-sm font-medium resize-none" placeholder="พิมพ์ไอเดียบอสที่นี่..."></textarea>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🎭</span> 3. สไตล์ตัวละคร
+                <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
+                    <span>🎭</span> 3. ตัวละคร & สินค้า
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="radio" name="style" id="styleA" value="A" checked>
-                    <label for="styleA" class="glass-input rounded-xl p-3 text-center cursor-pointer text-xs md:text-sm font-medium">👱‍♀️ คนจริง (Real)</label>
+                    <label for="styleA" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">👱‍♀️ คนจริง</label>
                     <input type="radio" name="style" id="styleB" value="B">
-                    <label for="styleB" class="glass-input rounded-xl p-3 text-center cursor-pointer text-xs md:text-sm font-medium">🧸 การ์ตูน 3D</label>
+                    <label for="styleB" class="glass-input rounded-xl p-3 text-center cursor-pointer text-sm font-medium">🧸 การ์ตูน 3D</label>
                 </div>
-                <div class="flex flex-col md:flex-row gap-3 md:gap-4 h-auto">
-                    <div id="charUploadContainer" class="w-full md:w-24 h-24 md:h-20 shrink-0 upload-box rounded-xl flex flex-col items-center justify-center relative overflow-hidden group">
-                        <div id="placeChar" onclick="document.getElementById('imgChar').click()" class="flex flex-col items-center justify-center w-full h-full">
-                            <span class="text-2xl mb-1 text-slate-400 drop-shadow-sm">📸</span>
-                            <span class="text-[10px] text-slate-500 font-bold">แนบรูป</span>
-                        </div>
-                        <input type="file" id="imgChar" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'previewChar', 'btnRemoveChar', 'placeChar')">
-                        <img id="previewChar" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
-                        <button id="btnRemoveChar" onclick="removeIndividualImg(event, 'imgChar', 'previewChar', 'btnRemoveChar', 'placeChar')" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-md hidden z-10">✕</button>
+                <div class="flex gap-3 mb-4">
+                    <div id="charUpload" class="w-20 h-20 upload-box rounded-xl flex flex-col items-center justify-center relative group" onclick="document.getElementById('imgChar').click()">
+                        <span class="text-xl">📸</span><span class="text-[8px] font-bold text-slate-500">แนบรูป</span>
+                        <input type="file" id="imgChar" class="hidden" accept="image/*" onchange="previewImg(this, 'prevChar', 'btnRmChar')">
+                        <img id="prevChar" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRmChar" onclick="removeImg(event, 'imgChar', 'prevChar', 'btnRmChar')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden z-10">✕</button>
                     </div>
-                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input bg-slate-50 rounded-xl p-3 text-xs md:text-sm resize-none h-20 md:h-full font-medium" placeholder="อธิบายรูปลักษณ์ตัวละคร (เช่น ผมสั้น หน้าบึ้ง)..."></textarea>
+                    <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input bg-slate-50 rounded-2xl p-3 text-xs font-medium resize-none h-20" placeholder="อธิบายรูปลักษณ์..."></textarea>
                 </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 text-6xl opacity-10">🛍️</div>
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🛍️</span> 4. ภาพ & ข้อมูลสินค้า
-                </label>
-                <div class="grid grid-cols-4 gap-2 mb-4">
-                    <div class="h-16 upload-box rounded-xl flex flex-col items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd1').click()">
-                        <div id="placeProd1" class="flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-lg text-slate-400">🖼️</span><span class="text-[8px] text-slate-500 font-bold">รูป 1</span>
-                        </div>
-                        <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd1', 'btnRmProd1', 'placeProd1')">
-                        <img id="prevProd1" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
-                        <button id="btnRmProd1" onclick="removeIndividualImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1', 'placeProd1')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
+                
+                <div class="grid grid-cols-4 gap-2 mb-3">
+                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd1').click()">
+                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                        <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd1', 'btnRmProd1')">
+                        <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
-                    <div class="h-16 upload-box rounded-xl flex flex-col items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd2').click()">
-                        <div id="placeProd2" class="flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-lg text-slate-400">🖼️</span><span class="text-[8px] text-slate-500 font-bold">รูป 2</span>
-                        </div>
-                        <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd2', 'btnRmProd2', 'placeProd2')">
-                        <img id="prevProd2" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
-                        <button id="btnRmProd2" onclick="removeIndividualImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2', 'placeProd2')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
+                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd2').click()">
+                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                        <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
+                        <img id="prevProd2" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
-                    <div class="h-16 upload-box rounded-xl flex flex-col items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd3').click()">
-                        <div id="placeProd3" class="flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-lg text-slate-400">🖼️</span><span class="text-[8px] text-slate-500 font-bold">รูป 3</span>
-                        </div>
-                        <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd3', 'btnRmProd3', 'placeProd3')">
-                        <img id="prevProd3" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
-                        <button id="btnRmProd3" onclick="removeIndividualImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3', 'placeProd3')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
+                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd3').click()">
+                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                        <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd3', 'btnRmProd3')">
+                        <img id="prevProd3" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
-                    <div class="h-16 upload-box rounded-xl flex flex-col items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgProd4').click()">
-                        <div id="placeProd4" class="flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-lg text-slate-400">🖼️</span><span class="text-[8px] text-slate-500 font-bold">รูป 4</span>
-                        </div>
-                        <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd4', 'btnRmProd4', 'placeProd4')">
-                        <img id="prevProd4" class="absolute inset-0 hidden pointer-events-none w-full h-full object-cover">
-                        <button id="btnRmProd4" onclick="removeIndividualImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4', 'placeProd4')" class="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] opacity-0 group-hover:opacity-100 z-10 hidden">✕</button>
+                    <div class="h-14 upload-box rounded-xl flex items-center justify-center relative" onclick="document.getElementById('imgProd4').click()">
+                        <div class="text-center pointer-events-none"><span class="text-sm">🖼️</span></div>
+                        <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd4', 'btnRmProd4')">
+                        <img id="prevProd4" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                 </div>
-                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-xl p-3 md:p-4 text-xs md:text-sm resize-none font-medium" placeholder="พิมพ์ชื่อและจุดเด่นสินค้าบังคับให้ชัดเจนตรงนี้! AI จะไม่กล้ามั่วแน่นอน..."></textarea>
+                <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-2xl p-4 text-xs font-medium resize-none" placeholder="ชื่อและจุดเด่นสินค้า..."></textarea>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🪄</span> 5. ข้อความ, ภาษาถิ่น & โทนพูด
+                <label class="flex items-center gap-2 text-sm font-black text-slate-700 mb-4 uppercase tracking-wide">
+                    <span>🪄</span> 4. โทนเสียง & บรรยากาศ
                 </label>
                 <div class="grid grid-cols-2 gap-2 mb-3">
-                    <select id="valDialect" class="glass-input rounded-xl p-2.5 text-xs md:text-sm font-bold text-teal-600">
-                        <option value="กลาง">🇹🇭 ถิ่น: กลาง</option>
-                        <option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
-                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option>
-                        <option value="ใต้">🌊 ถิ่น: ใต้</option>
+                    <select id="valDialect" class="glass-input rounded-xl p-2.5 text-xs font-bold text-teal-600">
+                        <option value="กลาง">🇹🇭 ถิ่น: กลาง</option><option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
+                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option><option value="ใต้">🌊 ถิ่น: ใต้</option>
                     </select>
-                    <select id="valTone" class="glass-input rounded-xl p-2.5 text-xs md:text-sm font-semibold text-slate-700">
-                        <option value="2">💬 ธรรมชาติ</option>
-                        <option value="1">👔 สุภาพ ทางการ</option>
-                        <option value="3">👯‍♀️ กู-มึง (เบาๆ)</option>
-                        <option value="4">🌶️ ปากแซ่บ</option>
-                        <option value="5">🎧 ASMR</option>
+                    <select id="valTone" class="glass-input rounded-xl p-2.5 text-xs font-bold text-slate-700">
+                        <option value="2">💬 โทน: ธรรมชาติ</option><option value="4">🌶️ โทน: ปากแซ่บ</option>
+                        <option value="3">👯‍♀️ โทน: กู-มึง</option><option value="1">👔 โทน: สุภาพ</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                <label class="flex items-center gap-2 text-sm md:text-base font-black text-slate-700 mb-4 uppercase tracking-wide">
-                    <span>🖼️</span> 6. Mood & Visual
-                </label>
-                <div class="space-y-3">
-                    <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs md:text-sm font-medium">
-                        <option value="Auto">⚪ อารมณ์: ปล่อยจอย AI</option>
-                        <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
-                        <option value="Bright and airy, minimalist, clean lighting">🌤️ โปร่งสบาย (Airy Clear)</option>
-                        <option value="Warm and cozy, inviting lighting">☕ ละมุนใจ (Soft & Warm)</option>
-                        <option value="Dark and gritty, high contrast">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
-                        <option value="Luxury, glamorous gold, sparkling">💎 เศรษฐีดูไบ (Rich & Shine)</option>
-                        <option value="Pastel dreamy, soft color palette">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
-                    </select>
-                    <select id="valVisual" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs md:text-sm font-medium">
-                        <option value="Auto">⚪ งานศิลป์: ตามใจ AI</option>
-                        <option value="Ultra-realistic, hyper-detailed, 8k resolution">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
-                        <option value="3D animation, Pixar style, cute 3D render">🏰 การ์ตูนฝรั่ง (Cute 3D)</option>
-                        <option value="Next-gen game graphics, Unreal Engine 5">🎮 เกมภาพสวย (Unreal Engine)</option>
-                        <option value="Studio Ghibli style, soft anime art">🌸 อนิเมะใจฟู (Soft Anime)</option>
-                    </select>
-                </div>
+                <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs font-bold mb-2">
+                    <option value="Auto">⚪ อารมณ์: ปล่อยจอย</option>
+                    <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
+                    <option value="Bright and airy, minimalist, clean light">🌤️ โปร่งสบาย (Airy Clear)</option>
+                </select>
             </div>
             
         </div>
 
-        <div class="p-4 md:p-6 bg-white/95 border-t border-yellow-200 z-10 backdrop-blur-md">
-            <button id="btnGenerate" class="w-full btn-super font-black py-4 md:py-5 rounded-2xl text-lg md:text-xl flex justify-center items-center gap-3 shadow-lg">
-                <span class="text-2xl md:text-3xl">✨</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
+        <div class="p-6 bg-white border-t-2 border-yellow-300 z-10">
+            <button id="btnGenerate" class="w-full btn-super font-black py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 shadow-2xl transition hover:scale-[1.02]">
+                <span class="text-3xl">✨</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
         </div>
     </aside>
 
-    <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            background: '#ffffff',
-            color: '#334155',
-            customClass: { popup: 'border-2 border-yellow-400 rounded-2xl shadow-lg font-bold' }
-        });
-        window.showToast = function(message, icon = 'info') { Toast.fire({ icon: icon, title: message }); }
-        
-        window.toggleSidebar = function() {
-            const sidebar = document.getElementById('mainSidebar');
-            if(sidebar.classList.contains('sidebar-closed')) {
-                sidebar.classList.remove('sidebar-closed'); sidebar.classList.add('sidebar-open');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
+            authDomain: "jossai-5a857.firebaseapp.com",
+            projectId: "jossai-5a857",
+            storageBucket: "jossai-5a857.firebasestorage.app",
+            messagingSenderId: "1080088885354",
+            appId: "1:1080088885354:web:693ae4350e49fe37c53213",
+            measurementId: "G-7PHD69E0W7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // 🚨 ระบุอีเมลแอดมินของบอสที่นี่ (เข้าได้เสมอ)
+        const ADMIN_EMAIL = "admin@gmail.com"; 
+
+        window.loginWithGoogle = async function() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                await checkAccess(result.user.email.toLowerCase());
+            } catch (error) {
+                showToast("ล็อกอินล้มเหลว กรุณาปิดตัวบล็อกป๊อปอัป", "error");
+            }
+        };
+
+        async function checkAccess(email) {
+            // เช็กว่าเป็นแอดมินไหม
+            if (email === ADMIN_EMAIL || email.includes("admin")) {
+                enterStudio(email); return;
+            }
+            // ถ้านักเรียน ให้เช็กรายชื่อจาก Firestore Database เท่านั้น
+            const q = query(collection(db, "allowed_users"), where("email", "==", email));
+            const snap = await getDocs(q);
+            
+            if (!snap.empty) { 
+                enterStudio(email); 
             } else {
-                sidebar.classList.remove('sidebar-open'); sidebar.classList.add('sidebar-closed');
+                document.getElementById('pendingForm').classList.remove('hidden');
+                document.getElementById('loginForm').classList.add('hidden');
             }
         }
 
-        let currentGeneratedScript = ""; 
-        window.WORKING_MODEL = ""; 
-        let loadingInterval; 
+        function enterStudio(email) {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainArea').classList.remove('hidden');
+            document.getElementById('userEmailDisplay').innerText = email;
+            showToast("ยินดีต้อนรับสู่สตูดิโอครับบอส! 🦆", "success");
+        }
 
-        window.autoResize = function(el) { el.style.height = 'auto'; el.style.height = (el.scrollHeight) + 'px'; }
+        window.logout = () => signOut(auth).then(() => location.reload());
+        window.resetLogin = () => {
+            document.getElementById('pendingForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            signOut(auth);
+        };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedKey = localStorage.getItem('jossApiKey');
-            if(savedKey) document.getElementById('userApiKey').value = savedKey;
-            document.getElementById('userApiKey').addEventListener('input', (e) => { localStorage.setItem('jossApiKey', e.target.value.trim()); });
+        onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase()); });
+    </script>
+
+    <script>
+        // --- ระบบพื้นฐาน UI ---
+        let currentScript = ""; let workingModel = "gemini-1.5-flash"; 
+        const Toast = Swal.mixin({
+            toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
+            background: '#ffffff', color: '#334155', customClass: { popup: 'border-2 border-yellow-400 rounded-2xl shadow-lg font-black' }
         });
+        window.showToast = (msg, icon) => Toast.fire({ icon, title: msg });
+        window.toggleSidebar = () => { const sb = document.getElementById('mainSidebar'); sb.classList.toggle('sidebar-closed'); sb.classList.toggle('sidebar-open'); };
+        window.autoResize = (el) => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
 
-        window.setFollowUpText = function(text) {
-            const inputEl = document.getElementById('valFollowUp');
-            if(inputEl) {
-                inputEl.value = inputEl.value ? inputEl.value + "\n" + text : text;
-                autoResize(inputEl); inputEl.focus();
-            }
-        }
-
-        window.previewIndividualImg = function(input, imgId, btnId, placeId) {
-            const imgEl = document.getElementById(imgId); const btnRm = document.getElementById(btnId); const placeHolder = document.getElementById(placeId);
+        window.previewImg = (input, imgId, btnId) => {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    if(imgEl) { imgEl.src = e.target.result; imgEl.classList.remove('hidden'); }
-                    if(btnRm) btnRm.classList.remove('hidden');
-                    if(placeHolder) placeHolder.classList.add('hidden'); 
+                reader.onload = e => {
+                    document.getElementById(imgId).src = e.target.result;
+                    document.getElementById(imgId).classList.remove('hidden');
+                    document.getElementById(btnId).classList.remove('hidden');
                 }
                 reader.readAsDataURL(input.files[0]);
             }
+        };
+        window.removeImg = (e, inputId, imgId, btnId) => {
+            e.stopPropagation(); document.getElementById(inputId).value = "";
+            document.getElementById(imgId).classList.add('hidden');
+            document.getElementById(btnId).classList.add('hidden');
+        };
+
+        const fileToBase64 = file => new Promise((res, rej) => {
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => res({ mimeType: file.type, data: reader.result.split(',')[1] });
+        });
+
+        const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+
+        // จำ API Key
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedKey = localStorage.getItem('jossApiKey');
+            if(savedKey) document.getElementById('userApiKey').value = savedKey;
+            document.getElementById('userApiKey').addEventListener('input', e => localStorage.setItem('jossApiKey', e.target.value.trim()));
+        });
+
+        window.setFollowUpText = txt => {
+            const el = document.getElementById('valFollowUp');
+            el.value = el.value ? el.value + "\n" + txt : txt;
+            autoResize(el); el.focus();
         }
 
-        window.removeIndividualImg = function(e, inputId, imgId, btnId, placeId) {
-            if(e) e.stopPropagation();
-            const inputEl = document.getElementById(inputId); const imgEl = document.getElementById(imgId); const btnRm = document.getElementById(btnId); const placeHolder = document.getElementById(placeId);
-            if(inputEl) inputEl.value = "";
-            if(imgEl) { imgEl.src = ""; imgEl.classList.add('hidden'); }
-            if(btnRm) btnRm.classList.add('hidden');
-            if(placeHolder) placeHolder.classList.remove('hidden'); 
-        }
-
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader(); reader.readAsDataURL(file);
-                reader.onload = () => {
-                    let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
-                    if ((encoded.length % 4) > 0) encoded += '='.repeat(4 - (encoded.length % 4));
-                    resolve({ mimeType: file.type, data: encoded });
-                };
-                reader.onerror = error => reject(error);
+        // 🌟 ฟังก์ชันคัดลอกแบบซ่อนโค้ด (มินิมอล) 🌟
+        window.copyHiddenPrompt = (btn) => {
+            const txt = btn.querySelector('.hidden-prompt').value;
+            navigator.clipboard.writeText(txt).then(() => {
+                const ogHtml = btn.innerHTML; 
+                btn.innerHTML = `<span class="w-full text-center text-white font-black text-lg flex justify-center items-center gap-2">✅ คัดลอกคำสั่งสำเร็จ!</span>`; 
+                btn.classList.add('bg-green-500');
+                btn.classList.remove('btn-super', 'btn-red');
+                setTimeout(() => { 
+                    btn.innerHTML = ogHtml; 
+                    btn.classList.remove('bg-green-500'); 
+                    if(ogHtml.includes('📸')) btn.classList.add('btn-super'); else btn.classList.add('btn-red');
+                }, 2000);
             });
         }
 
-        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])); }
-
-        // 🌟 ระบบคัดลอก Prompt แบบกล่องซ่อน (มินิมอล มีศิลปะ) 🌟
-        window.copyHiddenPrompt = function(btn) {
-            const textarea = btn.querySelector('.hidden-prompt');
-            if(textarea) {
-                navigator.clipboard.writeText(textarea.value).then(() => {
-                    const originalHTML = btn.innerHTML; 
-                    btn.innerHTML = `<span class="w-full text-center text-white font-bold flex justify-center items-center gap-2">✅ คัดลอกคำสั่งสำเร็จ!</span>`; 
-                    btn.classList.add('bg-green-500');
-                    setTimeout(() => { 
-                        btn.innerHTML = originalHTML; 
-                        btn.classList.remove('bg-green-500'); 
-                    }, 2000);
-                });
-            }
-        }
-
+        // 🌟 วาดกล่องผลลัพธ์ (การ์ด 3D สวยๆ) 🌟
         function renderGeminiBoxes(rawText) {
-            const container = document.getElementById('dynamicOutput'); if(!container) return;
-            container.innerHTML = ''; 
-            
+            const container = document.getElementById('dynamicOutput'); container.innerHTML = ''; 
             const parts = rawText.split(/(?=SCENE\s*\d+\s*:)/gi);
 
             parts.forEach(part => {
                 if (!part.trim()) return;
-
                 const sceneMatch = part.match(/SCENE\s*(\d+)\s*:/i);
                 
-                // บทนำ (STEP -1, STEP 0)
                 if (!sceneMatch) {
                     let preText = escapeHTML(part.trim())
-                        .replace(/(\[STEP -1:.*?\])/g, '<span class="text-xl font-bold text-red-500 block mb-2 pb-2 border-b border-red-200">$1</span>')
-                        .replace(/(\[STEP 0:.*?\])/g, '<span class="text-xl font-bold text-yellow-600 block mt-4 mb-2 pb-2 border-b border-yellow-300">$1</span>');
-                    container.innerHTML += `<div class="mb-6 p-6 glass-panel rounded-3xl border border-yellow-300 text-slate-700 text-sm leading-relaxed shadow-sm bg-white">${preText}</div>`;
+                        .replace(/(\[STEP -1:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-red-500 block mb-2 pb-2 border-b-2 border-red-100">$1</span>')
+                        .replace(/(\[STEP 0:.*?\])/g, '<span class="text-xl md:text-2xl font-black text-yellow-600 block mt-4 mb-2 pb-2 border-b-2 border-yellow-200">$1</span>');
+                    container.innerHTML += `<div class="mb-8 p-8 bg-white rounded-[2.5rem] border-2 border-yellow-300 text-slate-700 text-base font-medium leading-relaxed shadow-lg">${preText}</div>`;
                     return;
                 }
 
                 const sNum = sceneMatch[1];
                 let textOnly = escapeHTML(part.replace(/```[\s\S]*?```/g, '').trim())
-                    .replace(/(SCENE\s*\d+\s*:[^\n]*)/i, '<span class="text-2xl font-black text-red-500 block mb-4 pb-2 border-b border-red-200">$1</span>')
+                    .replace(/(SCENE\s*\d+\s*:[^\n]*)/i, '<span class="text-3xl md:text-4xl font-black text-red-500 block mb-6 pb-2 border-b-2 border-red-100">$1</span>')
                     .replace(/(Speaker:|Dialogue:|Action:|Background:|BGM\/SFX:|💡 Director's Note)/g, '<span class="text-yellow-600 font-black">$1</span>');
 
                 const codeBlocks = [...part.matchAll(/
