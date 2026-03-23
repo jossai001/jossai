@@ -10,7 +10,7 @@
     <style>
         body { 
             font-family: 'Kanit', sans-serif; 
-            /* เปลี่ยนพื้นหลังเป็นธีมเป็ดเหลืองในความมืดตามต้นฉบับ V.16 */
+            /* เปลี่ยนพื้นหลังเป็นธีมเป็ดเหลืองในความมืด */
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -61,7 +61,7 @@
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
         
-        /* สไลด์เมนูสำหรับมือถือ */
+        /* 🚨 CSS สำหรับระบบสไลด์แผงควบคุมบนมือถือ 🚨 */
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
         @media (min-width: 1024px) {
@@ -132,13 +132,13 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
                     </label>
-                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มไอเดียด้านล่าง..."></textarea>
+                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
                     <div class="flex flex-wrap gap-3 mt-4">
                         <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-slate-800 hover:bg-slate-700 text-yellow-300 px-4 py-2.5 rounded-lg border border-yellow-500/30 transition shadow-sm font-bold">➕ เพิ่มซีนต่อไป</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้แรงขึ้น ปากแซ่บ จิกกัด โดนใจคนดูมากขึ้น')" class="text-sm bg-slate-800 hover:bg-slate-700 text-orange-300 px-4 py-2.5 rounded-lg border border-orange-500/30 transition shadow-sm font-bold">🌶️ ปรับให้แรงขึ้น</button>
+                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น ดิบเถื่อน จิกกัด โดนใจคนดูมากขึ้น')" class="text-sm bg-slate-800 hover:bg-slate-700 text-orange-300 px-4 py-2.5 rounded-lg border border-orange-500/30 transition shadow-sm font-bold">🌶️ ปรับให้แรงขึ้น</button>
                         <button type="button" onclick="setFollowUpText('เน้นปิดการขายช่วงท้าย ให้มี Call to Action แรงๆ ชัดเจน')" class="text-sm bg-slate-800 hover:bg-slate-700 text-green-300 px-4 py-2.5 rounded-lg border border-green-500/30 transition shadow-sm font-bold">💰 เน้นปิดการขาย</button>
                     </div>
 
@@ -156,7 +156,7 @@
                             <span class="text-3xl animate-spin">⚙️</span>
                             <h4 class="text-xl font-bold text-orange-400 uppercase tracking-widest">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026 และตรวจสคริปต์...</div>
+                        <div id="analysisText" class="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">กำลังอ่านกฎระเบียบ TikTok 2026...</div>
                     </div>
                 </div>
             </div>
@@ -234,36 +234,44 @@
                 <div class="flex gap-4 h-24 mb-4">
                     <div id="charUpload" class="w-24 shrink-0 upload-box rounded-xl flex flex-col items-center justify-center relative group overflow-hidden" onclick="document.getElementById('imgChar').click()">
                         <span class="text-xl">📸</span><span class="text-[8px] font-bold text-slate-400">แนบรูป</span>
-                        <input type="file" id="imgChar" class="hidden" accept="image/*" onchange="previewImg(this, 'prevChar', 'btnRmChar')">
-                        <img id="prevChar" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
-                        <button id="btnRmChar" onclick="removeImg(event, 'imgChar', 'prevChar', 'btnRmChar')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden z-10">✕</button>
+                        <input type="file" id="imgChar" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'previewChar', 'btnRemoveChar', 'placeChar')">
+                        <img id="previewChar" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
+                        <button id="btnRemoveChar" onclick="removeIndividualImg(event, 'imgChar', 'previewChar', 'btnRemoveChar', 'placeChar')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden z-10">✕</button>
                     </div>
                     <textarea id="valChar" oninput="autoResize(this)" class="flex-1 glass-input rounded-xl p-3 text-xs font-medium resize-none h-full" placeholder="อธิบายรูปลักษณ์ตัวละคร..."></textarea>
                 </div>
                 <div class="grid grid-cols-4 gap-2 mb-3">
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd1').click()">
-                        <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 1</div>
-                        <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd1', 'btnRmProd1')">
+                        <div id="placeProd1" class="text-center pointer-events-none flex flex-col items-center justify-center h-full">
+                            <span class="text-sm">🖼️</span><span class="text-[8px] text-slate-500">รูป 1</span>
+                        </div>
+                        <input type="file" id="imgProd1" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd1', 'btnRmProd1', 'placeProd1')">
                         <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover">
-                        <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd1" onclick="removeIndividualImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1', 'placeProd1')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd2').click()">
-                        <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 2</div>
-                        <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
+                        <div id="placeProd2" class="text-center pointer-events-none flex flex-col items-center justify-center h-full">
+                            <span class="text-sm">🖼️</span><span class="text-[8px] text-slate-500">รูป 2</span>
+                        </div>
+                        <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd2', 'btnRmProd2', 'placeProd2')">
                         <img id="prevProd2" class="absolute inset-0 hidden w-full h-full object-cover">
-                        <button id="btnRmProd2" onclick="removeImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd2" onclick="removeIndividualImg(event, 'imgProd2', 'prevProd2', 'btnRmProd2', 'placeProd2')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd3').click()">
-                        <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 3</div>
-                        <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd3', 'btnRmProd3')">
+                        <div id="placeProd3" class="text-center pointer-events-none flex flex-col items-center justify-center h-full">
+                            <span class="text-sm">🖼️</span><span class="text-[8px] text-slate-500">รูป 3</span>
+                        </div>
+                        <input type="file" id="imgProd3" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd3', 'btnRmProd3', 'placeProd3')">
                         <img id="prevProd3" class="absolute inset-0 hidden w-full h-full object-cover">
-                        <button id="btnRmProd3" onclick="removeImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd3" onclick="removeIndividualImg(event, 'imgProd3', 'prevProd3', 'btnRmProd3', 'placeProd3')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd4').click()">
-                        <div class="text-center pointer-events-none text-[10px] text-slate-500 font-bold uppercase tracking-tighter">🖼️ 4</div>
-                        <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd4', 'btnRmProd4')">
+                        <div id="placeProd4" class="text-center pointer-events-none flex flex-col items-center justify-center h-full">
+                            <span class="text-sm">🖼️</span><span class="text-[8px] text-slate-500">รูป 4</span>
+                        </div>
+                        <input type="file" id="imgProd4" class="hidden" accept="image/*" onchange="previewIndividualImg(this, 'prevProd4', 'btnRmProd4', 'placeProd4')">
                         <img id="prevProd4" class="absolute inset-0 hidden w-full h-full object-cover">
-                        <button id="btnRmProd4" onclick="removeImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
+                        <button id="btnRmProd4" onclick="removeIndividualImg(event, 'imgProd4', 'prevProd4', 'btnRmProd4', 'placeProd4')" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
                 </div>
                 <textarea id="valProductDetail" rows="2" oninput="autoResize(this)" class="w-full glass-input bg-slate-900/50 rounded-2xl p-4 text-xs font-medium resize-none shadow-inner" placeholder="รายละเอียด/จุดเด่นสินค้าบังคับ..."></textarea>
@@ -275,55 +283,102 @@
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <select id="valDialect" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-teal-300 border-2 border-slate-700 shadow-inner">
-                        <option value="กลาง">🇹🇭 ถิ่น: กลาง</option><option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
-                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option><option value="ใต้">🌊 ถิ่น: ใต้</option>
+                        <option value="กลาง">🇹🇭 ถิ่น: กลาง</option>
+                        <option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
+                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option>
+                        <option value="ใต้">🌊 ถิ่น: ใต้</option>
                     </select>
                     <select id="valTone" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-orange-300 border-2 border-slate-700 shadow-inner">
-                        <option value="2">💬 โทน: ธรรมชาติ</option><option value="4">🌶️ โทน: ปากแซ่บ</option>
-                        <option value="3">👯‍♀️ โทน: กู-มึง</option><option value="1">👔 โทน: สุภาพ</option>
+                        <option value="2">💬 โทน: ธรรมชาติ</option>
+                        <option value="4">🌶️ โทน: ปากแซ่บ</option>
+                        <option value="3">👯‍♀️ โทน: กู-มึง</option>
+                        <option value="1">👔 โทน: สุภาพ</option>
                         <option value="5">🎧 โทน: ASMR</option>
                     </select>
                 </div>
-                <select id="valMood" class="w-full glass-input bg-slate-900/50 rounded-xl p-3 text-sm font-bold border border-slate-700 mb-2">
-                    <option value="Auto">⚪ อารมณ์: ปล่อยจอย AI</option>
-                    <option value="Cinematic lighting, dramatic shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
-                    <option value="Minimalist, clean light, morning sunlight">🌤️ โปร่งสบาย (Airy Clear)</option>
-                    <option value="Warm and cozy, homey vibe">☕ ละมุนใจ (Soft & Warm)</option>
-                    <option value="Dark and gritty, high contrast">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
-                    <option value="Luxury, glamorous gold">💎 เศรษฐีดูไบ (Rich & Shine)</option>
-                    <option value="Pastel dreamy, magical light">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
-                    <option value="Earth tone, muted colors, soft light">🤎 สายคาเฟ่ (Muted Earth)</option>
-                    <option value="Horror, eerie atmosphere, scary vibe">🩸 ขนหัวลุก (Nightmare)</option>
-                    <option value="High-octane action, explosive">💥 เดือดปุดๆ (Explosive Action)</option>
-                    <option value="Nature healing, organic, lush greenery">🍃 รับพลังธรรมชาติ (Green Oasis)</option>
-                    <option value="Cyberpunk, neon lights, futuristic">🌃 เมืองล้ำยุค (Neon Cyberpunk)</option>
-                    <option value="90s retro, vintage film look">📼 วัยรุ่นยุค 90 (Retro Film)</option>
-                    <option value="Thai street night market, raw lighting">🍢 หิวตอนดึก (Local Street)</option>
-                    <option value="Bodycam POV, shaky camera">🏃‍♂️ สายลุย (POV Shaky)</option>
-                    <option value="UGC raw photo, smartphone camera">📱 กล้องสดมือถือ (Casual Snap)</option>
-                    <option value="Hyper-macro photography, extreme close-up">🔬 ซูมตาแตก (Extreme Close-up)</option>
-                </select>
-                <select id="valVisual" class="w-full glass-input bg-slate-900/50 rounded-xl p-3 text-sm font-bold border border-slate-700">
-                    <option value="Auto">⚪ งานศิลป์: ตามใจ AI</option>
-                    <option value="Ultra-realistic, hyper-detailed, 8k resolution">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
-                    <option value="3D animation, Pixar style">🏰 การ์ตูน 3D Pixar</option>
-                    <option value="Next-gen game graphics, Unreal Engine 5 render">🎮 เกมภาพสวย (Unreal Engine)</option>
-                    <option value="Studio Ghibli style, soft anime art">🌸 อนิเมะใจฟู (Soft Anime)</option>
-                    <option value="Modern Manhwa style, Korean webtoon art">📖 มันฮวาสายเกา (Webtoon Art)</option>
-                    <option value="Pop art, vintage comic book style">💥 คอมมิคสายฝอ (Retro Pop-Art)</option>
-                    <option value="Watercolor painting, fluid brushstrokes">🖌️ พู่กันสีน้ำ (Flowing Watercolor)</option>
-                    <option value="Classic oil painting, impasto brushstrokes">🖼️ งานสีน้ำมัน (Masterpiece Oil)</option>
-                    <option value="Claymation style, stop-motion animation look">🗿 งานปั้นดินน้ำมัน (Stop-Motion Clay)</option>
-                    <option value="Pixel art, 8-bit retro gaming style">👾 เกมตู้เรโทร (Pixel Block)</option>
-                    <option value="Lego style, constructed from toy building bricks">🧱 เมืองตัวต่อ (Block Toys)</option>
-                    <option value="Vintage Thai movie poster, hand-painted style">🎬 ใบปิดหนังเรโทร (Thai Poster)</option>
-                    <option value="Pencil sketch, graphite drawing">✒️ สเก็ตช์ดินสอ (Pencil Sketch)</option>
-                </select>
+                
+                <div class="mb-4">
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">อารมณ์และบรรยากาศ (Mood & Tone)</label>
+                    <select id="valMood" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
+                        <option value="Auto">⚪ ปล่อยจอย (Random Vibe)</option>
+                        <option value="Cinematic lighting, dramatic shadows, blockbuster movie style">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
+                        <option value="Bright and airy, minimalist, clean lighting, morning sunlight">🌤️ โปร่งสบาย (Airy Clear)</option>
+                        <option value="Warm and cozy, inviting lighting, golden hour, homey vibe">☕ ละมุนใจ (Soft & Warm)</option>
+                        <option value="Dark and gritty, high contrast, moody lighting, raw atmosphere">🦇 ดุดันไม่เกรงใจใคร (Gritty Dark)</option>
+                        <option value="Luxury, glamorous gold, sparkling, rich and elegant lighting">💎 เศรษฐีดูไบ (Rich & Shine)</option>
+                        <option value="Pastel dreamy, soft color palette, magical light, cotton candy colors">🦄 ฟรุ้งฟริ้ง (Sweet Pastel)</option>
+                        <option value="Wes Anderson style, symmetrical composition, quirky pastel palette">🎨 อินดี้สมมาตร (Symmetric Pastel)</option>
+                        <option value="Earth tone, muted colors, Korean cafe aesthetic, soft natural light">🤎 สายคาเฟ่ (Muted Earth)</option>
+                        <option value="Horror, eerie atmosphere, psychological thriller, scary vibe">🩸 ขนหัวลุก (Nightmare)</option>
+                        <option value="High-octane action, explosive, dynamic movement, intense energy">💥 เดือดปุดๆ (Explosive Action)</option>
+                        <option value="Nature healing, organic, lush greenery, dappled sunlight">🍃 รับพลังธรรมชาติ (Green Oasis)</option>
+                        <option value="Melancholy, rainy day, overcast, gray and blue tones, lonely vibe">☔ คนเจ้าน้ำตา (Gloomy Rain)</option>
+                        <option value="Old money aesthetic, classic elegance, understated luxury, sophisticated">🕰️ ผู้ดีลูกคุณ (Quiet Luxury)</option>
+                        <option value="Lo-Fi chillhop, midnight vibe, dim lighting, purple and blue neon">🎧 คนนอนดึก (Midnight Chill)</option>
+                        <option value="Cyberpunk, neon lights, dystopian futuristic city, vibrant nightlife">🌃 เมืองล้ำยุค (Neon Cyberpunk)</option>
+                        <option value="Futuristic sci-fi, advanced technology, holographic elements, high-tech">🛸 ล้ำอวกาศ (Sci-Fi World)</option>
+                        <option value="Mystical, esoteric, candlelight, incense smoke, sacred atmosphere">🔮 สายมูเตลู (Sacred Vibe)</option>
+                        <option value="90s retro, vintage film look, warm nostalgic glow, film grain">📼 วัยรุ่นยุค 90 (Retro Film)</option>
+                        <option value="Y2K aesthetic, vibrant pop colors, trendy 2000s style, flashy">💿 ตัวจี๊ด Y2K (Trendy 2000s)</option>
+                        <option value="Thai street night market, raw fluorescent lighting, food smoke, authentic local">🍢 หิวตอนดึก (Local Street)</option>
+                        <option value="Bodycam POV, shaky camera, first-person action view, realistic motion blur">🏃‍♂️ สายลุย (POV Shaky)</option>
+                        <option value="Paparazzi flash photography, harsh direct flash, unpolished, celebrity candid">📸 โดนแอบถ่าย (Harsh Flash)</option>
+                        <option value="UGC raw photo, unedited smartphone camera, authentic casual shot">📱 กล้องสดมือถือ (Casual Snap)</option>
+                        <option value="Hyper-macro photography, extreme close-up, satisfying textures, high detail">🔬 ซูมตาแตก (Extreme Close-up)</option>
+                        <option value="Fire, inferno, burning blaze, intense heat, red and orange tones">🔥 นรกส่งมาเกิด (Inferno Blaze)</option>
+                        <option value="Freezing cold, snowy, ice frost, cool blue tones, winter wonderland">❄️ หนาวจับใจ (Arctic Frost)</option>
+                        <option value="Desert dunes, harsh sun, dusty safari, golden sand, adventurous">🏜️ ผจญภัยแดนเถื่อน (Desert Safari)</option>
+                        <option value="Clubbing, laser lights, disco ball, energetic party vibe, blurry movement">🥂 ปาร์ตี้สุดเหวี่ยง (Party Animal)</option>
+                        <option value="Zen garden, peaceful silence, soft light filtering through, mindful meditation">🧘 สงบจิตสงบใจ (Zen Temple)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2">สไตล์ภาพและงานศิลปะ (Visual / Art Style)</label>
+                    <select id="valVisual" class="w-full glass-input rounded-xl p-3 text-sm outline-none">
+                        <option value="Auto">⚪ ตามใจ AI (Any Style)</option>
+                        <option value="Ultra-realistic, hyper-detailed, photorealistic, 8k resolution, highly textured">👁️ ชัดทะลุมิติ (Hyper-Real)</option>
+                        <option value="3D animation, Pixar style, Disney style, cute stylized 3D render">🏰 การ์ตูนฝรั่ง (Cute 3D)</option>
+                        <option value="Next-gen game graphics, Unreal Engine 5 render, ray tracing, cinematic game art">🎮 เกมภาพสวย (Unreal Engine)</option>
+                        <option value="Studio Ghibli style, soft anime art, watercolor background, nostalgic anime">🌸 อนิเมะใจฟู (Soft Anime)</option>
+                        <option value="Shonen action anime style, sharp lines, dynamic comic art, intense shading">⚔️ อนิเมะสายบวก (Fierce Anime)</option>
+                        <option value="Modern Manhwa style, Korean webtoon art, beautiful stylized characters, clean lines">📖 มันฮวาสายเกา (Webtoon Art)</option>
+                        <option value="Pop art, vintage comic book style, bold colors, halftone dots, thick outlines">💥 คอมมิคสายฝอ (Retro Pop-Art)</option>
+                        <option value="Watercolor painting, fluid brushstrokes, soft and artistic, gentle washes of color">🖌️ พู่กันสีน้ำ (Flowing Watercolor)</option>
+                        <option value="Classic oil painting, impasto brushstrokes, fine art masterpiece, textured canvas">🖼️ งานสีน้ำมัน (Masterpiece Oil)</option>
+                        <option value="Amigurumi, crochet art, knitted texture, fluffy yarn, handmade craft style">🧶 งานถักนุ่มนิ่ม (Yarn Crochet)</option>
+                        <option value="Papercut art, layered paper diorama, intricate 3D paper craft, paper textures">✂️ ศิลปะกระดาษ (Layered Paper)</option>
+                        <option value="Claymation style, stop-motion animation look, plasticine models, tactile texture">🗿 งานปั้นดินน้ำมัน (Stop-Motion Clay)</option>
+                        <option value="Pixel art, 8-bit retro gaming style, nostalgic arcade graphics, blocky pixels">👾 เกมตู้เรโทร (Pixel Block)</option>
+                        <option value="Glitch art, vaporwave aesthetic, digital distortion, VHS tracking errors, neon wave">📺 ทีวีพัง (Glitch Wave)</option>
+                        <option value="Lego style, constructed from toy building bricks, plastic block world, stud textures">🧱 เมืองตัวต่อ (Block Toys)</option>
+                        <option value="Steampunk aesthetic, Victorian machinery, brass gears, steam-powered inventions">⚙️ ยุคฟันเฟือง (Steam Machine)</option>
+                        <option value="Risograph print style, halftone textures, slightly misaligned ink, indie zine look">🖨️ งานสกรีนเท่ๆ (Riso Print)</option>
+                        <option value="Modern Thai temple mural art, intricate Thai traditional patterns, elegant gold accents">🛕 ลายไทยโมเดิร์น (Thai Art)</option>
+                        <option value="Vintage Thai movie poster, hand-painted style, bold vibrant colors, dramatic retro">🎬 ใบปิดหนังเรโทร (Thai Poster)</option>
+                        <option value="Thai cheap horror comic style, rough black and white ink drawing, raw spooky art">👻 การ์ตูนผีไทย (Thai Ghost)</option>
+                        <option value="Pencil sketch, graphite drawing, rough lines, black and white artistic sketch">✒️ สเก็ตช์ดินสอ (Pencil Sketch)</option>
+                        <option value="Stained glass art, church window style, glowing colorful light, geometric panes">🌈 กระจกสี (Stained Glass)</option>
+                        <option value="Embroidery art, needlework, stitched fabric texture, cross-stitch">🧵 งานปักผ้า (Embroidery Art)</option>
+                        <option value="Crayon drawing, childlike doodle, messy coloring, bright playful colors">🖍️ สีเทียนเด็กอนุบาล (Crayon Doodle)</option>
+                        <option value="Made of crystal glass, transparent, refracting light, shiny and fragile texture">🧊 คริสตัลแก้ว (Glass/Crystal)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-2 pt-4 border-t border-slate-700/50 pb-8">
+                <label class="block text-xs font-bold text-slate-400 mb-2 tracking-wide uppercase flex justify-between items-center">
+                    <span>🔑 Custom API Key</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] font-bold text-blue-400 bg-blue-900/30 hover:bg-blue-500/50 px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                        <span>✨</span> รับ API ฟรีที่นี่
+                    </a>
+                </label>
+                <input type="password" id="userApiKey" class="w-full glass-input rounded-xl p-3 text-sm outline-none text-center focus:border-blue-500" placeholder="วาง API Key ส่วนตัว (ถ้ามี)...">
             </div>
             
         </div>
 
-        <div class="p-6 bg-slate-900/90 border-t-2 border-yellow-600 z-10 backdrop-blur-md">
+        <div class="p-6 bg-slate-900/90 border-t border-slate-700/50 z-10 backdrop-blur-md">
             <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 shadow-[0_0_20px_rgba(234,179,8,0.3)] transition hover:scale-[1.02]">
                 <span class="text-3xl">🦆</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
@@ -335,7 +390,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 🔥 Firebase Config ของบอส 🔥
+        // 🔥 Firebase Config ของโปรเจกต์บอส 🔥
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
@@ -353,54 +408,193 @@
         const ADMIN_EMAIL = "admin@gmail.com"; 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
-        // 🚨 รายชื่ออีเมล 153 คน (อยู่ครบไม่ตัดทิ้ง) 🚨
+        // 🚨 กู้คืนรายชื่ออีเมล 153 คนแบบครบทุกตัวอักษร 🚨
         window.ALLOWED_EMAILS = [
-            "ploy4661@gmail.co", "toyjutha@gmail.com", "yingonwan.stock@gmail.com", "passamonai30@gmail.com", 
-            "jaru1688@gmail.com", "ton_9926@hotmail.com", "puynadee03@gmail.com", "pungpondzaa1012@gmail.com", 
-            "ployandrs@gmail.com", "bua.pimchanok@gmail.com", "johntp3265@gmail.com", "hachikeru66@gmail.com", 
-            "kik2688@gmail.com", "sawasdee-2011@hotmail.com", "ppukpui555@gmail.com", "yingphat59144@gmail.com", 
-            "surasaksk212@gmail.com", "kheaknuttha@gmail.com", "aiewpong05@gmail.com", "suyaya14tan@gmail.com", 
-            "gitsafang@gmail.com", "suryaneesamahoh53@gmail.com", "noofonwow123@gmail.com", "bowsudarat1312@gmail.com", 
-            "pomwong1977@gmail.com", "thanaree404@gmail.com", "anne.17wk@gmail.com", "werapat123wi@gmail.com", 
-            "bengloomy21242@gmail.com", "wangkahadploy1988@gmail.com", "wanitchaya.kp@gmail.com", "orawan.piphat@gmail.com", 
-            "pitchanuch.i@gmail.com", "suradect083@gmail.com", "op.moniquewedding@gmail.com", "onanong.man@gmail.com", 
-            "patthirayatongjeen@gmail.com", "muayja5@gmail.com", "parapop1995@gmail.com", "jakdaw1977@gmail.com", 
-            "sjshopjune@gmail.com", "j.pensubdesigns@gmail.com", "imsayan.int@gmail.com", "nun.daw253746@gmail.com", 
-            "napatcha.jj@gmail.com", "patcharat@gmail.com", "kiatatisdej@gmail.com", "panatda.waew@gmail.com", 
-            "orawanjitdee@gmail.com", "lovetamsab89@gmail.com", "ug632447074@ftu.ac.th", "too235276@gmail.com", 
-            "piknicha@gmail.com", "p.ying.onwan@gmail.com", "b17636353@gmail.com", "lhee0706@gmail.com", 
-            "jirapatik2233@gmail.com", "paulchayasit@gmail.com", "alinda7316@gmail.com", "pakpornr@gmail.com", 
-            "peerada31210@gmail.com", "schaysm38@gmail.com", "krusarah1234@gmail.com", "treeranais20@gmail.com", 
-            "anattapongz@gmail.com", "jppaikamnarm@gmail.com", "kanya.thitalohakul@gmail.com", "bwhiteth@gmail.com", 
-            "atipornkhwan@gmail.com", "thitirat24269@gmail.com", "panwitpanwit5@gmail.com", "naipon4ais@gmail.com", 
-            "ngorngor.593@gmail.com", "matus17102550@gmail.com", "paisankhamnoy@gmail.com", "jiraporn56779@gmail.com", 
-            "thanaporn712389@gmail.com", "usasaetan69@gmail.com", "ahmuaypinya333@gmail.com", "supreme1988.z@gmail.com", 
-            "chotiros.phooraya@gmail.com", "thidnapa@gmail.com", "cheawkheruxaom@gmail.com", "aop.gus789@gmail.com", 
-            "chainzaa2549@gmail.com", "nicha19.03.1998@gmail.com", "tangthai550@gmail.com", "nnk24562456@gmail.com", 
-            "pomkanlayarat@gmail.com", "yimdi1@gmail.com", "pornthep.js@gmail.com", "fon43dmfom@gmail.com", 
-            "pattama.weaw@gmail.com", "jaonepay168@gmail.com", "aobneung1993@gmail.com", "pipopnuk44@gmail.com", 
-            "kraisorn11.nun2235@gmail.com", "chomchank93@gmail.com", "ratcham888@gmail.com", "langkangz81@gmail.com", 
-            "mooaungeay@gmail.com", "toonsu.nix@gmail.com", "chananphat.r@gmail.com", "20lomly@gmail.com", 
-            "ijab2543@gmail.com", "jane021tt@gmail.com", "kibkubkobkeb@gmail.com", "uzagi.a@gmail.com", 
-            "thepphimonkan@gmail.com", "taksaonsaetan@gmail.com", "fairphurichaya@gmail.com", "wowsengsengwow@gmail.com", 
-            "maiprom56@gmail.com", "24julio.closet@gmail.com", "sittisak.2121m@gmail.com", "billycat1989@gmail.com", 
-            "papapook1@gmail.com", "arunrat573@gmail.com", "jayzimina@gmail.com", "pateemoh822@gmail.com", 
-            "nathaphat58@gmail.com", "pkunpiti@gmail.com", "am848rat@gmail.com", "ss.jaravee99@gmail.com", 
-            "khathabut49@gmail.com", "satangmay11@gmail.com", "jakd77010819@gmail.com", "29pulom@gmail.com", 
-            "chanat.ch789@gmail.com", "nangchada55@gmail.com", "kamolchanok.fg@gmail.com", "kate.bevacation@gmail.com", 
-            "looktan40plus@gmail.com", "natatsapornkeereepoomrat@gmail.com", "annann.name@gmail.com", "a.tanongsak@gmail.com", 
-            "ongapisitphuket001@gmail.com", "nanted14595@gmail.com", "swicharaphoch@gmail.com", "tharidtimat@gmail.com", 
-            "somkead105@gmail.com", "mmenaruk632@gmail.com", "pakwan.poldon@gmail.com", "iaa208639@gmail.com", 
-            "rawatpoto1992@gmail.com", "elbe289@gmail.com", "oat.candys11@gmail.com", "tikyemily@gmail.com", 
-            "zingyimgourmet@gmail.com", "acharahoney@gmail.com", "khampee.2519@gmail.com", "aemwitchayapat@gmail.com", 
-            "nattytoday155@gmail.com", "name2500500@gmail.com", "tempakdee@gmail.com", "swnwtns.ai569@gmail.com", 
-            "phlayphelidsuchada@gmail.com", "pimpunpudyam@gmail.com", "peerayatinnut4628@gmail.com", "ardkan@gmail.com", 
-            "saibuatiktok@gmail.com", "anchalees901@gmail.com", "amirabahek@gmail.com", "name2500400@gmail.com", 
-            "ploy4661@gmail.com", "chumpuneks@gmail.com", "miskasawetr@gmail.com", "turakchareon@gmail.com", 
-            "nee.9484@gmail.com", "archiraya04@gmail.com", "anantasale2@gmail.com", "sakda0870826154@gmail.com",
-            "jaoh0963605619@gmail.com", "supawadee.cartoon@gmail.com", "chantolaongdao@gmail.com", 
-            "flukefashion22@gmail.com", "xiaolongnu55@gmail.com", "ongapisitphuket@gmail.com", "hastachairat@gmail.com",
-            "adminaong01", "rungtipvee@gmail.com", "1210", "2410", "shopchillchill66@gmail.com", "boonratchaiwat@gmail.com"
+            "ploy4661@gmail.co",
+            "toyjutha@gmail.com",
+            "yingonwan.stock@gmail.com",
+            "passamonai30@gmail.com",
+            "jaru1688@gmail.com",
+            "ton_9926@hotmail.com",
+            "puynadee03@gmail.com",
+            "pungpondzaa1012@gmail.com",
+            "ployandrs@gmail.com",
+            "bua.pimchanok@gmail.com",
+            "johntp3265@gmail.com",
+            "hachikeru66@gmail.com",
+            "kik2688@gmail.com",
+            "sawasdee-2011@hotmail.com",
+            "ppukpui555@gmail.com",
+            "yingphat59144@gmail.com",
+            "surasaksk212@gmail.com",
+            "kheaknuttha@gmail.com",
+            "aiewpong05@gmail.com",
+            "suyaya14tan@gmail.com",
+            "gitsafang@gmail.com",
+            "suryaneesamahoh53@gmail.com",
+            "noofonwow123@gmail.com",
+            "bowsudarat1312@gmail.com",
+            "pomwong1977@gmail.com",
+            "thanaree404@gmail.com",
+            "anne.17wk@gmail.com",
+            "werapat123wi@gmail.com",
+            "bengloomy21242@gmail.com",
+            "wangkahadploy1988@gmail.com",
+            "wanitchaya.kp@gmail.com",
+            "orawan.piphat@gmail.com",
+            "pitchanuch.i@gmail.com",
+            "suradect083@gmail.com",
+            "op.moniquewedding@gmail.com",
+            "onanong.man@gmail.com",
+            "patthirayatongjeen@gmail.com",
+            "muayja5@gmail.com",
+            "parapop1995@gmail.com",
+            "jakdaw1977@gmail.com",
+            "sjshopjune@gmail.com",
+            "j.pensubdesigns@gmail.com",
+            "imsayan.int@gmail.com",
+            "nun.daw253746@gmail.com",
+            "napatcha.jj@gmail.com",
+            "patcharat@gmail.com",
+            "kiatatisdej@gmail.com",
+            "panatda.waew@gmail.com",
+            "orawanjitdee@gmail.com",
+            "lovetamsab89@gmail.com",
+            "ug632447074@ftu.ac.th",
+            "too235276@gmail.com",
+            "piknicha@gmail.com",
+            "p.ying.onwan@gmail.com",
+            "b17636353@gmail.com",
+            "lhee0706@gmail.com",
+            "jirapatik2233@gmail.com",
+            "paulchayasit@gmail.com",
+            "alinda7316@gmail.com",
+            "pakpornr@gmail.com",
+            "peerada31210@gmail.com",
+            "schaysm38@gmail.com",
+            "krusarah1234@gmail.com",
+            "treeranais20@gmail.com",
+            "anattapongz@gmail.com",
+            "jppaikamnarm@gmail.com",
+            "kanya.thitalohakul@gmail.com",
+            "bwhiteth@gmail.com",
+            "atipornkhwan@gmail.com",
+            "thitirat24269@gmail.com",
+            "panwitpanwit5@gmail.com",
+            "naipon4ais@gmail.com",
+            "ngorngor.593@gmail.com",
+            "matus17102550@gmail.com",
+            "paisankhamnoy@gmail.com",
+            "jiraporn56779@gmail.com",
+            "thanaporn712389@gmail.com",
+            "usasaetan69@gmail.com",
+            "ahmuaypinya333@gmail.com",
+            "supreme1988.z@gmail.com",
+            "chotiros.phooraya@gmail.com",
+            "thidnapa@gmail.com",
+            "cheawkheruxaom@gmail.com",
+            "aop.gus789@gmail.com",
+            "chainzaa2549@gmail.com",
+            "nicha19.03.1998@gmail.com",
+            "tangthai550@gmail.com",
+            "nnk24562456@gmail.com",
+            "pomkanlayarat@gmail.com",
+            "yimdi1@gmail.com",
+            "pornthep.js@gmail.com",
+            "fon43dmfom@gmail.com",
+            "pattama.weaw@gmail.com",
+            "jaonepay168@gmail.com",
+            "aobneung1993@gmail.com",
+            "pipopnuk44@gmail.com",
+            "kraisorn11.nun2235@gmail.com",
+            "chomchank93@gmail.com",
+            "ratcham888@gmail.com",
+            "langkangz81@gmail.com",
+            "mooaungeay@gmail.com",
+            "toonsu.nix@gmail.com",
+            "chananphat.r@gmail.com",
+            "20lomly@gmail.com",
+            "ijab2543@gmail.com",
+            "jane021tt@gmail.com",
+            "kibkubkobkeb@gmail.com",
+            "uzagi.a@gmail.com",
+            "thepphimonkan@gmail.com",
+            "taksaonsaetan@gmail.com",
+            "fairphurichaya@gmail.com",
+            "wowsengsengwow@gmail.com",
+            "maiprom56@gmail.com",
+            "24julio.closet@gmail.com",
+            "sittisak.2121m@gmail.com",
+            "billycat1989@gmail.com",
+            "papapook1@gmail.com",
+            "arunrat573@gmail.com",
+            "jayzimina@gmail.com",
+            "pateemoh822@gmail.com",
+            "nathaphat58@gmail.com",
+            "pkunpiti@gmail.com",
+            "am848rat@gmail.com",
+            "ss.jaravee99@gmail.com",
+            "khathabut49@gmail.com",
+            "satangmay11@gmail.com",
+            "jakd77010819@gmail.com",
+            "29pulom@gmail.com",
+            "chanat.ch789@gmail.com",
+            "nangchada55@gmail.com",
+            "kamolchanok.fg@gmail.com",
+            "kate.bevacation@gmail.com",
+            "looktan40plus@gmail.com",
+            "natatsapornkeereepoomrat@gmail.com",
+            "annann.name@gmail.com",
+            "a.tanongsak@gmail.com",
+            "ongapisitphuket001@gmail.com",
+            "nanted14595@gmail.com",
+            "swicharaphoch@gmail.com",
+            "tharidtimat@gmail.com",
+            "somkead105@gmail.com",
+            "mmenaruk632@gmail.com",
+            "pakwan.poldon@gmail.com",
+            "iaa208639@gmail.com",
+            "rawatpoto1992@gmail.com",
+            "elbe289@gmail.com",
+            "oat.candys11@gmail.com",
+            "tikyemily@gmail.com",
+            "zingyimgourmet@gmail.com",
+            "acharahoney@gmail.com",
+            "khampee.2519@gmail.com",
+            "aemwitchayapat@gmail.com",
+            "nattytoday155@gmail.com",
+            "name2500500@gmail.com",
+            "tempakdee@gmail.com",
+            "swnwtns.ai569@gmail.com",
+            "phlayphelidsuchada@gmail.com",
+            "pimpunpudyam@gmail.com",
+            "peerayatinnut4628@gmail.com",
+            "ardkan@gmail.com",
+            "saibuatiktok@gmail.com",
+            "anchalees901@gmail.com",
+            "amirabahek@gmail.com",
+            "name2500400@gmail.com",
+            "ploy4661@gmail.com",
+            "chumpuneks@gmail.com",
+            "miskasawetr@gmail.com",
+            "turakchareon@gmail.com",
+            "nee.9484@gmail.com",
+            "archiraya04@gmail.com",
+            "anantasale2@gmail.com",
+            "sakda0870826154@gmail.com",
+            "jaoh0963605619@gmail.com",
+            "supawadee.cartoon@gmail.com",
+            "chantolaongdao@gmail.com",
+            "flukefashion22@gmail.com",
+            "xiaolongnu55@gmail.com",
+            "ongapisitphuket@gmail.com",
+            "hastachairat@gmail.com",
+            "adminaong01",
+            "rungtipvee@gmail.com",
+            "1210",
+            "2410",
+            "shopchillchill66@gmail.com",
+            "boonratchaiwat@gmail.com"
         ];
 
         window.loginWithGoogle = async function() {
@@ -469,7 +663,7 @@
         const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
         let currentGeneratedScript = ""; 
         window.WORKING_MODEL = ""; 
-        window.LAST_API_PARTS = []; // 🧠 ระบบจำ History ให้ AI แก้ไขได้ถูกจุด
+        window.LAST_API_PARTS = []; 
         let loadingInterval; 
 
         const Toast = Swal.mixin({
@@ -486,31 +680,51 @@
         
         window.autoResize = el => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
 
-        window.previewImg = (input, imgId, btnId) => {
+        window.previewIndividualImg = function(input, imgId, btnId, placeId) {
+            const imgEl = document.getElementById(imgId);
+            const btnRm = document.getElementById(btnId);
+            const placeHolder = document.getElementById(placeId);
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = e => {
-                    document.getElementById(imgId).src = e.target.result;
-                    document.getElementById(imgId).classList.remove('hidden');
-                    document.getElementById(btnId).classList.remove('hidden');
+                reader.onload = function(e) {
+                    if(imgEl) { imgEl.src = e.target.result; imgEl.classList.remove('hidden'); }
+                    if(btnRm) btnRm.classList.remove('hidden');
+                    if(placeHolder) placeHolder.classList.add('hidden'); 
                 }
                 reader.readAsDataURL(input.files[0]);
             }
-        };
-        window.removeImg = (e, inputId, imgId, btnId) => {
-            e.stopPropagation(); document.getElementById(inputId).value = "";
-            document.getElementById(imgId).src = ""; document.getElementById(imgId).classList.add('hidden');
-            document.getElementById(btnId).classList.add('hidden');
-        };
+        }
 
-        const fileToBase64 = file => new Promise((res, rej) => {
-            const reader = new FileReader(); reader.readAsDataURL(file);
-            reader.onload = () => res({ mimeType: file.type, data: reader.result.split(',')[1] });
-        });
+        window.removeIndividualImg = function(e, inputId, imgId, btnId, placeId) {
+            if(e) e.stopPropagation();
+            const inputEl = document.getElementById(inputId);
+            const imgEl = document.getElementById(imgId);
+            const btnRm = document.getElementById(btnId);
+            const placeHolder = document.getElementById(placeId);
+            
+            if(inputEl) inputEl.value = "";
+            if(imgEl) { imgEl.src = ""; imgEl.classList.add('hidden'); }
+            if(btnRm) btnRm.classList.add('hidden');
+            if(placeHolder) placeHolder.classList.remove('hidden'); 
+        }
 
-        const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = () => {
+                    let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+                    if ((encoded.length % 4) > 0) encoded += '='.repeat(4 - (encoded.length % 4));
+                    resolve({ mimeType: file.type, data: encoded });
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
 
-        window.copyCode = btn => {
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+        }
+
+        window.copyCode = function(btn) {
             const codeBlock = btn.parentElement.nextElementSibling.innerText;
             if(codeBlock) {
                 navigator.clipboard.writeText(codeBlock).then(() => {
@@ -520,9 +734,9 @@
                     setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('text-orange-400'); }, 2000);
                 });
             }
-        };
+        }
 
-        // 🌟 วาดกล่องผลลัพธ์แบบละเอียด (ไม่ซ่อน Prompt ของเดิมบอส) 🌟
+        // 🌟 วาดกล่องผลลัพธ์แบบละเอียด (ไม่ซ่อน Prompt) 🌟
         function renderGeminiBoxes(raw) {
             const container = document.getElementById('dynamicOutput'); container.innerHTML = '';
             const parts = raw.split(/(```[\s\S]*?```)/g);
@@ -797,7 +1011,6 @@
 - พล็อต/ไอเดียหลัก: ${briefIdea}
 - ข้อมูลสินค้า: ${productDetail}
 `;
-                // ใช้การต่อสตริงแบบธรรมดา ไม่ใช้ backtick ซ้อนเพื่อป้องกันบั๊ก
                 let basePrompt = SYSTEM_PROMPT + "\n\n" + enforcementPrompt;
 
                 let apiParts = [];
@@ -971,7 +1184,7 @@
                 let chatHistory = [
                     { role: "user", parts: window.LAST_API_PARTS }, 
                     { role: "model", parts: [{ text: currentGeneratedScript }] }, 
-                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะตาม Google Flow, บทพูดห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด และรักษากฎ Typography เดิมที่สั่งไว้)` }] }
+                    { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติมจากบอส (User Edit):\n${followUpText}\n\n[ข้อบังคับขั้นเด็ดขาด]: จงแก้ไขสคริปต์ด้านบนตามคำสั่งนี้ และส่งผลลัพธ์โครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน (หรือรันซีนต่อไป) โดยรักษากฎเหล็กทั้งหมด (ภาพสินค้าเป๊ะตาม Google Flow, บทพูดห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด)` }] }
                 ];
 
                 let response = await fetch(API_URL, {
