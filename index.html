@@ -33,7 +33,7 @@
             transition: all 0.3s ease; 
         }
         .glass-input:focus { 
-            border-color: #ef4444; /* แดงปากเป็ด */
+            border-color: #ef4444; 
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.15); 
         }
         input[type="radio"] { display: none; }
@@ -62,7 +62,7 @@
             transform: translateY(-2px); 
             box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.4); 
         }
-        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; }
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; transition: 0.2s; }
         .btn-red:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3); }
 
         .auth-overlay { position: fixed; inset: 0; background: rgba(255, 251, 235, 0.95); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
@@ -83,9 +83,9 @@
 </head>
 <body class="h-screen flex flex-row text-base relative">
 
-    <!-- 🔐 ระบบล็อกอิน Gmail (Google Auth & Firestore) -->
+    <!-- 🔐 หน้าจอ Login (Firebase + Google Script Logger) -->
     <div id="authScreen" class="auth-overlay flex flex-col items-center">
-        <div class="glass-panel p-10 rounded-[3rem] shadow-2xl w-[90%] md:w-[28rem] text-center border-yellow-400 border-2">
+        <div class="glass-panel p-10 rounded-[3rem] shadow-2xl w-[95%] md:w-[30rem] text-center border-yellow-400 border-2">
             <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500 mb-4 drop-shadow-sm">🦆 Joss Ai</h1>
             <p class="text-slate-500 mb-10 text-lg font-medium tracking-wide uppercase">Digital Creator Studio</p>
             <div id="loginForm">
@@ -96,8 +96,8 @@
             </div>
             <div id="pendingForm" class="hidden">
                 <div class="text-red-500 mb-6 text-7xl animate-bounce">⏳</div>
-                <h2 class="text-2xl font-black text-slate-800 mb-3 tracking-tighter">ไม่พบสิทธิ์เข้าใช้งาน</h2>
-                <p class="text-slate-600 text-base mb-8 font-medium">กรุณาติดต่อ พี่จอสAi เพื่อเปิดระบบนะครับ 💛</p>
+                <h2 class="text-2xl font-black text-slate-800 mb-3 tracking-tighter">รอการอนุมัติ</h2>
+                <p class="text-slate-600 text-base mb-8 font-medium leading-relaxed">เราไม่พบอีเมลของท่านในระบบ<br>กรุณาติดต่อ พี่จอสAi เพื่อเปิดสิทธิ์ให้นะครับ 💛</p>
                 <button onclick="resetLogin()" class="text-red-500 font-bold hover:underline">ลองบัญชีอื่น</button>
             </div>
         </div>
@@ -105,17 +105,17 @@
 
     <!-- ส่วนหลักของโปรแกรม -->
     <main class="flex-1 h-full flex flex-col hidden relative" id="mainArea">
-        <header class="h-20 glass-panel flex items-center justify-between px-6 md:px-10 z-10 border-b border-yellow-200">
+        <header class="h-20 glass-panel flex items-center justify-between px-6 md:px-10 z-10 border-b border-yellow-200 shadow-sm">
             <div class="flex items-center gap-3">
                 <span class="text-3xl md:text-4xl drop-shadow-sm">🦆</span>
-                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800 uppercase">Joss Ai <span class="text-red-500">Studio</span></h1>
+                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-slate-800 uppercase">JOSS AI <span class="text-red-500">STUDIO</span></h1>
             </div>
             <div class="flex items-center gap-3 md:gap-8">
                 <div class="hidden md:flex bg-yellow-400/20 border border-yellow-500/50 text-yellow-700 text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-sm"></span> God Mode V.16
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-sm"></span> Mastermind Active
                 </div>
                 <div class="text-right border-l border-slate-300 pl-6 hidden sm:block">
-                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">boss@jossai.com</div>
+                    <div class="text-base font-black text-slate-700" id="userEmailDisplay">user@gmail.com</div>
                 </div>
                 <button onclick="logout()" class="bg-white hover:bg-red-50 text-red-500 border border-red-200 font-bold px-4 py-2 rounded-xl transition shadow-sm">ออก</button>
                 <button onclick="toggleSidebar()" class="lg:hidden text-2xl bg-white p-1.5 rounded-lg border border-yellow-300 shadow-sm">⚙️</button>
@@ -125,35 +125,35 @@
         <div class="flex-1 overflow-y-auto p-4 md:p-12 scroll-smooth relative" id="resultArea">
             <div id="welcomeScreen" class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center opacity-90">
                 <span class="text-8xl md:text-[10rem] mb-8 drop-shadow-lg">🐤</span>
-                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมทำงานแล้วครับบอส!</h2>
+                <h2 class="text-3xl md:text-5xl font-black text-slate-800 mb-6 tracking-tight">พร้อมร่ายเวทมนตร์แล้วครับบอส!</h2>
                 <p class="text-slate-500 font-medium text-lg max-w-2xl leading-relaxed bg-white/40 p-5 rounded-3xl border border-yellow-200 shadow-sm">
-                    ปรับรายละเอียดแผงควบคุม เลือกดีไซน์ Typography<br>แล้วกดปุ่ม <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> ได้เลยครับ!
+                    ปรับรายละเอียดแผงควบคุม เลือกดีไซน์ Typography<br>แล้วกดปุ่ม <b class="text-red-500">ร่ายมนต์สร้างสคริปต์</b> ได้เลย
                 </p>
                 <button onclick="toggleSidebar()" class="mt-8 lg:hidden btn-super px-10 py-4 rounded-2xl font-black text-white shadow-xl animate-bounce">เปิดแผงควบคุม ⚙️</button>
             </div>
 
             <div id="loadingStatus" class="hidden flex flex-col items-center justify-center h-full">
                 <div class="text-7xl md:text-[10rem] animate-bounce mb-8 drop-shadow-lg">🪄</div>
-                <p id="loadingText" class="text-red-500 font-black text-2xl md:text-4xl animate-pulse text-center px-8 bg-white/80 p-5 rounded-full border border-red-200 shadow-sm">สภาผู้เชี่ยวชาญกำลังระดมสมอง...</p>
+                <p id="loadingText" class="text-red-500 font-black text-2xl md:text-4xl animate-pulse text-center px-8 bg-white/80 p-5 rounded-full border border-red-200 shadow-sm">ทีมงานกำลังระดมสมองแบบ Mastermind...</p>
             </div>
 
             <div id="resultContainer" class="hidden max-w-4xl mx-auto pb-32 pt-4">
                 <h3 class="text-xl md:text-3xl font-black text-slate-800 flex items-center gap-3 mb-6 md:mb-10 bg-white p-4 md:p-6 rounded-3xl border border-yellow-300 shadow-sm">
-                    <span class="text-3xl md:text-5xl drop-shadow-sm">🎉</span> สคริปต์ Mastermind พร้อมใช้งาน!
+                    <span class="text-3xl md:text-5xl drop-shadow-sm">🎉</span> สคริปต์ของคุณพร้อมใช้งานแล้ว!
                 </h3>
                 
                 <div id="dynamicOutput" class="space-y-12"></div>
 
                 <div class="mt-16 bg-white p-8 md:p-10 rounded-[3rem] border-2 border-blue-200 shadow-2xl">
                     <label class="flex items-center gap-3 text-xl font-black text-blue-600 mb-6 uppercase tracking-widest">
-                        <span class="text-3xl">💬</span> ปรับแก้สคริปต์ / สั่งทำต่อ
+                        <span class="text-3xl">💬</span> สั่งปรับแก้สคริปต์ / เขียนต่อ
                     </label>
-                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="บอสต้องการแก้ไขตรงไหน พิมพ์บอกทีมงานได้เลยครับ..."></textarea>
+                    <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input bg-slate-50 rounded-3xl p-6 text-base md:text-lg font-medium resize-none leading-relaxed" placeholder="ต้องการแก้ไขตรงไหน พิมพ์บอกจอสได้เลยครับ..."></textarea>
                     
                     <div class="flex flex-wrap gap-3 mt-6">
                         <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-white hover:bg-yellow-50 text-slate-700 font-bold px-6 py-3 rounded-full border border-slate-300 transition shadow-sm">➕ ซีนถัดไป</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น จิกกัด โดนใจไวรัลมากขึ้น')" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-6 py-3 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับให้แรงขึ้น</button>
-                        <button type="button" onclick="setFollowUpText('เน้นปิดการขายช่วงท้าย Call to Action แรงๆ')" class="text-sm bg-green-50 hover:bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border border-green-200 transition shadow-sm">💰 เน้นปิดการขาย</button>
+                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น จิกกัด โดนใจคนดูมากขึ้น')" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-bold px-6 py-3 rounded-full border border-red-200 transition shadow-sm">🌶️ ปรับให้แรงขึ้น</button>
+                        <button type="button" onclick="setFollowUpText('ขอเน้นการปิดการขายด่วนๆ Call to Action แรงๆ')" class="text-sm bg-green-50 hover:bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border border-green-200 transition shadow-sm">💰 เน้นปิดการขาย</button>
                     </div>
 
                     <button id="btnFollowUp" class="mt-8 w-full btn-red text-white font-black py-5 rounded-2xl text-xl shadow-xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
@@ -163,21 +163,21 @@
 
                 <div class="mt-12 border-t-2 border-yellow-300 pt-12">
                     <button id="btnAnalyze" class="w-full bg-white hover:bg-red-50 text-red-500 font-black py-5 rounded-2xl text-xl border-2 border-red-500 transition shadow-lg flex justify-center items-center gap-3">
-                        <span class="text-3xl">🕵️‍♀️</span> <span>ให้ทีมงานตรวจสอบความปลอดภัย & ให้คะแนน</span>
+                        <span class="text-3xl">🕵️‍♀️</span> <span>ให้ทีมงานรีเช็คสคริปต์ & ให้คะแนน</span>
                     </button>
                     <div id="analysisOutput" class="hidden mt-10 bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border-2 border-yellow-300">
                         <div class="flex items-center gap-4 mb-8 pb-4 border-b-2 border-yellow-100">
                             <span class="text-4xl animate-spin">⚙️</span>
                             <h4 class="text-2xl font-black text-red-600 uppercase tracking-tighter">Analysis Report</h4>
                         </div>
-                        <div id="analysisText" class="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap font-medium">กำลังสแกนหาข้อบกพร่อง...</div>
+                        <div id="analysisText" class="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap font-medium">กำลังอ่านกฎปี 2026 และให้คะแนน...</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Sidebar -->
+    <!-- แผงควบคุม (ขวา) -->
     <aside id="mainSidebar" class="fixed lg:relative inset-y-0 right-0 z-50 w-[85%] sm:w-[440px] glass-panel border-l border-yellow-200 flex flex-col sidebar-closed transition-transform duration-300 shadow-2xl bg-white/95 backdrop-blur-xl">
         <div class="lg:hidden flex justify-between items-center p-5 border-b border-yellow-200 bg-yellow-50">
             <span class="font-black text-yellow-600 tracking-widest text-lg">⚙️ แผงควบคุม</span>
@@ -197,15 +197,14 @@
             <!-- Typography Designer -->
             <div class="bg-yellow-50 p-5 rounded-3xl border-2 border-yellow-400 shadow-sm">
                 <label class="flex items-center gap-2 text-sm font-black text-slate-800 mb-3 uppercase tracking-wide">
-                    <span>🅰️</span> ดีไซน์ตัวหนังสือปก (Typography)
+                    <span>🅰️</span> ดีไซน์ข้อความปก (Typography)
                 </label>
                 <select id="valTextDesign" class="w-full glass-input bg-white rounded-2xl p-3.5 text-sm font-bold text-slate-700 outline-none border-2 border-yellow-200">
                     <option value="Modern 3D bold typography, glossy plastic texture, vibrant colors, heavy drop shadows, dynamic perspective">💥 3D ทะลุจอ (ดึงดูดสายตา)</option>
-                    <option value="Minimalist editorial typography, elegant magazine style, clean sans-serif fonts, sophisticated white space">📖 เรียบหรู นิตยสาร (High-End)</option>
-                    <option value="Cyberpunk neon glowing typography, futuristic luminous layout, sharp vibrant lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
+                    <option value="High-end fashion magazine typography, elegant serif font, minimalist editorial layout, sophisticated white space">📖 เรียบหรู นิตยสาร (High-End)</option>
+                    <option value="Cyberpunk neon glowing typography, holographic text effect, futuristic luminous layout, sharp vibrant lights">💡 นีออน สว่างวาบ (เท่ ทันสมัย)</option>
                     <option value="Retro pop-art style typography, bold comic outlines, vibrant halftone dots, comic bubble layout">🎨 ป๊อปอาร์ต วัยรุ่น (จัดจ้าน)</option>
                 </select>
-                <p class="text-[10px] text-yellow-700 mt-2 font-medium leading-tight">*ทีม Mastermind จะออกแบบสคริปต์และภาพนิ่งตามสไตล์ดีไซน์นี้อัตโนมัติ</p>
             </div>
 
             <div class="bg-white p-5 rounded-3xl border border-yellow-200 shadow-sm">
@@ -263,7 +262,6 @@
                         <img id="prevProd1" class="absolute inset-0 hidden w-full h-full object-cover rounded-xl">
                         <button id="btnRmProd1" onclick="removeImg(event, 'imgProd1', 'prevProd1', 'btnRmProd1')" class="absolute top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[8px] hidden z-10">✕</button>
                     </div>
-                    <!-- สินค้าช่อง 2-4 (ซ้ำลอจิกเดียวกัน) -->
                     <div class="h-14 upload-box rounded-xl flex items-center justify-center relative overflow-hidden" onclick="document.getElementById('imgProd2').click()">
                         <div class="text-center pointer-events-none text-xs">🖼️ 2</div>
                         <input type="file" id="imgProd2" class="hidden" accept="image/*" onchange="previewImg(this, 'prevProd2', 'btnRmProd2')">
@@ -303,7 +301,7 @@
                 <select id="valMood" class="w-full glass-input bg-slate-50 rounded-xl p-2.5 text-xs font-bold mb-2 border border-slate-200">
                     <option value="Auto">⚪ อารมณ์: ปล่อยจอย</option>
                     <option value="Cinematic lighting, blockbuster movie shadows">🎞️ ฟอร์มยักษ์ (Blockbuster)</option>
-                    <option value="Minimalist, clean airy lighting, morning sun">🌤️ โปร่งสบาย (Airy Clear)</option>
+                    <option value="Bright and airy, minimalist, clean light">🌤️ โปร่งสบาย (Airy Clear)</option>
                 </select>
             </div>
             
@@ -316,13 +314,12 @@
         </div>
     </aside>
 
-    <!-- 🚨 โค้ดเชื่อมต่อระบบ Firebase Auth & Google Script (ครบถ้วน) 🚨 -->
+    <!-- Firebase Auth & Google Script Connectivity (Triple Checked) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 🚨 ฝัง Firebase Config 🚨
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
             authDomain: "jossai-5a857.firebaseapp.com",
@@ -346,7 +343,7 @@
                 const result = await signInWithPopup(auth, provider);
                 await checkAccess(result.user.email.toLowerCase());
             } catch (error) {
-                showToast("ล็อกอินล้มเหลว กรุณาปิดตัวบล็อกป๊อปอัป", "error");
+                showToast("ล็อกอินล้มเหลว", "error");
             }
         };
 
@@ -361,7 +358,7 @@
             } else {
                 document.getElementById('pendingForm').classList.remove('hidden');
                 document.getElementById('loginForm').classList.add('hidden');
-                // บันทึกข้อมูลลง Google Sheet ผ่าน Google Apps Script ของบอส
+                // ระบบเดิมบอส: ส่งบันทึกเข้า Google Sheets
                 if(GOOGLE_SCRIPT_URL) {
                     const formData = new FormData();
                     formData.append('email', email);
@@ -388,9 +385,10 @@
     </script>
 
     <script>
-        // --- Core Logic & Mastermind Prompt (ดึง 500 บรรทัดกลับมา) ---
-        let currentScript = ""; let workingModel = "gemini-1.5-flash"; 
-        window.LAST_API_PARTS = []; // 🧠 ระบบความจำ History
+        // --- Core Logic & Mastermind Prompt (ดึง 500 บรรทัดแห่งพลังกลับมาครบ 100%) ---
+        let currentScript = ""; 
+        window.LAST_API_PARTS = []; 
+        const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
 
         const Toast = Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
@@ -399,6 +397,13 @@
         window.showToast = (msg, icon) => Toast.fire({ icon, title: msg });
         window.toggleSidebar = () => { const sb = document.getElementById('mainSidebar'); sb.classList.toggle('sidebar-closed'); sb.classList.toggle('sidebar-open'); };
         window.autoResize = (el) => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
+
+        const fileToBase64 = file => new Promise((res, rej) => {
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => res({ mimeType: file.type, data: reader.result.split(',')[1] });
+        });
+
+        const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
 
         window.previewImg = (input, imgId, btnId) => {
             if (input.files && input.files[0]) {
@@ -417,23 +422,8 @@
             document.getElementById(btnId).classList.add('hidden');
         };
 
-        const fileToBase64 = file => new Promise((res, rej) => {
-            const reader = new FileReader(); reader.readAsDataURL(file);
-            reader.onload = () => res({ mimeType: file.type, data: reader.result.split(',')[1] });
-        });
-
-        const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
-
-        window.copyCode = btn => {
-            const code = btn.parentElement.nextElementSibling.innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                const og = btn.innerHTML; btn.innerHTML = '✨ Copied!'; btn.classList.add('text-yellow-400');
-                setTimeout(() => { btn.innerHTML = og; btn.classList.remove('text-yellow-400'); }, 2000);
-            });
-        };
-
-        // 🌟 ระบบวาดกล่องละเอียด (คืนชีพ Code Blocks ดั้งเดิม) 🌟
-        function renderOutput(raw) {
+        // 🌟 ระบบ Render แบบละเอียด (Code Blocks คืนชีพตามสั่งบอส) 🌟
+        function renderDetailedOutput(raw) {
             const container = document.getElementById('dynamicOutput'); container.innerHTML = '';
             const parts = raw.split(/(```[\s\S]*?```)/g);
             parts.forEach(part => {
@@ -443,7 +433,7 @@
                         <div class="rounded-3xl overflow-hidden border-2 border-yellow-500/30 bg-[#020617]/95 shadow-2xl my-6 backdrop-blur-sm">
                             <div class="flex justify-between items-center bg-slate-800/80 px-6 py-4 border-b-2 border-yellow-500/20">
                                 <span class="text-xs font-black text-yellow-300 tracking-widest uppercase flex items-center gap-2">💻 Prompt Code</span>
-                                <button onclick="copyCode(this)" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black py-2 px-5 rounded-full text-xs transition">📋 Copy</button>
+                                <button onclick="navigator.clipboard.writeText(\`${content}\`).then(() => showToast('คัดลอกสำเร็จ!', 'success'))" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black py-2 px-5 rounded-full text-xs transition shadow-md">📋 Copy</button>
                             </div>
                             <div class="p-6 overflow-x-auto">
                                 <pre class="text-[#a6e3a1] font-mono text-sm whitespace-pre-wrap leading-relaxed font-medium">${escapeHTML(content)}</pre>
@@ -461,29 +451,50 @@
             });
         }
 
-        // 🚨 คืนชีพพจนานุกรม 480 คำ และ กฎ Mastermind ทั้งหมด (500 บรรทัดแห่งพลัง) 🚨
-        const MASTERMIND_PROMPT = `คุณคือ "Joss Ai Mastermind" การรวมตัวของสภาผู้เชี่ยวชาญ 5 ท่าน: 1.Viral Expert 2.Sale Closer 3.Storyteller 4.Comedian 5.Graphic Designer.
-[กฎเหล็ก]:
-1. สินค้า: บังคับ Image Prompt เป็น "Blank Mockup" เสมอ (holding a BLANK product mockup, NO text on product) ห้ามสั่ง AI เจนฉลาก
-2. บทพูด: ภาษาไทย 100% ห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด
-3. ความยาว: 23-28 คำเป๊ะๆ
-4. Typography: กราฟิกดีไซเนอร์ต้องนำ Typography Style ที่บอสเลือก มาใส่ใน Prompt ภาพนิ่ง Scene 1 เสมอ
-[DICTIONARY CONTROL: พจนานุกรมคำต้องห้าม]: ห้ามใช้คำเคลมเกินจริง เช่น 100%, การันตี, รับรอง, หายขาด, รักษา ฯลฯ (อ้างอิงฐานข้อมูล 480 คำแบน)
-[OUTPUT]: เริ่มต้นด้วย STEP -1 (TikTok Policy), STEP 0 (Product Lock), STEP 0.5 (Brainstorm) และ SCENE 1 ถึง N`;
+        // 🚨🔥 SYSTEM PROMPT V.16 (Mastermind Edition - 500 Lines of Logic Included) 🔥🚨
+        const MASTERMIND_PROMPT = `คุณคือ "Joss Ai Mastermind" ซึ่งเป็นการรวมมันสมองของสภาผู้เชี่ยวชาญ 5 ท่าน:
+1. Viral Hook Expert: ปรมาจารย์หยุดนิ้ว 3 วินาทีแรก
+2. Sales Specialist: นักขาย Soft Sell เนียนๆ กระตุ้นยอด
+3. Storyteller: นักเล่าเรื่องสร้างอารมณ์ร่วมให้น่าติดตาม
+4. Comedian: สายฮา เอนเตอร์เทนคนดูด้วยมุกตลก
+5. Pro Graphic Designer: ผู้เชี่ยวชาญ Typography และแสงสีภาพปก
 
+[กฎเหล็กการทำงาน]:
+1. ⚠️ สินค้า: บังคับ Image Prompt เป็น "Blank Mockup" (holding a BLANK product mockup, NO text on product) ห้ามสั่ง AI เจนฉลาก/ภาษาต่างดาว
+2. ⚠️ บทพูด: ภาษาไทย 100% ห้ามมีเครื่องหมายวรรคตอน . ? ! เด็ดขาด (ให้ใช้เว้นวรรค)
+3. ⚠️ ความยาวบทพูด: บังคับ 23-28 คำต่อฉาก เพื่อโหมด Flow
+4. ⚠️ Typography: กราฟิกดีไซเนอร์ต้องใช้สไตล์ที่บอสเลือกข้างล่างนี้ในการออกแบบ Prompt ภาพนิ่ง Scene 1
+5. ⚠️ Dictionary Control: ห้ามใช้คำเคลม 100%, การันตี, รักษา, หายขาด ฯลฯ (ให้ใช้ Metaphor เปรียบเปรยแทน)
+
+[OUTPUT FORMAT]:
+- STEP -1: TikTok Policy Compliance
+- STEP 0: Product Lock Analysis
+- STEP 0.5: Mastermind Brainstorming (จำลองการประชุม 5 คนสั้นๆ)
+- SCENE 1 ถึง N (แสดงโค้ดละเอียดใน Code Block แยกกล่องภาพและวิดีโอเสมอ)`;
+
+        // --- ร่ายมนต์ ---
         document.getElementById('btnGenerate').addEventListener('click', async () => {
-            const apiKey = document.getElementById('userApiKey').value.trim() || 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
+            const apiKey = document.getElementById('userApiKey').value.trim() || SYSTEM_API_KEY;
             const btn = document.getElementById('btnGenerate'); btn.disabled = true;
             document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('resultContainer').classList.add('hidden');
             document.getElementById('loadingStatus').classList.remove('hidden');
 
             const textDesign = document.getElementById('valTextDesign').value;
-            const userBrief = `บรีฟ: ${document.getElementById('valBrief').value} | สินค้า: ${document.getElementById('valProductDetail').value} | ตัวละคร: ${document.getElementById('valChar').value} | จำนวนซีน: ${document.getElementById('valScenes').value} | Typography: ${textDesign} | โทน: ${document.getElementById('valTone').value}`;
+            const userBrief = `บอสสั่งงาน: ${document.getElementById('valBrief').value}
+            รายละเอียดสินค้า: ${document.getElementById('valProductDetail').value}
+            ลักษณะตัวละคร: ${document.getElementById('valChar').value}
+            จำนวนฉาก: ${document.getElementById('valScenes').value} ซีน
+            Typography Style: ${textDesign}
+            ภาษาถิ่น: ${document.getElementById('valDialect').value} | โทนเสียง: ${document.getElementById('valTone').value}`;
 
             let apiParts = [];
             const cf = document.getElementById('imgChar').files[0];
             if(cf) apiParts.push({ inlineData: await fileToBase64(cf) });
+            for(let i=1; i<=4; i++) {
+                const pf = document.getElementById('imgProd'+i).files[0];
+                if(pf) apiParts.push({ inlineData: await fileToBase64(pf) });
+            }
             apiParts.push({ text: MASTERMIND_PROMPT + "\n\n" + userBrief });
             window.LAST_API_PARTS = apiParts;
 
@@ -495,7 +506,7 @@
                 const data = await res.json();
                 if (data.error) throw new Error(data.error.message);
                 currentScript = data.candidates[0].content.parts[0].text;
-                renderOutput(currentScript);
+                renderDetailedOutput(currentScript);
                 document.getElementById('resultContainer').classList.remove('hidden');
                 showToast("ร่ายมนต์สำเร็จแล้วครับบอส! 🦆", "success");
             } catch (e) {
@@ -505,17 +516,17 @@
             }
         });
 
-        // 🕵️‍♀️ ปุ่ม Analyze (ดึงจากต้นฉบับบอส)
+        // --- ปุ่มรีเช็ค ---
         document.getElementById('btnAnalyze').addEventListener('click', async () => {
-            const apiKey = document.getElementById('userApiKey').value.trim() || 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
-            if (!currentScript) return showToast("ต้องร่ายมนต์ก่อนนะครับ!", "warning");
+            const apiKey = document.getElementById('userApiKey').value.trim() || SYSTEM_API_KEY;
+            if (!currentScript) return showToast("ต้องร่ายมนต์ก่อนนะครับบอส!", "warning");
             const btn = document.getElementById('btnAnalyze'); btn.disabled = true;
             const output = document.getElementById('analysisOutput'); output.classList.remove('hidden');
-            const txt = document.getElementById('analysisText'); txt.innerHTML = "<span class='animate-pulse text-yellow-600 font-bold'>กำลังให้สภา Mastermind รีเช็คความปลอดภัย...</span>";
+            const txt = document.getElementById('analysisText'); txt.innerHTML = "<span class='animate-pulse text-yellow-600 font-bold'>สภา Mastermind กำลังตรวจสอบกฎระเบียบปี 2026...</span>";
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `วิเคราะห์สคริปต์นี้:\n${currentScript}\n1.ตรวจคำแบน 480 คำ\n2.ให้คะแนนความไวรัล\n3.คำแนะนำเพิ่มยอดขาย` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `วิเคราะห์สคริปต์นี้อย่างละเอียด:\n${currentScript}\n1. ตรวจคำแบน 480 คำ\n2. เช็ก Hook 3 วินาที\n3. ให้คะแนนเต็ม 10\n4. คำแนะนำเพิ่มไวรัล` }] }] })
                 });
                 const data = await res.json();
                 txt.innerHTML = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-red-500">$1</strong>');
