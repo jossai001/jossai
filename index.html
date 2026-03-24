@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joss Ai 🦆 Web Studio (God Mode V.16 - Mastermind Edition)</title>
+    <title>Joss Ai 🦆 Web Studio (God Mode V.17 - Viral Concept Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
-            font-family: 'Prompt', sans-serif; 
+            font-family: 'Sarabun', sans-serif; 
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -198,11 +198,104 @@
                 </div>
             </div>
 
-            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50">
-                <label class="flex items-center gap-2 text-base font-bold text-orange-300 mb-4 uppercase tracking-wide">
-                    <span>💡</span> 2. ไอเดียหลักที่ต้องการ
-                </label>
-                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-xl p-4 text-sm font-medium resize-none leading-relaxed" placeholder="พิมพ์ไอเดียบอสที่นี่..."></textarea>
+            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
+                <div class="flex justify-between items-center mb-4">
+                    <label class="flex items-center gap-2 text-base font-bold text-orange-300 uppercase tracking-wide">
+                        <span>💡</span> 2. โครงสร้างคลิป & ไอเดีย
+                    </label>
+                    <button type="button" onclick="randomViralIdea()" class="text-xs bg-orange-500/20 text-orange-300 hover:bg-orange-500/40 px-3 py-1.5 rounded-lg border border-orange-500/30 transition shadow-sm font-bold flex items-center gap-1 z-10">🎲 สุ่มไวรัลฮิต</button>
+                </div>
+                
+                <select id="valViralTrend" class="w-full glass-input bg-slate-900/80 rounded-xl p-3 text-sm font-bold border border-slate-700 mb-3 text-yellow-300 relative z-10 focus:ring-2 focus:ring-orange-500 transition-all duration-300">
+                    <option value="ปล่อยอิสระ (ให้ AI วิเคราะห์โครงสร้างที่เหมาะสมเอง)">⚡ โครงสร้าง: ปล่อยอิสระ (AI จัดการเอง)</option>
+                    <optgroup label="🔥 หมวด 1: สายฮา & บันเทิง (Comedy)">
+                        <option value="แกล้งคนใกล้ตัว (Prank แบบน่ารักๆ ไม่รุนแรง)">1. แกล้งคนใกล้ตัว (Prank น่ารักๆ)</option>
+                        <option value="พากย์เสียงนรก (เอาคลิปธรรมดามาพากย์ตลก)">2. พากย์เสียงนรก (พากย์นรกสุดฮา)</option>
+                        <option value="ซิทคอมสะท้อนชีวิตจริง (พนักงานออฟฟิศ/นักเรียน)">3. ซิทคอมชีวิตจริง (เจ้านายVSลูกน้อง)</option>
+                        <option value="แข่งขันเกมโชว์ทำเอง (เกมง่ายๆ แต่อินเนอร์มาเต็ม)">4. แข่งเกมโชว์ทำเอง (อินเนอร์เล่นใหญ่)</option>
+                        <option value="รีแอคชั่นคลิปแปลกๆ (Reaction วิดีโอไวรัล)">5. รีแอคชั่นคลิปแปลก (ฮาหน้าตาย)</option>
+                        <option value="สวมบทบาทสมมติ (POV: เมื่อคุณเป็น...)">6. POV: สวมบทบาท (เมื่อคุณเป็น...)</option>
+                        <option value="มุกตลกหน้าตาย (Deadpan comedy)">7. มุกตลกหน้าตาย (เล่าเรื่องตลกหน้านิ่ง)</option>
+                        <option value="ชาเลนจ์สุดหิน (ทำภารกิจที่คนทั่วไปไม่ทำกัน)">8. ชาเลนจ์สุดหิน (ภารกิจคนจริง)</option>
+                        <option value="รีวิวกวนโอ๊ย (ใช้ของผิดประเภทให้ดูตลก)">9. รีวิวกวนโอ๊ย (ใช้ของผิดประเภท)</option>
+                        <option value="แปลงเพลงฮิต (เปลี่ยนเนื้อร้องให้เข้ากับชีวิต)">10. แปลงเพลงฮิต (ร้องเพลงชีวิตรันทด)</option>
+                    </optgroup>
+                    <optgroup label="🧠 หมวด 2: สายให้ความรู้ & สาระ (Edutainment)">
+                        <option value="สรุปข่าว/เรื่องราวใน 1 นาที (Fast Recap)">11. สรุปเรื่องยากใน 1 นาที (Fast Recap)</option>
+                        <option value="ไขข้อข้องใจ (Did you know? สิ่งที่คนมักเข้าใจผิด)">12. ไขข้อข้องใจ (สิ่งที่คนมักเข้าใจผิด)</option>
+                        <option value="แฮ็กชีวิตประจำวัน (Life Hacks เคล็ดลับที่ไม่มีใครบอก)">13. แฮ็กชีวิตประจำวัน (Life Hacks สุดเจ๋ง)</option>
+                        <option value="รีวิวหนังสือ/พอดแคสต์ (สรุปข้อคิดเจ๋งๆ)">14. รีวิวข้อคิด (จากหนังสือ/พอดแคสต์)</option>
+                        <option value="ทดลองวิทยาศาสตร์บ้านๆ (ทำได้จริงด้วยของรอบตัว)">15. ทดลองวิทยาศาสตร์ (ด้วยของใกล้ตัว)</option>
+                        <option value="สอนภาษาแบบสตรีท (คำศัพท์สแลง/ภาษาถิ่น)">16. สอนภาษาแบบสตรีท (สแลง/ภาษาถิ่น)</option>
+                        <option value="ประวัติศาสตร์ย่อยง่าย (เล่าเรื่องอดีตให้เหมือนเมาท์มอย)">17. ประวัติศาสตร์เมาท์มอย (เล่าสนุกๆ)</option>
+                        <option value="ทริคการเงิน/การลงทุน (ฉบับคนงบน้อย)">18. ทริคการเงิน (ฉบับคนงบน้อย)</option>
+                        <option value="วิเคราะห์กลยุทธ์ธุรกิจ (ทำไมแบรนด์นี้ถึงดัง)">19. วิเคราะห์ธุรกิจ (ทำไมถึงขายดี?)</option>
+                        <option value="จิตวิทยาพฤติกรรมมนุษย์ (อ่านใจคนจากท่าทาง)">20. จิตวิทยาอ่านใจคน (จากภาษากาย)</option>
+                    </optgroup>
+                    <optgroup label="🏕️ หมวด 3: สายไลฟ์สไตล์ & ท่องเที่ยว (Lifestyle)">
+                        <option value="วันๆ นึงทำอะไรบ้าง (A Day in the Life - ฉบับเรียลๆ)">21. วันๆ ทำอะไรบ้าง (Vlog ฉบับเรียลๆ)</option>
+                        <option value="จัดกระเป๋า/จัดห้อง (ASMR Organizing ดูเพลินๆ)">22. จัดห้อง/จัดกระเป๋า (ASMR ดูเพลิน)</option>
+                        <option value="เที่ยวแบบงบจำกัด (ทริคประหยัดเงิน)">23. เที่ยวทิพย์/งบน้อย (ทริคเที่ยวประหยัด)</option>
+                        <option value="พากินร้านลับ (รีวิวอาหารแบบไม่ห่วงสวย)">24. พากินร้านลับ (รีวิวแบบเรียลๆ)</option>
+                        <option value="รูทีนก่อนนอน/ตอนเช้า (Morning/Night Routine)">25. รูทีนก่อนนอน/ตอนเช้า (Routine)</option>
+                        <option value="แมตช์ชุดพังให้ปัง (Makeover Transformation)">26. แปลงโฉมเปลี่ยนลุค (Makeover)</option>
+                        <option value="ออกกำลังกายฉบับคนขี้เกียจ (Workout for beginners)">27. ออกกำลังกาย (ฉบับคนขี้เกียจ)</option>
+                        <option value="เลี้ยงสัตว์แสนรู้ (โชว์ความน่ารัก/ป่วนของสัตว์เลี้ยง)">28. อวดสัตว์เลี้ยง (แสนรู้หรือแสนซน)</option>
+                        <option value="ปลูกต้นไม้ในห้อง (มุมพักผ่อนมินิมอล)">29. จัดมุมพักผ่อน (มินิมอลรักษ์โลก)</option>
+                        <option value="งานอดิเรกสุดแปลก (พาส่องกิจกรรมยามว่างที่ไม่ค่อยมีคนทำ)">30. งานอดิเรกสุดแปลก (ไม่ค่อยมีใครทำ)</option>
+                    </optgroup>
+                    <optgroup label="🎭 หมวด 4: สายดราม่า & สังคม (Drama & Social)">
+                        <option value="หนังสั้นสะท้อนสังคม (จิกกัดประเด็นร้อน)">31. หนังสั้นสะท้อนสังคม (จิกกัดเบาๆ)</option>
+                        <option value="เล่าประสบการณ์แย่ๆ (เพื่อเป็นอุทาหรณ์)">32. เล่าอุทาหรณ์ (ประสบการณ์แย่ๆ)</option>
+                        <option value="เปิดโปงกลโกง (เตือนภัยมิจฉาชีพ)">33. เปิดโปงกลโกง (เตือนภัยสังคม)</option>
+                        <option value="สัมภาษณ์ความคิดเห็น (ถามคนแปลกหน้าในประเด็นต่างๆ)">34. สัมภาษณ์คนแปลกหน้า (ประเด็นร้อน)</option>
+                        <option value="ถกเถียงประเด็นเดือด (Debate เสนอมุมมองต่างมุม)">35. ถกเถียงประเด็นเดือด (Debate มุมมอง)</option>
+                        <option value="ความขัดแย้งในครอบครัว (ปัญหาพี่น้อง/พ่อแม่ลูก - ตอนจบซึ้ง)">36. ปัญหาครอบครัว (ตอนจบหักมุมซึ้ง)</option>
+                        <option value="เรื่องราวสร้างแรงบันดาลใจ (จากคนสู้ชีวิต)">37. สร้างแรงบันดาลใจ (สู้ชีวิต)</option>
+                        <option value="กฎแห่งกรรม/เวรกรรมมีจริง (เล่าเรื่องแนวความเชื่อ)">38. กฎแห่งกรรม (ทำดีได้ดี ทำชั่วได้ชั่ว)</option>
+                        <option value="ตีแผ่ความจริงหลังกล้อง (เบื้องหลังชีวิตครีเอเตอร์)">39. ตีแผ่ความจริง (เบื้องหลังกล้อง)</option>
+                        <option value="ระบายความในใจ (พูดแทนใจใครหลายคน)">40. ระบายความในใจ (พูดแทนใจคนดู)</option>
+                    </optgroup>
+                    <optgroup label="👻 หมวด 5: สายสยองขวัญ & ลี้ลับ (Mystery)">
+                        <option value="เล่าเรื่องผีจากทางบ้าน (บรรยากาศหลอนๆ)">41. เล่าเรื่องผี (บรรยากาศขนหัวลุก)</option>
+                        <option value="ตำนานพื้นบ้าน/เรื่องลี้ลับ (ที่ยังพิสูจน์ไม่ได้)">42. ตำนานพื้นบ้าน (เรื่องลี้ลับ)</option>
+                        <option value="สำรวจสถานที่ร้าง (พาไปดูที่สยองขวัญ)">43. สำรวจที่ร้าง (ท้าพิสูจน์หลอน)</option>
+                        <option value="ไขคดีปริศนา (True Crime สรุปคดีดัง)">44. ไขคดีปริศนา (สรุปคดีฆาตกรรม)</option>
+                        <option value="ทฤษฎีสมคบคิด (Conspiracy Theories)">45. ทฤษฎีสมคบคิด (โลกนี้มีอะไรซ่อนอยู่)</option>
+                        <option value="ประสบการณ์ขนหัวลุก (เรื่องแปลกที่เจอมากับตัว)">46. ประสบการณ์เฉียดตาย/ขนลุก</option>
+                        <option value="รีวิวเครื่องราง/ของขลัง (ความเชื่อส่วนบุคคล)">47. รีวิวเครื่องราง/สายมู (ปังหรือพัง)</option>
+                        <option value="เปิดไพ่ทำนายทายทัก (Pick a card สั้นๆ)">48. เปิดไพ่ทำนายทายทัก (Pick a card)</option>
+                        <option value="วิเคราะห์ภาพถ่ายติดวิญญาณ (จับผิดหรือของจริง?)">49. วิเคราะห์ภาพหลอน (ของจริงหรือตัดต่อ)</option>
+                        <option value="เล่าฝันร้ายสุดหลอน (ฝันพยากรณ์)">50. ฝันพยากรณ์ (บอกลางบอกเหตุ)</option>
+                    </optgroup>
+                    <optgroup label="🛍️ หมวด 6: สายป้ายยา & รีวิว (Affiliate Trend)">
+                        <option value="ป้ายยาแบบซึนๆ (ทำเป็นบ่นแต่จริงๆ ชอบมาก)">51. ป้ายยาแบบซึนๆ (บ่นแต่แอบชม)</option>
+                        <option value="แกะกล่องสุ่ม/ของแปลก (Unboxing คลิปตื่นเต้น)">52. แกะกล่องสุ่มสุดลุ้น (Unboxing)</option>
+                        <option value="เปรียบเทียบของถูก vs ของแพง (อันไหนคุ้มกว่า?)">53. จับมาชน! ของถูก VS ของแพง</option>
+                        <option value="รีวิวของใช้แล้วพัง (พังยังไง ทำไมพัง)">54. รีวิวของพัง (เตือนก่อนซื้อ)</option>
+                        <option value="ซื้อตามรีวิว (มันดีจริงหรือจกตา?)">55. ซื้อตามรีวิว (ดีจริงหรือจกตา?)</option>
+                        <option value="จัดอันดับ Top 5 (สินค้าหมวดต่างๆ)">56. จัดอันดับ Top 5 (ของดีที่ต้องมี)</option>
+                        <option value="ของมันต้องมี (Must-have items ประจำเดือน)">57. Favorite Item (ของมันต้องมี)</option>
+                        <option value="หาทำของแปลกในเน็ต (ลองสั่งของประหลาดมารีวิว)">58. รีวิวของแปลก (หาทำสั่งจากเน็ต)</option>
+                        <option value="ฮาวทูใช้ของให้คุ้ม (Trick การใช้งานที่คนไม่รู้)">59. ทริคลับใช้ของ (แบบที่เซลล์ไม่บอก)</option>
+                        <option value="จัดเซ็ตของขวัญ (ไอเดียให้ของขวัญตามเทศกาล)">60. ไอเดียจัดเซ็ตของขวัญ (งบหลักร้อย)</option>
+                    </optgroup>
+                    <optgroup label="🚀 หมวด 7: เทรนด์ใหม่มาแรง 2026 (New Trends)">
+                        <option value="สัมภาษณ์ AI (ลองคุยกับบอทด้วยคำถามปั่นๆ)">61. คุยกับ AI (ปั่นประสาทแชทบอท)</option>
+                        <option value="ASMR แบบดุดัน (เสียงกระแทก/เสียงดังแต่สะใจ)">62. ASMR ดุดัน (ทำเสียงดังๆ สะใจ)</option>
+                        <option value="POV: สิ่งของรอบตัว (ถ้าของชิ้นนั้นพูดได้)">63. POV: ถ้าสิ่งของพูดได้ (จะเป็นยังไง)</option>
+                        <option value="พยากรณ์อนาคตจำลอง (สร้างข่าวปลอมฮาๆ ในปี 2050)">64. ข่าวปลอมอนาคต (จำลองโลกปี 2050)</option>
+                        <option value="คลิปสอนแบบวีนๆ (ครูดุแต่ตลก)">65. คลิปสอนแบบวีนๆ (ดุนะแต่ได้ความรู้)</option>
+                        <option value="แกงเพื่อนร่วมงาน (แอบถ่ายรีแอคชั่น)">66. แกงเพื่อนร่วมงาน (คลิปแกล้งเพื่อน)</option>
+                        <option value="ชีวิตลูกจ้าง VS เจ้านาย (เปรียบเทียบมุมมอง)">67. ลูกจ้าง VS เจ้านาย (ความจริงเจ็บปวด)</option>
+                        <option value="สุ่มกินตามอีโมจิ (ทำชาเลนจ์ตามที่เพื่อนคอมเมนต์)">68. ชาเลนจ์ตามผู้ติดตาม (คอมเมนต์สั่ง)</option>
+                        <option value="รีวิวความล้มเหลว (บอกเล่าความผิดพลาดอย่างภาคภูมิใจ)">69. รีวิวความเฟล (ล้มเหลวแบบภูมิใจ)</option>
+                        <option value="ลิปซิงค์เสียงไวรัล (แอคติ้งเบอร์ใหญ่)">70. ลิปซิงค์ใหญ่รัชดาลัย (อินเนอร์ 100%)</option>
+                    </optgroup>
+                </select>
+
+                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-xl p-4 text-sm font-medium resize-none leading-relaxed relative z-10" placeholder="พิมพ์ไอเดียหลัก หรือสิ่งที่อยากให้เน้นเพิ่มตรงนี้..."></textarea>
             </div>
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm">
@@ -305,7 +398,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        // 🚨 อิมพอร์ตระบบ Session 🚨
         import { getFirestore, collection, getDocs, query, where, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -323,11 +415,8 @@
         const provider = new GoogleAuthProvider();
 
         const ADMIN_EMAIL = "admin@gmail.com"; 
-        
-        // 🚨 ล้างอีเมลทิ้ง ให้เช็กจาก Firestore เท่านั้น 🚨
         window.ALLOWED_EMAILS = [];
 
-        // 🚨 ตัวแปรสำหรับระบบเตะเครื่องซ้อน 🚨
         let currentSessionId = localStorage.getItem('joss_session_id');
         let unsubscribeSession = null;
 
@@ -343,38 +432,27 @@
 
         async function checkAccess(email) {
             let isAllowed = false;
-
             if (email === ADMIN_EMAIL || email.includes("admin")) {
                 isAllowed = true;
             }
-
             if (!isAllowed) {
                 try {
                     const q = query(collection(db, "allowed_users"), where("email", "==", email));
                     const snap = await getDocs(q);
-                    if (!snap.empty) {
-                        isAllowed = true;
-                    }
+                    if (!snap.empty) isAllowed = true;
                 } catch (e) {
                     console.warn("Firestore Check Error:", e.message);
                 }
             }
 
             if (isAllowed) {
-                // 🚨 สร้าง Session ทันทีที่ล็อกอินผ่าน 🚨
                 await createSessionAndEnter(email);
             } else {
                 document.getElementById('pendingForm').classList.remove('hidden');
                 document.getElementById('loginForm').classList.add('hidden');
-                if(GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'ใส่_URL_ของ_GOOGLE_APPS_SCRIPT_ตรงนี้') {
-                    const formData = new FormData();
-                    formData.append('email', email);
-                    fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
-                }
             }
         }
 
-        // 🚨 ระบบสร้าง Session และล็อกรหัส 🚨
         async function createSessionAndEnter(email) {
             const newSessionId = Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
             localStorage.setItem('joss_session_id', newSessionId);
@@ -395,14 +473,12 @@
             }
         }
 
-        // 🚨 ระบบเรดาร์จ้องจับการล็อกอินซ้อน 🚨
         function monitorSession(email) {
             if (unsubscribeSession) unsubscribeSession(); 
 
             unsubscribeSession = onSnapshot(doc(db, "user_sessions", email), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    // ถ้าโดนล็อกอินทับ รหัสจะไม่ตรงกัน
                     if (data.sessionId !== currentSessionId) {
                         Swal.fire({
                             icon: 'error',
@@ -410,9 +486,7 @@
                             html: '<p class="text-red-500 font-bold mb-2">บัญชีนี้มีการเข้าสู่ระบบจากเครื่องอื่น</p>ไม่อนุญาตให้แชร์บัญชีเพื่อใช้งานพร้อมกันครับ',
                             allowOutsideClick: false,
                             confirmButtonText: 'รับทราบ'
-                        }).then(() => {
-                            window.logout(); // เตะออก
-                        });
+                        }).then(() => { window.logout(); });
                     }
                 }
             });
@@ -438,9 +512,7 @@
             signOut(auth);
         };
 
-        onAuthStateChanged(auth, user => { 
-            if(user) checkAccess(user.email.toLowerCase().trim()); 
-        });
+        onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase().trim()); });
     </script>
 
     <script>
@@ -450,7 +522,6 @@
         window.LAST_API_PARTS = []; 
         let loadingInterval; 
 
-        // 🚨 อาร์เรย์สำหรับเก็บไฟล์ภาพแบบ Bulk Upload 🚨
         let characterFiles = [];
         let productFiles = [];
 
@@ -468,7 +539,19 @@
         
         window.autoResize = el => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
 
-        // 🚨 ฟังก์ชันจัดการไฟล์แบบคลุมดำโยนทีละหลายภาพ (Bulk Upload) 🚨
+        // 🎲 ฟังก์ชันสุ่มไวรัลฮิต 70 แบบ 🎲
+        window.randomViralIdea = function() {
+            const select = document.getElementById('valViralTrend');
+            const options = select.querySelectorAll('option:not([value="ปล่อยอิสระ (ให้ AI วิเคราะห์โครงสร้างที่เหมาะสมเอง)"])');
+            const randomIndex = Math.floor(Math.random() * options.length);
+            select.value = options[randomIndex].value;
+            
+            select.classList.add('ring-2', 'ring-orange-500');
+            setTimeout(() => select.classList.remove('ring-2', 'ring-orange-500'), 500);
+            
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: '🎲 สุ่มไอเดียแนวคลิปใหม่แล้ว!', showConfirmButton: false, timer: 1500 });
+        }
+
         document.getElementById('imgChar').addEventListener('change', function(e) {
             handleFiles(e.target.files, characterFiles, 4, 'charPreviewContainer', 'char');
             this.value = ''; 
@@ -675,10 +758,12 @@
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
             const ACTIVE_API_KEY = userInputKey !== "" ? userInputKey : SYSTEM_API_KEY;
 
+            const viralTrendEl = document.getElementById('valViralTrend');
             const briefIdeaEl = document.getElementById('valBrief');
             const productDetailEl = document.getElementById('valProductDetail');
             const charDescEl = document.getElementById('valChar');
             
+            const viralTrend = viralTrendEl ? viralTrendEl.value : "ปล่อยอิสระ (ให้ AI วิเคราะห์โครงสร้างที่เหมาะสมเอง)";
             const briefIdea = briefIdeaEl ? briefIdeaEl.value : "";
             const productDetail = productDetailEl ? productDetailEl.value : "";
             const charDesc = charDescEl ? charDescEl.value : "";
@@ -701,8 +786,8 @@
             const moodInput = moodEl ? moodEl.value : "Auto";
             const visualInput = visualEl ? visualEl.value : "Auto";
 
-            if (!briefIdea.trim() && !productDetail.trim() && productFiles.length === 0) {
-                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '🦆 พี่จอสAi ครับ รบกวนพิมพ์ไอเดีย หรือแนบรูปสินค้าให้สักนิดก่อนรันระบบนะครับ!' });
+            if (!briefIdea.trim() && !productDetail.trim() && productFiles.length === 0 && viralTrend === "ปล่อยอิสระ (ให้ AI วิเคราะห์โครงสร้างที่เหมาะสมเอง)") {
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '🦆 พี่จอสAi ครับ รบกวนกดสุ่มไวรัล หรือพิมพ์ไอเดียให้สักนิดก่อนรันระบบนะครับ!' });
                 return;
             }
 
@@ -789,18 +874,19 @@
                 const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 [การตั้งค่าพื้นฐาน]
-1. เป้าหมายคลิป: ${goalName}
-2. รูปแบบ Typography: ${textDesignPrompt}
-3. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
-4. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
-5. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
-6. ลักษณะตัวละคร: ${characterRule}
-7. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
-8. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
-9. กฎเครื่องหมายวรรคตอนและภาษา: ห้ามมีเครื่องหมาย . ? ! ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
+1. โครงสร้างคลิป/แนวทางไวรัล (Viral Concept): บังคับนำเสนอในรูปแบบ "${viralTrend}" (นำโครงสร้างนี้มาประยุกต์เข้ากับสินค้า/ไอเดียหลักอย่างแนบเนียน)
+2. เป้าหมายคลิป: ${goalName}
+3. รูปแบบ Typography: ${textDesignPrompt}
+4. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
+5. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
+6. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
+7. ลักษณะตัวละคร: ${characterRule}
+8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
+9. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
+10. กฎเครื่องหมายวรรคตอนและภาษา: ห้ามมีเครื่องหมาย . ? ! ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
 [ข้อมูลคลิป]
-- พล็อต/ไอเดียหลัก: ${briefIdea}
+- พล็อต/ไอเดียหลักเสริม: ${briefIdea}
 - ข้อมูลสินค้า: ${productDetail}
 `;
                 let basePrompt = SYSTEM_PROMPT + "\n\n" + enforcementPrompt;
