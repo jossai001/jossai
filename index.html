@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joss Ai 🦆 Web Studio (God Mode V.16 - Mastermind Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
-            font-family: 'Prompt', sans-serif; 
+            /* บังคับใช้ฟอนต์ Sarabun ทั้งหน้าเว็บ */
+            font-family: 'Sarabun', sans-serif; 
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -129,7 +130,7 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -342,7 +343,7 @@
         const ADMIN_EMAIL = "admin@gmail.com"; 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
 
-        // 🚨 4. ล้างบางรายชื่ออีเมล 153 คนออกทั้งหมด เพื่อประหยัด Token และเช็กสิทธิ์จาก Firestore โดยตรง 🚨
+        // 🚨 นำรายชื่ออีเมลออกแล้ว เพื่อความรวดเร็วและใช้การเช็กสิทธิ์จากระบบ Firestore แท้ๆ 100% 🚨
         window.ALLOWED_EMAILS = [];
 
         window.loginWithGoogle = async function() {
@@ -549,7 +550,7 @@
             "7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น \"ภาษาไทย\" 100% ห้ามใช้ภาษาอังกฤษ",
             "8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน",
             "9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน",
-            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK: บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
+            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK (กฎการสร้างภาพสินค้า): บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
             "",
             "[CONCEPT-BASED DICTIONARY CONTROL: กฎการหลบเลี่ยงคำต้องห้ามขั้นเด็ดขาด]",
             "⚠️ ห้ามใช้คำศัพท์ที่เข้าข่าย 'เคลมเกินจริง' หรือ 'ผิดกฎ TikTok' ทั้งหมด โดยให้ใช้ Metaphor (การเปรียบเปรย) แทนเสมอ ตัวอย่างเช่น:",
