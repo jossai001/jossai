@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joss Ai 🦆 Web Studio (God Mode V.17 - Viral Concept Edition)</title>
+    <title>Joss Ai 🦆 Web Studio (God Mode V.18 - Perfect Flow Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -539,7 +539,6 @@
         
         window.autoResize = el => { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; };
 
-        // 🎲 ฟังก์ชันสุ่มไวรัลฮิต 70 แบบ 🎲
         window.randomViralIdea = function() {
             const select = document.getElementById('valViralTrend');
             const options = select.querySelectorAll('option:not([value="ปล่อยอิสระ (ให้ AI วิเคราะห์โครงสร้างที่เหมาะสมเอง)"])');
@@ -649,6 +648,7 @@
             });
         }
 
+        // 🚨 แก้ไขช่วงความยาวประโยค (18-25 คำ) และเครื่องหมายการพักหายใจ 🚨
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -668,8 +668,8 @@
             "5. ⚠️ TYPOGRAPHY: Graphic Designer ต้องนำสไตล์ Typography ที่บอสเลือก มาออกแบบ Prompt ใส่ในเฉพาะ SCENE 1 เสมอ",
             "6. ZERO TEXT IN VIDEO: ฝั่ง GEN VIDEO ห้ามมีตัวหนังสือ ตัวอักษร สติ๊กเกอร์ ในวิดีโอเด็ดขาด (ZERO TEXT 100%)",
             "7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น \"ภาษาไทย\" 100% ห้ามใช้ภาษาอังกฤษ",
-            "8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน",
-            "9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน",
+            "8. ⚠️ PUNCTUATION FOR TTS: อนุญาตให้ใช้เครื่องหมาย , (ลูกน้ำ) และ . (จุด) ในประโยคบทพูด เพื่อให้ AI เสียงพากย์ (TTS) รู้จักเว้นจังหวะหายใจ ห้ามใช้เครื่องหมายอื่นๆ",
+            "9. ⚠️ FLOW MODE: โหมด Flow บังคับความยาวบทพูดอยู่ที่ 18-25 คำ ต่อ 1 ซีน เพื่อให้สอดคล้องกับความยาวคลิป 8 วินาที (หากยาวเกินระบบเสียงจะ Error)",
             "10. ⚠️ GOOGLE FLOW PRODUCT LOCK: บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
             "",
             "[CONCEPT-BASED DICTIONARY CONTROL: กฎการหลบเลี่ยงคำต้องห้ามขั้นเด็ดขาด]",
@@ -713,7 +713,7 @@
             "=============================",
             "SCENE 1 : 🖼️ COVER IMAGE & HOOK",
             "Speaker: [ชื่อคาแรคเตอร์]",
-            "Dialogue: \"([อารมณ์/โทนเสียง]) [บทพูดภาษาไทย Metaphor ห้ามมี . ? ! เด็ดขาด (ยาว 23-28 คำ)]\"",
+            "Dialogue: \"([อารมณ์/โทนเสียง]) [บทพูดภาษาไทย ใส่เครื่องหมาย , หรือ . เพื่อพักหายใจ (ความยาว 18-25 คำ)]\"",
             "Action: [ท่าทางดึงดูดสายตาอย่างแรง]",
             "Background: [ฉากหลัง]",
             "💡 Director's Note: [อธิบายว่าซีนนี้ห้ามมีสินค้าเด็ดขาด ให้เน้นฮุกอารมณ์]",
@@ -724,12 +724,12 @@
             "```",
             "❤️ 2. สร้างวิดีโอ (GEN VIDEO)",
             "```text",
-            "SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Consistent Voice ID: [Character Name]. Dialogue: \"[บทพูดภาษาไทย ห้ามมี . ? !]\". Rules: Native Thai voice only. NO TEXT ON SCREEN.",
+            "SCENE 1: [IMAGE-TO-VIDEO REQUIRED] A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Consistent Voice ID: [Character Name]. Dialogue: \"[บทพูดภาษาไทย บังคับใส่เครื่องหมาย , หรือ . เพื่อเว้นจังหวะ (ยาว 18-25 คำ)]\". Rules: Native Thai voice only. NO TEXT ON SCREEN.",
             "```",
             "=========================================",
             "SCENE [X] : [ชื่อซีนภาษาไทย] (ตั้งแต่ SCENE 2 เป็นต้นไป)",
             "Speaker: [ชื่อคาแรคเตอร์]",
-            "Dialogue: \"([อารมณ์/โทนเสียง]) [บทพูดที่ผ่านการสแกนคำต้องห้ามแล้ว ห้ามมี . ? !]\"",
+            "Dialogue: \"([อารมณ์/โทนเสียง]) [บทพูดภาษาไทย ใส่เครื่องหมาย , หรือ . เพื่อพักหายใจ (ความยาว 18-25 คำ)]\"",
             "Action: [ท่าทางของตัวละคร]",
             "Background: [ฉากหลัง]",
             "💡 Director's Note: [บอกชัดเจนว่าซีนนี้ให้โชว์สินค้าไหม ถ้าโชว์ให้จัดวางให้เด่น]",
@@ -740,7 +740,7 @@
             "```",
             "❤️ 2. สร้างวิดีโอ (GEN VIDEO)",
             "```text",
-            "SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Consistent Voice ID: [Character Name]. Dialogue: \"[บทพูดภาษาไทย ห้ามมี . ? !]\". Rules: NO TEXT ON SCREEN.",
+            "SCENE [X]: A high-quality clip (8 seconds). Speaker: [Character Name]. Audio Requirement: STRICTLY THAI LANGUAGE VOICE. Consistent Voice ID: [Character Name]. Dialogue: \"[บทพูดภาษาไทย บังคับใส่เครื่องหมาย , หรือ . เพื่อเว้นจังหวะ (ยาว 18-25 คำ)]\". Rules: NO TEXT ON SCREEN.",
             "```",
             "(ทำซ้ำแบบฟอร์ม SCENE [X] จนครบตามจำนวน)",
             "",
@@ -853,7 +853,8 @@
                 const goalName = goalInput === '1' ? 'สร้างตัวตน/ให้ความรู้ (ห้ามขายของ)' : 'ขายของ/ป้ายยาสินค้า (ชี้เป้า/มี CTA)';
                 let platName = 'Google Flow (จังหวะสมูทธรรมชาติ)'; 
                 let platTime = "8"; 
-                let lengthRule = "บังคับความยาวบทพูด 23-28 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น";
+                // 🚨 อัปเดตกฎความยาวและเครื่องหมายวรรคตอน ใน Payload 🚨
+                let lengthRule = "บังคับความยาวบทพูด 18-25 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น พร้อมใส่เครื่องหมาย , หรือ . เพื่อให้พากย์เสียงได้สมูท";
                 const characterRule = charDesc.trim() !== "" ? `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
                 let batchScenes = scenesInput > 10 ? 10 : scenesInput;
 
@@ -883,7 +884,7 @@
 7. ลักษณะตัวละคร: ${characterRule}
 8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
 9. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
-10. กฎเครื่องหมายวรรคตอนและภาษา: ห้ามมีเครื่องหมาย . ? ! ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
+10. กฎเครื่องหมายวรรคตอนและภาษา: อนุญาตให้ใช้เครื่องหมาย , หรือ . ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
 [ข้อมูลคลิป]
 - พล็อต/ไอเดียหลักเสริม: ${briefIdea}
