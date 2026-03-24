@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joss Ai 🦆 Web Studio (God Mode V.16 - Mastermind Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
-            /* บังคับใช้ฟอนต์ Sarabun ทั้งหน้าเว็บ */
-            font-family: 'Sarabun', sans-serif; 
+            font-family: 'Prompt', sans-serif; 
             background: radial-gradient(circle at top left, #713f12, #422006, #020617); 
             color: #f8fafc; 
             overflow: hidden; 
@@ -21,7 +20,6 @@
         .glass-panel { 
             background: rgba(30, 41, 59, 0.6); 
             backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
         }
         .glass-input { 
@@ -31,40 +29,23 @@
             outline: none; 
             transition: all 0.3s ease; 
         }
-        .glass-input:focus { 
-            border-color: #f97316; 
-            box-shadow: 0 0 10px rgba(249, 115, 22, 0.3); 
-        }
+        .glass-input:focus { border-color: #f97316; box-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
         input[type="radio"] { display: none; }
         input[type="radio"]:checked + label { 
             border-color: #f97316; 
             background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(249, 115, 22, 0.2)); 
             color: #fff;
         }
-        /* 🚨 Style สำหรับกล่องอัปโหลดแบบลากวาง (Drag & Drop) 🚨 */
-        .upload-box { 
-            background: rgba(15, 23, 42, 0.5); 
-            cursor: pointer; 
-            transition: 0.3s; 
-        }
+        .upload-box { background: rgba(15, 23, 42, 0.5); cursor: pointer; transition: 0.3s; }
         .upload-box:hover { border-color: #f97316; background: rgba(30, 41, 59, 0.8); }
-        .btn-super { 
-            background: linear-gradient(135deg, #eab308 0%, #f97316 100%); 
-            transition: transform 0.2s, box-shadow 0.2s; 
-        }
-        .btn-super:hover:not(:disabled) { 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.6); 
-        }
+        .btn-super { background: linear-gradient(135deg, #eab308 0%, #f97316 100%); transition: transform 0.2s, box-shadow 0.2s; }
+        .btn-super:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.6); }
         .btn-super:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
         .auth-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         textarea { overflow: hidden; }
-        
         .sidebar-open { transform: translateX(0%); }
         .sidebar-closed { transform: translateX(100%); }
-        @media (min-width: 1024px) {
-            .sidebar-closed { transform: translateX(0%); } 
-        }
+        @media (min-width: 1024px) { .sidebar-closed { transform: translateX(0%); } }
     </style>
 </head>
 <body class="h-screen flex flex-row text-base relative">
@@ -130,7 +111,7 @@
 
                 <div class="mt-14 bg-[#0f172a]/80 p-8 rounded-3xl border border-teal-500/30 shadow-[0_0_20px_rgba(20,184,166,0.15)] backdrop-blur-md">
                     <label class="flex items-center gap-2 text-lg font-bold text-teal-300 mb-4 uppercase tracking-wide">
-                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม
+                        <span class="text-2xl">💬</span> สั่งปรับแก้สคริปต์ / จดไอเดียเพิ่มเติม (อิสระ)
                     </label>
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
@@ -315,7 +296,7 @@
         </div>
 
         <div class="p-6 bg-slate-900/90 border-t-2 border-yellow-600 z-10 backdrop-blur-md">
-            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 shadow-[0_0_20px_rgba(234,179,8,0.3)] transition hover:scale-[1.02]">
+            <button id="btnGenerate" class="w-full btn-super text-white font-extrabold py-5 rounded-[1.5rem] text-2xl flex justify-center items-center gap-3 transition hover:scale-[1.02]">
                 <span class="text-3xl">🦆</span> <span id="btnText">ร่ายมนต์สร้างสคริปต์</span>
             </button>
         </div>
@@ -324,7 +305,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // 🚨 อิมพอร์ตระบบ Session 🚨
+        import { getFirestore, collection, getDocs, query, where, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
@@ -341,10 +323,13 @@
         const provider = new GoogleAuthProvider();
 
         const ADMIN_EMAIL = "admin@gmail.com"; 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQeRmFiCyHl3rWI3pr3yWy8cjI4bZ5Zl5DwTIEIw4BgkgZ3_hMOplufB_OCr8lfF5/exec';
-
-        // 🚨 นำรายชื่ออีเมลออกแล้ว เพื่อความรวดเร็วและใช้การเช็กสิทธิ์จากระบบ Firestore แท้ๆ 100% 🚨
+        
+        // 🚨 ล้างอีเมลทิ้ง ให้เช็กจาก Firestore เท่านั้น 🚨
         window.ALLOWED_EMAILS = [];
+
+        // 🚨 ตัวแปรสำหรับระบบเตะเครื่องซ้อน 🚨
+        let currentSessionId = localStorage.getItem('joss_session_id');
+        let unsubscribeSession = null;
 
         window.loginWithGoogle = async function() {
             try {
@@ -352,7 +337,7 @@
                 await checkAccess(result.user.email.toLowerCase().trim());
             } catch (error) {
                 console.error("Login Error:", error);
-                Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'ล็อกอินล้มเหลว กรุณาปิดตัวบล็อกป๊อปอัป', showConfirmButton: false, timer: 3000 });
+                Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'ล็อกอินล้มเหลว', showConfirmButton: false, timer: 3000 });
             }
         };
 
@@ -371,12 +356,13 @@
                         isAllowed = true;
                     }
                 } catch (e) {
-                    console.warn("Firestore Check Warning:", e.message);
+                    console.warn("Firestore Check Error:", e.message);
                 }
             }
 
             if (isAllowed) {
-                enterStudio(email);
+                // 🚨 สร้าง Session ทันทีที่ล็อกอินผ่าน 🚨
+                await createSessionAndEnter(email);
             } else {
                 document.getElementById('pendingForm').classList.remove('hidden');
                 document.getElementById('loginForm').classList.add('hidden');
@@ -388,6 +374,50 @@
             }
         }
 
+        // 🚨 ระบบสร้าง Session และล็อกรหัส 🚨
+        async function createSessionAndEnter(email) {
+            const newSessionId = Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+            localStorage.setItem('joss_session_id', newSessionId);
+            currentSessionId = newSessionId;
+
+            try {
+                await setDoc(doc(db, "user_sessions", email), {
+                    sessionId: newSessionId,
+                    timestamp: new Date()
+                });
+                
+                enterStudio(email);
+                monitorSession(email);
+
+            } catch (e) {
+                console.error("Session Error:", e);
+                Swal.fire({ icon: 'error', title: 'เซิร์ฟเวอร์ขัดข้อง', text: 'ไม่สามารถสร้าง Session ได้ โปรดตรวจสอบ Firebase Rules' });
+            }
+        }
+
+        // 🚨 ระบบเรดาร์จ้องจับการล็อกอินซ้อน 🚨
+        function monitorSession(email) {
+            if (unsubscribeSession) unsubscribeSession(); 
+
+            unsubscribeSession = onSnapshot(doc(db, "user_sessions", email), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    // ถ้าโดนล็อกอินทับ รหัสจะไม่ตรงกัน
+                    if (data.sessionId !== currentSessionId) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ถูกเตะออกจากระบบ! 🥾',
+                            html: '<p class="text-red-500 font-bold mb-2">บัญชีนี้มีการเข้าสู่ระบบจากเครื่องอื่น</p>ไม่อนุญาตให้แชร์บัญชีเพื่อใช้งานพร้อมกันครับ',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'รับทราบ'
+                        }).then(() => {
+                            window.logout(); // เตะออก
+                        });
+                    }
+                }
+            });
+        }
+
         function enterStudio(email) {
             document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('mainSidebar').classList.remove('sidebar-closed');
@@ -396,14 +426,21 @@
             Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `ยินดีต้อนรับบอส ${email}! 🦆`, showConfirmButton: false, timer: 3000 });
         }
 
-        window.logout = () => signOut(auth).then(() => location.reload());
+        window.logout = () => {
+            localStorage.removeItem('joss_session_id');
+            if (unsubscribeSession) unsubscribeSession();
+            signOut(auth).then(() => location.reload());
+        };
+
         window.resetLogin = () => {
             document.getElementById('pendingForm').classList.add('hidden');
             document.getElementById('loginForm').classList.remove('hidden');
             signOut(auth);
         };
 
-        onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase().trim()); });
+        onAuthStateChanged(auth, user => { 
+            if(user) checkAccess(user.email.toLowerCase().trim()); 
+        });
     </script>
 
     <script>
@@ -550,7 +587,7 @@
             "7. ⚠️ STRICT THAI LANGUAGE: บทพูดและตัวหนังสือบนปก ต้องเป็น \"ภาษาไทย\" 100% ห้ามใช้ภาษาอังกฤษ",
             "8. ⚠️ NO PUNCTUATION: ห้ามใช้เครื่องหมาย . ? ! ในประโยคบทพูด ให้ใช้วรรค(Space) แทน",
             "9. ⚠️ FLOW MODE: โหมด Flow บังคับบทพูด 23-28 คำเป๊ะๆ ต่อ 1 ซีน",
-            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK (กฎการสร้างภาพสินค้า): บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
+            "10. ⚠️ GOOGLE FLOW PRODUCT LOCK: บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
             "",
             "[CONCEPT-BASED DICTIONARY CONTROL: กฎการหลบเลี่ยงคำต้องห้ามขั้นเด็ดขาด]",
             "⚠️ ห้ามใช้คำศัพท์ที่เข้าข่าย 'เคลมเกินจริง' หรือ 'ผิดกฎ TikTok' ทั้งหมด โดยให้ใช้ Metaphor (การเปรียบเปรย) แทนเสมอ ตัวอย่างเช่น:",
@@ -769,7 +806,6 @@
                 let basePrompt = SYSTEM_PROMPT + "\n\n" + enforcementPrompt;
 
                 let apiParts = [];
-                // 🚨 ดึงข้อมูลจากอาร์เรย์ characterFiles 🚨
                 if (characterFiles.length > 0) {
                     for(let i=0; i<characterFiles.length; i++) {
                         apiParts.push({ inlineData: await fileToBase64(characterFiles[i]) });
@@ -777,7 +813,6 @@
                     basePrompt += `\n[ระบบ: แนบ 'รูปตัวละครหลัก' มา ${characterFiles.length} รูป ให้อ้างอิงและดึงหน้าตาจากรูปเหล่านี้ให้เป๊ะที่สุด]`;
                 }
                 
-                // 🚨 ดึงข้อมูลจากอาร์เรย์ productFiles 🚨
                 if (productFiles.length > 0) {
                     for(let i=0; i<productFiles.length; i++) {
                         apiParts.push({ inlineData: await fileToBase64(productFiles[i]) });
