@@ -295,7 +295,19 @@
                     </optgroup>
                 </select>
 
-                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-xl p-4 text-sm font-medium resize-none leading-relaxed relative z-10" placeholder="พิมพ์ไอเดียหลัก หรือสิ่งที่อยากให้เน้นเพิ่มตรงนี้..."></textarea>
+                <textarea id="valBrief" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-xl p-4 text-sm font-medium resize-none leading-relaxed relative z-10" placeholder="พิมพ์ไอเดียหลัก หรือสิ่งที่อยากให้เน้นเพิ่มตรงนี้..."></textarea><div class="mt-4 border-t border-slate-700/50 pt-4 relative z-10">
+                    <label class="flex items-center gap-2 text-sm font-bold text-purple-400 mb-3 uppercase tracking-wide">
+                        <span class="text-lg">🧠</span> จิตวิทยาป้ายยา (Dark Psychology)
+                    </label>
+                    <select id="valPsychology" class="w-full glass-input bg-slate-900/90 rounded-xl p-3 text-sm font-bold border border-purple-500/50 text-purple-300 focus:ring-2 focus:ring-purple-500 transition-all shadow-[0_0_15px_rgba(168,85,247,0.15)] outline-none">
+                        <option value="None">⚪ ไม่ใช้ (เน้นเล่าเรื่องธรรมชาติ)</option>
+                        <option value="FOMO">🔥 FOMO (ขู่ให้กลัวพลาดโอกาส/ตกรถ)</option>
+                        <option value="Curiosity">🫣 Curiosity (กระตุกต่อมเผือก/ทิ้งปริศนา)</option>
+                        <option value="UsVsThem">⚔️ Us vs Them (สร้างศัตรูร่วม/หาพวก)</option>
+                        <option value="Exclusivity">👑 Exclusivity (ความลับคนวงใน/VIP)</option>
+                        <option value="PainAgitation">🩸 Pain & Agitation (ขยี้แผลให้สุดแล้วยื่นทางรอด)</option>
+                    </select>
+                    <p class="text-[10px] text-purple-300/60 mt-2 font-light">*AI จะสะกดจิตคนดูผ่าน Hook และบทพูดขั้นสุด</p>
             </div>
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm">
@@ -914,6 +926,8 @@
             const dialectEl = document.getElementById('valDialect');
             const moodEl = document.getElementById('valMood');
             const visualEl = document.getElementById('valVisual');
+            const psychEl = document.getElementById('valPsychology');
+            const psychInput = psychEl ? psychEl.value : "None";
 
             const goalInput = goalEl ? goalEl.value : "2";
             const typoInput = typoEl ? typoEl.value : "3";
@@ -1008,7 +1022,18 @@
                 } else {
                     textDesignPrompt = `📌 กฎ Typography: ผู้ใช้เลือก "ไม่มี Text เลย" ดังนั้นบังคับใส่ "ABSOLUTELY NO TEXT" ใน Image Prompt ของทุก SCENE`;
                 }
+// 🧠 ระบบประมวลผล Dark Psychology
+                let psychPrompt = "";
+                if (psychInput !== "None") {
+                    let psychDesc = "";
+                    if (psychInput === "FOMO") psychDesc = "ใช้จิตวิทยา FOMO (Fear of Missing Out) กระตุ้นให้คนดูกลัวพลาดโอกาส กลัวตามคนอื่นไม่ทัน ต้องรีบดูรีบตัดสินใจเดี๋ยวนี้";
+                    else if (psychInput === "Curiosity") psychDesc = "ใช้จิตวิทยา Curiosity Gap กระตุกต่อมเผือก เปิดประเด็นด้วยความลับหรือสิ่งที่คนคาดไม่ถึง ทำให้หยุดดูไม่ได้จนจบคลิป";
+                    else if (psychInput === "UsVsThem") psychDesc = "ใช้จิตวิทยา Us vs Them สร้างศัตรูร่วม (เช่น พวกชอบเอาเปรียบ, ระบบที่แย่) เพื่อดึงคนดูมาเป็นพวกเดียวกัน แล้วค่อยเสนอสินค้าเราเป็นทางออก";
+                    else if (psychInput === "Exclusivity") psychDesc = "ใช้จิตวิทยา Exclusivity ทำให้ลูกค้ารู้สึกเป็นคนพิเศษ (VIP) เป็นความลับที่รู้กันเฉพาะคนวงใน หรือเป็นของที่มีจำนวนจำกัด";
+                    else if (psychInput === "PainAgitation") psychDesc = "ใช้จิตวิทยา Pain & Agitation ขยี้ปัญหา (Pain point) ของคนดูให้รู้สึกเจ็บปวดทรมานที่สุดในตอนต้นคลิป แล้วค่อยยื่นสินค้าเราเป็นฮีโร่หรือทางรอดเดียว";
 
+                    psychPrompt = `\n11. 🧠 [DARK PSYCHOLOGY MODE ACTIVATED]: บังคับเขียนบทพากย์และข้อความฮุกแบบสะกดจิตคนดู โดย${psychDesc} (ใช้เทคนิคนี้บิ้วอารมณ์ให้เนียนที่สุด ห้ามให้คนดูรู้ตัวว่ากำลังถูกขายของ)`;
+                }
                 const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 [การตั้งค่าพื้นฐาน]
@@ -1022,6 +1047,8 @@
 8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
 9. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
 10. กฎเครื่องหมายวรรคตอนและภาษา: อนุญาตให้ใช้เครื่องหมาย , หรือ . ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
+${psychPrompt}
+[การตั้งค่าภาพเพิ่มเติม]
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
 [ข้อมูลคลิป]
 - พล็อต/ไอเดียหลักเสริม: ${briefIdea}
