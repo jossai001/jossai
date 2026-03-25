@@ -395,10 +395,29 @@
         </div>
     </aside>
 
+    <button onclick="toggleHistoryModal()" class="fixed bottom-6 left-6 z-40 bg-slate-800/90 hover:bg-slate-700 text-yellow-400 font-bold p-4 rounded-full border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.3)] transition transform hover:scale-110 flex items-center gap-2 group">
+        <span class="text-2xl">💾</span>
+        <span class="hidden group-hover:inline pr-2 tracking-wide">งานล่าสุด (5)</span>
+    </button>
+
+    <div id="historyModal" class="hidden fixed inset-0 bg-slate-900/95 z-[100] flex justify-center items-center backdrop-blur-sm">
+        <div class="glass-panel w-[90%] md:w-[800px] max-h-[80vh] rounded-3xl border border-yellow-500/30 flex flex-col shadow-2xl relative">
+            <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-800/50 rounded-t-3xl">
+                <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 uppercase flex items-center gap-3">
+                    <span class="text-3xl">🦆</span> ประวัติการทำงาน 5 ล่าสุด
+                </h2>
+                <button onclick="toggleHistoryModal()" class="text-slate-400 hover:text-white text-4xl font-bold transition hover:scale-110">&times;</button>
+            </div>
+            <div id="historyList" class="p-6 overflow-y-auto flex-1 space-y-4">
+                <div class="text-center text-slate-400 py-10 text-lg animate-pulse">กำลังโหลดข้อมูล...</div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, query, where, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, where, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBsN-c-__MAMAXmvXTHjPLs1pgD38iBSqs",
@@ -513,11 +532,119 @@
         };
 
         onAuthStateChanged(auth, user => { if(user) checkAccess(user.email.toLowerCase().trim()); });
+
+        // =========================================================
+        // 💾 ส่วนของ Memory System: บันทึกงานอัตโนมัติ 5 ล่าสุด
+        // =========================================================
+
+        window.toggleHistoryModal = async () => {
+            const modal = document.getElementById('historyModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                await loadHistory();
+            }
+        };
+
+        window.autoSaveHistory = async (scriptContent, briefIdea) => {
+            const user = auth.currentUser;
+            if (!user || !scriptContent) return;
+
+            const email = user.email.toLowerCase().trim();
+            const historyRef = doc(db, "user_history", email);
+
+            try {
+                const docSnap = await getDoc(historyRef);
+                let currentHistory = [];
+
+                if (docSnap.exists() && docSnap.data().records) {
+                    currentHistory = docSnap.data().records;
+                }
+
+                const newRecord = {
+                    id: Date.now().toString(),
+                    timestamp: new Date().toLocaleString('th-TH'),
+                    brief: briefIdea && briefIdea.trim() !== "" ? briefIdea : "ไม่ได้ระบุพล็อตเรื่อง (สุ่มไอเดีย / สินค้า)",
+                    script: scriptContent
+                };
+
+                // นำงานใหม่ไปแทรกด้านบนสุด
+                currentHistory.unshift(newRecord);
+                
+                // ตัดให้เหลือแค่ 5 อันล่าสุดเพื่อไม่ให้เปลืองพื้นที่
+                if (currentHistory.length > 5) {
+                    currentHistory = currentHistory.slice(0, 5);
+                }
+
+                await setDoc(historyRef, { records: currentHistory });
+                console.log("💾 บันทึกประวัติงาน 5 ล่าสุดสำเร็จ");
+            } catch (e) {
+                console.error("Save History Error:", e);
+            }
+        };
+
+        window.loadHistory = async () => {
+            const user = auth.currentUser;
+            const historyList = document.getElementById('historyList');
+            if (!user) { historyList.innerHTML = '<div class="text-center text-red-400">กรุณาล็อกอินก่อนครับ</div>'; return; }
+
+            const email = user.email.toLowerCase().trim();
+            try {
+                const docSnap = await getDoc(doc(db, "user_history", email));
+                if (docSnap.exists() && docSnap.data().records && docSnap.data().records.length > 0) {
+                    const records = docSnap.data().records;
+                    let html = '';
+                    records.forEach((rec, index) => {
+                        html += `
+                            <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-600 hover:border-yellow-500/80 transition cursor-pointer group shadow-lg" onclick="restoreWork(${index})">
+                                <div class="flex justify-between items-center mb-3 border-b border-slate-700 pb-2">
+                                    <span class="text-yellow-400 font-bold text-sm tracking-wide">🗓️ ${rec.timestamp}</span>
+                                    <button class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-white text-xs px-4 py-1.5 rounded-full font-bold shadow-md transform group-hover:scale-105 transition flex items-center gap-1">
+                                        <span class="text-base">✨</span> เรียกคืนงานนี้
+                                    </button>
+                                </div>
+                                <p class="text-slate-200 text-base line-clamp-2 leading-relaxed">💡 <span class="font-bold text-teal-300">พล็อตหลัก:</span> ${rec.brief}</p>
+                            </div>
+                        `;
+                    });
+                    window.TEMP_HISTORY = records; 
+                    historyList.innerHTML = html;
+                } else {
+                    historyList.innerHTML = '<div class="text-center text-slate-400 py-10 text-lg">📭 ยังไม่มีประวัติการทำงานในระบบครับ</div>';
+                }
+            } catch (e) {
+                historyList.innerHTML = '<div class="text-center text-red-400 py-10 font-bold">❌ เกิดข้อผิดพลาดในการโหลดประวัติ</div>';
+            }
+        };
+
+        window.restoreWork = (index) => {
+            if (window.TEMP_HISTORY && window.TEMP_HISTORY[index]) {
+                const record = window.TEMP_HISTORY[index];
+                
+                // กำหนดตัวแปรระบบ
+                window.currentGeneratedScript = record.script; 
+                
+                // เรนเดอร์ลงจอ
+                if(typeof window.renderGeminiBoxes === 'function') {
+                     window.renderGeminiBoxes(record.script);
+                } else {
+                     document.getElementById('dynamicOutput').innerHTML = record.script; 
+                }
+                
+                // จัดการ UI
+                document.getElementById('resultContainer')?.classList.remove('hidden');
+                document.getElementById('welcomeScreen')?.classList.add('hidden');
+                document.getElementById('analysisOutput')?.classList.add('hidden');
+                document.getElementById('btnAutoFix')?.classList.add('hidden');
+                
+                toggleHistoryModal();
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'ดึงงานเก่ากลับมาสำเร็จ! ✨', showConfirmButton: false, timer: 3000 });
+            }
+        };
     </script>
 
     <script>
         const SYSTEM_API_KEY = 'AIzaSyDgzcavBUEjGdbT49cd1iKYIPwY1r5lqgU';
-        let currentGeneratedScript = ""; 
+        window.currentGeneratedScript = ""; 
         window.WORKING_MODEL = ""; 
         window.LAST_API_PARTS = []; 
         let loadingInterval; 
@@ -619,7 +746,7 @@
             }
         };
 
-        function renderGeminiBoxes(raw) {
+        window.renderGeminiBoxes = function(raw) {
             const container = document.getElementById('dynamicOutput'); container.innerHTML = '';
             const parts = raw.split(/(```[\s\S]*?```)/g);
             parts.forEach(part => {
@@ -646,9 +773,8 @@
                     container.innerHTML += `<div class="text-slate-300 text-lg leading-relaxed whitespace-pre-wrap px-2">${formatted}</div>`;
                 }
             });
-        }
+        };
 
-        // 🚨 แก้ไขช่วงความยาวประโยค (18-25 คำ) และเครื่องหมายการพักหายใจ 🚨
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -673,7 +799,7 @@
             "10. ⚠️ GOOGLE FLOW PRODUCT LOCK: บอสใช้ระบบ Google Flow โดยมีภาพสินค้าจริงแนบไปเป็น Reference ดังนั้น **ห้ามใช้ Blank Mockup เด็ดขาด!** ในฉากที่ต้องมีสินค้า ให้ระบุใน Image Prompt อย่างชัดเจนว่าต้องใช้ภาพสินค้าที่แนบมา 100% ห้ามเพี้ยน ห้ามมั่วตัวหนังสือต่างดาว",
             "",
             "[CONCEPT-BASED DICTIONARY CONTROL: กฎการหลบเลี่ยงคำต้องห้ามขั้นเด็ดขาด]",
-            "⚠️ ห้ามใช้คำศัพท์ที่เข้าข่าย 'เคลมเกินจริง' หรือ 'ผิดกฎ TikTok' ทั้งหมด โดยให้ใช้ Metaphor (การเปรียบเปรย) แทนเสมอ ตัวอย่างเช่น:",
+            "⚠️ ห้ามใช้คำศัพท์ที่เข้าข่าย 'เคลมเกินจริง' หรือ 'ผิดกฎ TikTok' ทั้งหมด ระบบฐานข้อมูลคำต้องห้ามกว่า 480 คำ โดยให้ใช้ Metaphor (การเปรียบเปรย) แทนเสมอ ตัวอย่างเช่น:",
             "- ห้ามอ้างผลลัพธ์ 100%, การันตี, รับรอง, ดีที่สุด, อันดับ 1 (ให้ใช้คำว่า 'คนทักเยอะมาก', 'ใครเห็นก็ว้าว')",
             "- ห้ามอ้างการรักษาทางการแพทย์: รักษา, หายขาด, ถาวร, หมอ, คลินิก, อย., งานวิจัย (ให้ใช้คำว่า 'ดูแลตรงจุด', 'ฟื้นฟูล้ำลึก')",
             "- ห้ามอ้างความรวดเร็วโอเวอร์: ขาวทันที, ยุบทันที, พลิกชีวิตในคืนเดียว (ให้ใช้คำว่า 'รู้สึกได้ถึงความต่าง', 'เปลี่ยนไปจนสังเกตได้')",
@@ -853,7 +979,6 @@
                 const goalName = goalInput === '1' ? 'สร้างตัวตน/ให้ความรู้ (ห้ามขายของ)' : 'ขายของ/ป้ายยาสินค้า (ชี้เป้า/มี CTA)';
                 let platName = 'Google Flow (จังหวะสมูทธรรมชาติ)'; 
                 let platTime = "8"; 
-                // 🚨 อัปเดตกฎความยาวและเครื่องหมายวรรคตอน ใน Payload 🚨
                 let lengthRule = "บังคับความยาวบทพูด 18-25 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น พร้อมใส่เครื่องหมาย , หรือ . เพื่อให้พากย์เสียงได้สมูท";
                 const characterRule = charDesc.trim() !== "" ? `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
                 let batchScenes = scenesInput > 10 ? 10 : scenesInput;
@@ -934,9 +1059,15 @@
                             throw new Error(errMsg);
                         }
 
-                        currentGeneratedScript = data.candidates[0].content.parts[0].text; 
-                        renderGeminiBoxes(currentGeneratedScript);
+                        window.currentGeneratedScript = data.candidates[0].content.parts[0].text; 
+                        window.renderGeminiBoxes(window.currentGeneratedScript);
                         document.getElementById('resultContainer')?.classList.remove('hidden');
+                        
+                        // 🚨 เซฟลงประวัติอัตโนมัติ (Memory Trigger) 🚨
+                        if (typeof window.autoSaveHistory === 'function') {
+                            const currentBrief = briefIdeaEl ? briefIdeaEl.value : "ไม่ได้ระบุพล็อตเรื่อง";
+                            window.autoSaveHistory(window.currentGeneratedScript, currentBrief);
+                        }
                         
                         success = true;
                         window.WORKING_MODEL = modelName;
@@ -981,7 +1112,7 @@
             const followUpText = followUpEl ? followUpEl.value : "";
             
             if(!followUpText.trim()) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '🦆 พี่จอสAi พิมพ์คำสั่งที่ต้องการแก้ไขก่อนนะครับ!' }); return; }
-            if(!window.LAST_API_PARTS || !currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '⚠️ ต้องสร้างสคริปต์ก่อน 1 รอบครับ!' }); return; }
+            if(!window.LAST_API_PARTS || !window.currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: '⚠️ ต้องสร้างสคริปต์ก่อน 1 รอบครับ!' }); return; }
 
             const btn = document.getElementById('btnFollowUp');
             const btnText = document.getElementById('btnFollowUpText');
@@ -995,16 +1126,24 @@
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
                 let chatHistory = [
                     { role: "user", parts: window.LAST_API_PARTS }, 
-                    { role: "model", parts: [{ text: currentGeneratedScript }] }, 
+                    { role: "model", parts: [{ text: window.currentGeneratedScript }] }, 
                     { role: "user", parts: [{ text: `🚨 คำสั่งแก้ไขเพิ่มเติม:\n${followUpText}\n\n[บังคับ]: แก้ไขตามคำสั่งและส่งโครงสร้าง FULL STORYBOARD กลับมาทั้งหมดทุกซีน รักษากฎเดิม 100%` }] }
                 ];
                 let response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: chatHistory, generationConfig: { temperature: 0.7, maxOutputTokens: 8192 } }) });
                 let data = await response.json();
                 if (!response.ok || data.error) throw new Error(data.error?.message || "การแก้ไขล้มเหลว");
 
-                currentGeneratedScript = data.candidates[0].content.parts[0].text; 
-                renderGeminiBoxes(currentGeneratedScript);
+                window.currentGeneratedScript = data.candidates[0].content.parts[0].text; 
+                window.renderGeminiBoxes(window.currentGeneratedScript);
                 document.getElementById('resultContainer')?.classList.remove('hidden');
+                
+                // 🚨 เซฟลงประวัติอัตโนมัติเมื่อแก้เสร็จ (Memory Trigger) 🚨
+                if (typeof window.autoSaveHistory === 'function') {
+                    const briefIdeaEl = document.getElementById('valBrief');
+                    const currentBrief = briefIdeaEl ? briefIdeaEl.value : "ไม่ได้ระบุพล็อตเรื่อง";
+                    window.autoSaveHistory(window.currentGeneratedScript, currentBrief + ` (แก้ไข: ${followUpText.substring(0, 20)}...)`);
+                }
+
                 if(followUpEl) { followUpEl.value = ''; autoResize(followUpEl); }
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไขเรียบร้อยครับ! ✨', showConfirmButton: false, timer: 3000 });
             } catch (error) {
@@ -1025,7 +1164,7 @@
             const analysisOutput = document.getElementById('analysisOutput');
             const analysisText = document.getElementById('analysisText');
 
-            if (!currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ต้องสร้างสคริปต์ก่อนครับ!' }); return; }
+            if (!window.currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ต้องสร้างสคริปต์ก่อนครับ!' }); return; }
 
             btnAnalyze.disabled = true;
             btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังสแกน...';
@@ -1036,7 +1175,7 @@
             try {
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-1.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
-                const analysisPrompt = `คุณคือ "TikTok Policy AI"\nวิเคราะห์สคริปต์นี้อย่างเข้มงวดที่สุด\n[คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ห้ามเกริ่นนำ ตอบตามรูปแบบนี้เป๊ะๆ:\n\n1. 👁️ ประเมินภาพ:\n(ผล)\n\n2. 🎧 ประเมินเสียง:\n(ผล)\n\n3. 🗣️ ประเมินคำพูด:\n(ผลหาคำเคลม)\n\n4. 📊 โอกาสไวรัล:\n(ผล)\n\n5. ⭐ สรุปคะแนน:\n(คะแนนและการแก้ไข)\n\n[สคริปต์]:\n${currentGeneratedScript}`;
+                const analysisPrompt = `คุณคือ "TikTok Policy AI"\nวิเคราะห์สคริปต์นี้อย่างเข้มงวดที่สุด\n[คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ห้ามเกริ่นนำ ตอบตามรูปแบบนี้เป๊ะๆ:\n\n1. 👁️ ประเมินภาพ:\n(ผล)\n\n2. 🎧 ประเมินเสียง:\n(ผล)\n\n3. 🗣️ ประเมินคำพูด:\n(ผลหาคำเคลม)\n\n4. 📊 โอกาสไวรัล:\n(ผล)\n\n5. ⭐ สรุปคะแนน:\n(คะแนนและการแก้ไข)\n\n[สคริปต์]:\n${window.currentGeneratedScript}`;
                 
                 let response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: analysisPrompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 2500 } }) });
                 let data = await response.json();
@@ -1062,7 +1201,7 @@
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
             const ACTIVE_API_KEY = userInputKey !== "" ? userInputKey : SYSTEM_API_KEY;
 
-            if(!window.LAST_API_PARTS || !currentGeneratedScript) return;
+            if(!window.LAST_API_PARTS || !window.currentGeneratedScript) return;
 
             const btn = document.getElementById('btnAutoFix');
             btn.disabled = true;
@@ -1075,18 +1214,26 @@
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
                 let chatHistory = [
                     { role: "user", parts: window.LAST_API_PARTS }, 
-                    { role: "model", parts: [{ text: currentGeneratedScript }] }, 
+                    { role: "model", parts: [{ text: window.currentGeneratedScript }] }, 
                     { role: "user", parts: [{ text: `🚨 คำสั่งฉุกเฉิน (AUTO-FIX): รีไรท์สคริปต์นี้ใหม่ทั้งหมดให้ปลอดภัย 100% แก้ไขคำต้องห้ามเป็น Metaphor ปรับ Hook ให้ไวรัล รักษากฎภาพและข้อความเดิม ส่ง FULL STORYBOARD กลับมาแบบเป๊ะๆ` }] }
                 ];
                 let response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: chatHistory, generationConfig: { temperature: 0.7, maxOutputTokens: 8192 } }) });
                 let data = await response.json();
                 if (!response.ok || data.error) throw new Error(data.error?.message || "Auto-Fix ล้มเหลว");
 
-                currentGeneratedScript = data.candidates[0].content.parts[0].text; 
-                renderGeminiBoxes(currentGeneratedScript);
+                window.currentGeneratedScript = data.candidates[0].content.parts[0].text; 
+                window.renderGeminiBoxes(window.currentGeneratedScript);
                 document.getElementById('analysisOutput').classList.add('hidden');
                 btn.classList.add('hidden');
                 document.getElementById('resultContainer').classList.remove('hidden');
+                
+                // 🚨 เซฟลงประวัติอัตโนมัติเมื่อ AutoFix เสร็จ (Memory Trigger) 🚨
+                if (typeof window.autoSaveHistory === 'function') {
+                    const briefIdeaEl = document.getElementById('valBrief');
+                    const currentBrief = briefIdeaEl ? briefIdeaEl.value : "ไม่ได้ระบุพล็อตเรื่อง";
+                    window.autoSaveHistory(window.currentGeneratedScript, currentBrief + ` (สคริปต์ผ่านการ Auto-Fix)`);
+                }
+
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเกรดสมบูรณ์แบบ 100% แล้วครับ! ✨', showConfirmButton: false, timer: 3000 });
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'Error', text: error.message });
