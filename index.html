@@ -763,18 +763,29 @@
                             </div>
                         </div>`;
                 } else if (part.trim() !== '') {
+                    // 🚨 เพิ่มตัวดักจับ [CAPTION_BOX] ตรงนี้
                     let formatted = escapeHTML(part.trim())
+                        .replace(/\[CAPTION_BOX\]([\s\S]*?)\[\/CAPTION_BOX\]/g, (match, p1) => {
+                            return `<div class="rounded-2xl overflow-hidden border border-blue-500/40 bg-[#0f172a]/90 shadow-[0_5px_20px_rgba(0,0,0,0.4)] my-10 backdrop-blur-md transition hover:scale-[1.01]">
+                                <div class="flex justify-between items-center bg-slate-800/90 px-6 py-4 border-b border-blue-500/30">
+                                    <span class="text-base font-bold text-blue-300 tracking-widest flex items-center gap-2"><span class="text-2xl">📱</span> แคปชั่นพร้อมใช้ (TikTok/Reels)</span>
+                                    <button onclick="copyCode(this)" class="flex items-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-6 py-2.5 rounded-full transition shadow-lg">📋 คัดลอกแคปชั่น</button>
+                                </div>
+                                <div class="p-7">
+                                    <div class="hidden"></div> <pre class="text-blue-50 font-sans text-lg whitespace-pre-wrap leading-relaxed">${p1.trim()}</pre>
+                                </div>
+                            </div>`;
+                        })
                         .replace(/(\[STEP -1:.*?\])/g, '<span class="text-2xl font-extrabold text-red-400 block mt-8 mb-3 pb-2 border-b border-red-500/20 drop-shadow-sm">$1</span>')
                         .replace(/(\[STEP 0:.*?\])/g, '<span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400 block mt-10 mb-5 pb-3 border-b border-yellow-500/20 drop-shadow-sm">$1</span>')
                         .replace(/(\[STEP 0\.5:.*?\])/g, '<span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400 block mt-10 mb-5 pb-3 border-b border-teal-500/20 drop-shadow-sm">$1</span>')
                         .replace(/(SCENE \d+\s*:[^\n]*)/g, '<span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400 block mt-10 mb-4 pb-2 border-b border-orange-500/20 drop-shadow-sm">$1</span>')
                         .replace(/(FULL STORYBOARD.*?)/g, '<span class="text-4xl font-extrabold text-white block mt-12 mb-6">$1</span>')
-                        .replace(/(# อยากได้อะไร สงสัยอะไร ให้พิมพ์คุยกับจอสก่อน จอสฉลาดกว่าเจ้านายจอสอีก)/g, '<h1 class="text-4xl font-extrabold text-orange-500 mt-12 text-center animate-pulse">$1</h1>');
+                        .replace(/(# อยากเปลี่ยนแปลงแบบไหน พิมพ์ในกล่องข้อความด้านบนเลย คิดว่าผมเป็นเพื่อนคนนึง คุยภาษาคนได้เลยผมเข้าใจ)/g, '<h1 class="text-4xl font-extrabold text-orange-500 mt-12 text-center animate-pulse">$1</h1>');
                     container.innerHTML += `<div class="text-slate-300 text-lg leading-relaxed whitespace-pre-wrap px-2">${formatted}</div>`;
                 }
             });
         };
-
         const SYSTEM_PROMPT = [
             "[SYSTEM INSTRUCTION]",
             "คุณคือ \"Joss Ai Mastermind\" ซึ่งเกิดจากการรวมมันสมองของสุดยอดทีมงาน 5 คนเข้าด้วยกันและทำงานแบบอัตโนมัติ:",
@@ -873,8 +884,9 @@
             "📱 แคปชั่นสำหรับโพสต์ (TikTok/Reels)",
             "[เขียนแคปชั่นสั้นๆ ห้าม Hard Sell] [#แฮชแท็ก 4 ตัว]และ มี#จอสAi ในลำดับที่2 เสมอ",
             "",
-            "[ข้อเสนอจาก จอส Ai]:",
-            "\"อยากให้ผู้เชี่ยวชาญทุกคนวิเคราะห์การละเมิด และให้คะแนนอีกสักรอบไหม ถ้าต้องการพิม ok มาเลย\"",
+            "[CAPTION_BOX]",
+            "[เขียนแคปชั่นสั้นๆ แบบ Storytelling ห้าม Hard Sell เด็ดขาด] [#แฮชแท็ก 4 ตัว] และต้องมี #จอสAi ในลำดับที่ 2 เสมอ",
+            "[/CAPTION_BOX]",
             "",
             "# อยากได้อะไร สงสัยอะไร ให้พิมพ์คุยกับจอสก่อน จอสฉลาดกว่าเจ้านายจอสอีก"
         ].join("\n");
@@ -1164,38 +1176,74 @@
             const analysisOutput = document.getElementById('analysisOutput');
             const analysisText = document.getElementById('analysisText');
 
-            if (!window.currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ต้องสร้างสคริปต์ก่อนครับ!' }); return; }
+            if (!window.currentGeneratedScript) { Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'ต้องสร้างสคริปต์ก่อนครับบอส!' }); return; }
 
             btnAnalyze.disabled = true;
-            btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> กำลังสแกน...';
+            btnAnalyze.innerHTML = '<span class="text-2xl animate-spin">⏳</span> สภาวิชาการกำลังวิเคราะห์เชิงลึก...';
             analysisOutput.classList.remove('hidden');
             document.getElementById('btnAutoFix')?.classList.add('hidden');
-            analysisText.innerHTML = '<span class="animate-pulse text-orange-400 font-bold">กำลังวิเคราะห์ตามกฎ TikTok...</span>';
+            analysisText.innerHTML = '<span class="animate-pulse text-orange-400 font-bold text-xl flex items-center gap-3">กำลังประมวลผลตามกฎ TikTok Policy...</span>';
 
             try {
                 const MODEL_NAME = window.WORKING_MODEL || 'gemini-1.5-flash';
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${ACTIVE_API_KEY}`;
-                const analysisPrompt = `คุณคือ "TikTok Policy AI"\nวิเคราะห์สคริปต์นี้อย่างเข้มงวดที่สุด\n[คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ห้ามเกริ่นนำ ตอบตามรูปแบบนี้เป๊ะๆ:\n\n1. 👁️ ประเมินภาพ:\n(ผล)\n\n2. 🎧 ประเมินเสียง:\n(ผล)\n\n3. 🗣️ ประเมินคำพูด:\n(ผลหาคำเคลม)\n\n4. 📊 โอกาสไวรัล:\n(ผล)\n\n5. ⭐ สรุปคะแนน:\n(คะแนนและการแก้ไข)\n\n[สคริปต์]:\n${window.currentGeneratedScript}`;
                 
-                let response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: analysisPrompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 2500 } }) });
+                // 🚨 อัปเกรด Prompt เป็นนักวิชาการ
+                const analysisPrompt = `คุณคือ "TikTok Policy & Content Analyst AI" ระดับผู้เชี่ยวชาญเชิงวิชาการ
+วิเคราะห์สคริปต์นี้อย่างละเอียดและเข้มงวดที่สุด
+[คำสั่งเด็ดขาด]: ห้ามใช้เครื่องหมาย # หรือ * ห้ามเกริ่นนำ ตอบตามรูปแบบนี้เป๊ะๆ:
+
+1. 👁️ ประเมินด้านภาพและ Visual [คะแนน: X/10]
+(วิเคราะห์ความดึงดูด, การจัดวางสินค้า, ความเสี่ยงด้านภาพผิดกฎแบบลงลึก)
+
+2. 🎧 ประเมินด้านเสียงและ Pacing [คะแนน: X/10]
+(วิเคราะห์จังหวะการเว้นวรรค, ความยาวประโยค 18-25 คำ, โทนเสียงอารมณ์ร่วม)
+
+3. 🗣️ ประเมินด้านภาษาและคำเคลม [คะแนน: X/10]
+(วิเคราะห์เชิงลึกเรื่องการหลบเลี่ยงคำแบน 480 คำ, ความปลอดภัยของ Metaphor ที่ใช้)
+
+4. 📊 โอกาสไวรัลและจิตวิทยา [คะแนน: X/10]
+(วิเคราะห์โครงสร้าง Hook-Body-CTA, การกระตุ้นความรู้สึกและ FOMO ของคนดู)
+
+5. ⭐ สรุปเกรดรวม [คะแนนรวม: X/40]
+(สรุปจุดแข็ง จุดอ่อน และข้อเสนอแนะเชิงวิชาการเพื่อการปรับแก้ที่สมบูรณ์แบบ)
+
+[สคริปต์]:
+${window.currentGeneratedScript}`;
+                
+                let response = await fetch(API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: analysisPrompt }] }], 
+                        generationConfig: { temperature: 0.2, maxOutputTokens: 3000 } 
+                    }) 
+                });
+                
                 let data = await response.json();
                 if (!response.ok || data.error) throw new Error(data.error?.message || "การวิเคราะห์ล้มเหลว");
 
                 if (data.candidates && data.candidates[0].content && analysisText) {
                     let rawText = escapeHTML(data.candidates[0].content.parts[0].text);
+                    
+                    // แปลง **ข้อความ** เป็นตัวหนา
                     rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400">$1</strong>');
-                    rawText = rawText.replace(/(1\.|2\.|3\.|4\.|5\.)\s*(👁️|🎧|🗣️|📊|⭐)(.*?)(?=\n|$)/g, '<div class="text-xl mt-6 mb-2 border-b border-slate-600 pb-2 text-orange-400 font-extrabold flex items-center gap-2"><span>$2</span> $3</div>');
+                    
+                    // 🚨 จับคู่หัวข้อและดึงป้ายคะแนน [คะแนน: X/10] มาทำปุ่ม Badge สวยๆ
+                    rawText = rawText.replace(/(1\.|2\.|3\.|4\.|5\.)\s*(👁️|🎧|🗣️|📊|⭐)\s*(.*?)\s*\[(คะแนน|คะแนนรวม):\s*(.*?)\]/g, 
+                        '<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-10 mb-4 border-b border-slate-600 pb-3 gap-3"><div class="text-2xl text-orange-400 font-extrabold flex items-center gap-2"><span>$2</span> $3</div><div class="bg-slate-900 text-yellow-400 px-5 py-2 rounded-xl text-xl font-black border-2 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]">คะแนน: $5</div></div>'
+                    );
+                    
                     analysisText.innerHTML = rawText.replace(/\n/g, '<br>');
                     document.getElementById('btnAutoFix').classList.remove('hidden');
                 }
             } catch (error) {
-                analysisText.innerHTML = `<span class="text-red-500 font-bold">❌ Error: ${error.message}</span>`;
+                analysisText.innerHTML = `<span class="text-red-500 font-bold text-lg border border-red-500/50 p-4 rounded-xl bg-red-900/20 block">❌ Error: ${error.message}</span>`;
             } finally {
                 btnAnalyze.disabled = false;
-                btnAnalyze.innerHTML = '<span class="text-2xl">✨</span> ตรวจสอบเสร็จสิ้น (ดูผลด้านล่าง)';
+                btnAnalyze.innerHTML = '<span class="text-2xl">✨</span> ตรวจสอบเชิงวิชาการเสร็จสิ้น';
             }
         });
-
         document.getElementById('btnAutoFix').addEventListener('click', async () => {
             const userInputKeyEl = document.getElementById('userApiKey');
             const userInputKey = userInputKeyEl ? userInputKeyEl.value.trim() : "";
