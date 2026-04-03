@@ -117,9 +117,7 @@
                     <textarea id="valFollowUp" rows="3" oninput="autoResize(this)" class="w-full glass-input rounded-2xl p-5 text-base resize-none leading-relaxed" placeholder="พิมพ์สิ่งที่คุณต้องการปรับแก้ตรงนี้ โทนเสียง แสง สี หรือเลือกจากปุ่มด้านล่าง..."></textarea>
                     
                     <div class="flex flex-wrap gap-3 mt-4">
-                        <button type="button" onclick="setFollowUpText('รันซีนต่อไปเชื่อมจากเนื้อหาเดิมได้เลย')" class="text-sm bg-slate-800 hover:bg-slate-700 text-yellow-300 px-4 py-2.5 rounded-lg border border-yellow-500/30 transition shadow-sm font-bold">➕ เพิ่มซีนต่อไป</button>
-                        <button type="button" onclick="setFollowUpText('ปรับบทพูดให้ปากแซ่บขึ้น ดิบเถื่อน จิกกัด โดนใจคนดูมากขึ้น')" class="text-sm bg-slate-800 hover:bg-slate-700 text-orange-300 px-4 py-2.5 rounded-lg border border-orange-500/30 transition shadow-sm font-bold">🌶️ ปรับให้แรงขึ้น</button>
-                        <button type="button" onclick="setFollowUpText('เน้นปิดการขายช่วงท้าย ให้มี Call to Action แรงๆ ชัดเจน')" class="text-sm bg-slate-800 hover:bg-slate-700 text-green-300 px-4 py-2.5 rounded-lg border border-green-500/30 transition shadow-sm font-bold">💰 เน้นปิดการขาย</button>
+                        <button type="button" onclick="runNextBatch()" class="text-sm bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white px-5 py-2.5 rounded-lg border border-yellow-400/50 transition shadow-[0_0_15px_rgba(249,115,22,0.4)] font-extrabold animate-pulse">⏩ พิมพ์ตอนต่อไป (ซีนที่เหลือ)</button>
                     </div>
 
                     <button id="btnFollowUp" class="mt-6 w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white font-bold py-5 text-lg rounded-xl transition shadow-lg flex justify-center items-center gap-2">
@@ -667,7 +665,9 @@
         window.currentGeneratedScript = ""; 
         window.WORKING_MODEL = ""; 
         window.LAST_API_PARTS = []; 
-        let loadingInterval; 
+        let loadingInterval;
+        window.TOTAL_SCENES_TARGET = 0;
+        window.CURRENT_SCENE_COUNT = 0; 
 
         let characterFiles = [];
         let productFiles = [];
@@ -1016,6 +1016,15 @@
                 let lengthRule = "บังคับความยาวบทพูด 18-25 คำเป๊ะๆ ห้ามขาดห้ามเกิน และต้องเป็นภาษาไทยเท่านั้น พร้อมใส่เครื่องหมาย , หรือ . เพื่อให้พากย์เสียงได้สมูท";
                 const characterRule = charDesc.trim() !== "" ? `บังคับสร้างตัวละครตามนี้ 100%: "${charDesc}"` : "ออกแบบตัวละครให้เหมาะสมกับเนื้อหา";
                 let batchScenes = scenesInput > 10 ? 10 : scenesInput;
+                window.TOTAL_SCENES_TARGET = scenesInput;
+                window.CURRENT_SCENE_COUNT = 10; // กำหนดว่ารอบแรกรัน 10 ซีน
+
+                let targetPromptMsg = "";
+                if (scenesInput > 10) {
+                    targetPromptMsg = `5. ⚠️ **ระบบแบ่งการทำงาน (BATCH MODE):** บอสต้องการทั้งหมด ${scenesInput} ซีน แต่เพื่อความละเอียด **รอบนี้ให้คุณเขียนสคริปต์มาแค่ SCENE 1 ถึง SCENE 10 เท่านั้น** แล้วตอนจบสคริปต์ให้คุณพิมพ์ข้อความแจ้งเตือนว่า: "\n\n💡 จอส Ai: ผมเขียนให้ 10 ซีนแรกแล้วครับบอส! ถ้าอยากให้ผมลุยซีนที่ 11 ถึง ${scenesInput} ต่อ... พิมพ์คำว่า **'ต่อ'** มาได้เลยครับ!"`;
+                } else {
+                    targetPromptMsg = `5. จำนวนซีนที่จะสร้าง: บังคับรันทั้งหมด ${scenesInput} ซีน (รันให้ครบจบในรอบเดียว)`;
+                }
 
                 let customStylePrompt = "";
                 if(moodInput !== "Auto") customStylePrompt += `\n   - อารมณ์/บรรยากาศ (Mood): บังคับใส่คีย์เวิร์ด "${moodInput}" ลงใน Image Prompt ทุกซีน`;
@@ -1049,7 +1058,7 @@
 2. เป้าหมายคลิป: ${goalName}
 3. รูปแบบ Typography: ${textDesignPrompt}
 4. แพลตฟอร์ม/ความยาว: โหมด ${platName} | บังคับ Video Prompt เวลา = ${platTime} วินาที | กฎความยาว: ${lengthRule}
-5. จำนวนซีนที่จะสร้างใน Batch นี้: บังคับรัน ${batchScenes} ซีน (จากเป้าหมายทั้งหมด ${scenesInput} ซีน)
+${targetPromptMsg}
 6. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
 7. ลักษณะตัวละคร: ${characterRule}
 8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
