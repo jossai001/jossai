@@ -8,13 +8,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-       body { 
-    font-family: 'Sarabun', sans-serif; 
-    /* เปลี่ยนสีพื้นหลังตรงนี้ เป็นการไล่สีจากฟ้าสว่าง -> น้ำเงิน -> กรมท่า */
-    background: radial-gradient(circle at top left, #06b6d4, #0284c7, #0f172a); 
-    color: #f8fafc; 
-    overflow: hidden; 
-}
+       /* 🎨 THEME ENGINE 🎨 */
+        :root {
+            --bg-main: radial-gradient(circle at top left, #06b6d4, #0284c7, #0f172a);
+            --panel-bg: rgba(30, 41, 59, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+        }
+        [data-theme="light"] {
+            --bg-main: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            --panel-bg: rgba(255, 255, 255, 0.7);
+            --panel-border: rgba(0, 0, 0, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-muted: #334155;
+        }
+        [data-theme="matcha"] {
+            --bg-main: linear-gradient(135deg, #f0fdf4, #bbf7d0);
+            --panel-bg: rgba(255, 255, 255, 0.7);
+            --panel-border: rgba(34, 197, 94, 0.2);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #14532d;
+            --text-muted: #166534;
+        }
+        [data-theme="latte"] {
+            --bg-main: linear-gradient(135deg, #fff7ed, #fde68a);
+            --panel-bg: rgba(255, 255, 255, 0.7);
+            --panel-border: rgba(217, 119, 6, 0.2);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #451a03;
+            --text-muted: #78350f;
+        }
+        [data-theme="sakura"] {
+            --bg-main: linear-gradient(135deg, #fdf2f8, #fbcfe8);
+            --panel-bg: rgba(255, 255, 255, 0.7);
+            --panel-border: rgba(236, 72, 153, 0.2);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #831843;
+            --text-muted: #9d174d;
+        }
+
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-main); 
+            overflow: hidden; 
+            transition: background 0.5s ease, color 0.3s ease;
+        }
+        .glass-panel { background: var(--panel-bg) !important; border: 1px solid var(--panel-border) !important; transition: all 0.3s ease; }
+        .glass-input { background: var(--input-bg) !important; color: var(--text-main) !important; border-color: var(--panel-border) !important; }
+        
+        /* 🛡️ ป้องกันสีตัวหนังสือกลืนกับพื้นหลังในโหมดมินิมอล 🛡️ */
+        [data-theme]:not([data-theme="dark"]) .text-white,
+        [data-theme]:not([data-theme="dark"]) .text-slate-200,
+        [data-theme]:not([data-theme="dark"]) .text-slate-300,
+        [data-theme]:not([data-theme="dark"]) .text-slate-400 { color: var(--text-muted) !important; }
+        [data-theme]:not([data-theme="dark"]) h1, 
+        [data-theme]:not([data-theme="dark"]) h2, 
+        [data-theme]:not([data-theme="dark"]) h3, 
+        [data-theme]:not([data-theme="dark"]) h4 { color: var(--text-main) !important; }
+        [data-theme]:not([data-theme="dark"]) .bg-slate-800,
+        [data-theme]:not([data-theme="dark"]) .bg-slate-900,
+        [data-theme]:not([data-theme="dark"]) .bg-\[\#0f172a\] { background-color: rgba(255, 255, 255, 0.5) !important; border-color: var(--panel-border) !important; }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #eab308; border-radius: 10px; }
@@ -77,6 +134,13 @@
                 <h1 class="text-2xl font-extrabold tracking-wide text-white uppercase">Joss Ai <span class="text-yellow-400 font-light hidden sm:inline">Studio</span></h1>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
+                <div class="hidden md:flex items-center gap-2 bg-black/20 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner">
+                    <button onclick="changeTheme('dark')" class="w-6 h-6 rounded-full bg-gradient-to-br from-cyan-500 to-blue-900 border-2 border-transparent hover:border-white hover:scale-110 transition" title="Dark Mode (ธีมดั้งเดิม)"></button>
+                    <button onclick="changeTheme('light')" class="w-6 h-6 rounded-full bg-gradient-to-br from-gray-100 to-gray-300 border-2 border-transparent hover:border-white hover:scale-110 transition" title="Light Mode (สว่าง)"></button>
+                    <button onclick="changeTheme('matcha')" class="w-6 h-6 rounded-full bg-gradient-to-br from-green-100 to-green-300 border-2 border-transparent hover:border-white hover:scale-110 transition" title="Matcha (ชาเขียวมินิมอล)"></button>
+                    <button onclick="changeTheme('latte')" class="w-6 h-6 rounded-full bg-gradient-to-br from-orange-50 to-amber-200 border-2 border-transparent hover:border-white hover:scale-110 transition" title="Latte (กาแฟอบอุ่น)"></button>
+                    <button onclick="changeTheme('sakura')" class="w-6 h-6 rounded-full bg-gradient-to-br from-pink-100 to-rose-300 border-2 border-transparent hover:border-white hover:scale-110 transition" title="Sakura (ซากุระหวานๆ)"></button>
+                </div>
                 <div class="hidden md:flex bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/50 text-orange-300 text-xs font-bold px-5 py-2 rounded-full uppercase tracking-widest items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse shadow-sm"></span> Mastermind Active
                 </div>
@@ -668,6 +732,28 @@
         let loadingInterval;
         window.TOTAL_SCENES_TARGET = 0;
         window.CURRENT_SCENE_COUNT = 0; 
+        // 👇 🎨 แทรกโค้ดระบบเปลี่ยนสีธีมตรงนี้ 🎨 👇
+        window.changeTheme = function(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('joss_theme', themeName);
+            
+            // แจ้งเตือนเท่ๆ ตอนเปลี่ยนธีม
+            let icon = '✨';
+            if(themeName === 'dark') icon = '🌙';
+            if(themeName === 'light') icon = '☀️';
+            if(themeName === 'matcha') icon = '🍃';
+            if(themeName === 'latte') icon = '☕';
+            if(themeName === 'sakura') icon = '🌸';
+            
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `${icon} เปลี่ยนธีมเรียบร้อย!`, showConfirmButton: false, timer: 1500 });
+        };
+        
+        // ให้ระบบจำสีที่บอสเลือกไว้ (โหลดสีเดิมตอนเปิดเว็บใหม่)
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('joss_theme') || 'dark'; // ค่าเริ่มต้นคือสี dark
+            document.body.setAttribute('data-theme', savedTheme);
+        });
+        // 👆 สิ้นสุดโค้ดระบบเปลี่ยนสีธีม 👆
 
         let characterFiles = [];
         let productFiles = [];
