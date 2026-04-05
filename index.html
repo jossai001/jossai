@@ -240,26 +240,30 @@
                 <p class="text-[10px] text-orange-200/60 mt-2 font-light">*ทีม Graphic Designer จะนำสไตล์นี้ไปสร้างภาพปกอัตโนมัติ</p>
             </div>
 
-            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm">
+           <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm relative z-10">
                 <label class="flex items-center gap-2 text-base font-bold text-yellow-300 mb-4 uppercase tracking-wide">
                     <span>🎬</span> 1. ตั้งค่าเป้าหมาย
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
-                    <input type="radio" name="goal" id="goal1" value="1">
-                    <label for="goal1" class="glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300">🌟 สร้างตัวตน</label>
-                    <input type="radio" name="goal" id="goal2" value="2" checked>
-                    <label for="goal2" class="glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300">💰 ขายของ</label>
+                    <div>
+                        <input type="radio" name="goal" id="goal1" value="1" class="peer hidden">
+                        <label for="goal1" class="block w-full glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300 peer-checked:border-orange-500 peer-checked:bg-gradient-to-br peer-checked:from-yellow-500/20 peer-checked:to-orange-500/20 peer-checked:text-white transition-all">🌟 สร้างตัวตน</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="goal" id="goal2" value="2" class="peer hidden" checked>
+                        <label for="goal2" class="block w-full glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300 peer-checked:border-orange-500 peer-checked:bg-gradient-to-br peer-checked:from-yellow-500/20 peer-checked:to-orange-500/20 peer-checked:text-white transition-all">💰 ขายของ</label>
+                    </div>
                 </div>
-                <select id="valTypo" class="w-full glass-input rounded-xl p-3 text-sm outline-none mb-3 font-semibold border border-slate-700">
+                <select id="valTypo" class="w-full glass-input rounded-xl p-3 text-sm outline-none mb-3 font-semibold border border-slate-700 relative z-20">
                     <option value="3">🔥 ทุกฉากมี Text ฮุกดึงดูด</option>
                     <option value="2">🖼️ มี Text เฉพาะปก (Scene 1)</option>
                     <option value="1">🚫 ทุกฉากไม่มี Text เลย</option>
                 </select>
-                <div class="flex items-center justify-between glass-input rounded-xl p-3 px-5 border border-slate-700">
+                <div class="flex items-center justify-between glass-input rounded-xl p-3 px-5 border border-slate-700 relative z-20">
                     <span class="text-sm text-slate-400 font-bold">จำนวนฉาก (ซีน):</span>
                     <input type="number" id="valScenes" value="6" min="1" max="100" class="w-20 bg-transparent text-right outline-none font-bold text-yellow-400 text-xl">
                 </div>
-            </div>
+            </div>>
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
@@ -378,17 +382,30 @@
                     <p class="text-[10px] text-purple-300/60 mt-2 font-light">*AI จะสะกดจิตคนดูผ่าน Hook และบทพูดขั้นสุด</p>
             </div>
 
-            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm">
+            <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm relative z-10">
                 <label class="flex items-center gap-2 text-base font-bold text-teal-300 mb-4 uppercase tracking-wide">
                     <span>🎭</span> 3. ตัวละคร (สูงสุด 4 รูป)
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
-                    <input type="radio" name="style" id="styleA" value="A" checked>
-                    <label for="styleA" class="glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300">👱‍♀️ คนจริง</label>
-                    <input type="radio" name="style" id="styleB" value="B">
-                    <label for="styleB" class="glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300">🧸 การ์ตูน 3D</label>
-                    <div class="grid grid-cols-1 gap-3 mb-4">
-</div>
+                    <div>
+                        <input type="radio" name="style" id="styleA" value="A" class="peer hidden" checked>
+                        <label for="styleA" class="block w-full glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300 peer-checked:border-teal-500 peer-checked:bg-gradient-to-br peer-checked:from-teal-500/20 peer-checked:to-cyan-500/20 peer-checked:text-white transition-all">👱‍♀️ คนจริง</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="style" id="styleB" value="B" class="peer hidden">
+                        <label for="styleB" class="block w-full glass-input rounded-xl p-3 text-center cursor-pointer font-bold text-slate-300 peer-checked:border-teal-500 peer-checked:bg-gradient-to-br peer-checked:from-teal-500/20 peer-checked:to-cyan-500/20 peer-checked:text-white transition-all">🧸 การ์ตูน 3D</label>
+                    </div>
+                </div>
+                
+                <div id="charDropzone" class="upload-box rounded-xl p-4 flex flex-col items-center justify-center relative mb-3 border-2 border-dashed border-teal-500/30 hover:border-teal-400 h-24 z-20">
+                    <span class="text-3xl mb-1">📸</span>
+                    <span class="text-xs text-slate-400 text-center">คลิกหรือลากรูปมาวางที่นี่<br>(คลุมดำหลายรูปได้ Max 4)</span>
+                    <input type="file" id="imgChar" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" multiple>
+                </div>
+                <div id="charPreviewContainer" class="flex flex-wrap gap-2 mb-4"></div>
+
+                <textarea id="valChar" oninput="autoResize(this)" class="w-full glass-input rounded-xl p-3 text-xs font-medium resize-none relative z-20" placeholder="อธิบายรูปลักษณ์ตัวละคร..."></textarea>
+            </div>
                 </div>
                 
                 <div id="charDropzone" class="upload-box rounded-xl p-4 flex flex-col items-center justify-center relative mb-3 border-2 border-dashed border-teal-500/30 hover:border-teal-400 h-24">
