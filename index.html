@@ -104,8 +104,25 @@
             </div>
 
             <div id="resultContainer" class="hidden max-w-5xl mx-auto pb-24 pt-4">
-                <h3 class="text-3xl font-extrabold text-yellow-300 flex items-center gap-3 mb-10 bg-yellow-900/30 p-6 rounded-2xl border border-yellow-500/30 shadow-lg">
-                    <span class="text-4xl">🎉</span> สคริปต์ Mastermind พร้อมใช้งานแล้ว!
+                <h3 class="text-3xl font-extrabold text-yellow-300 flex flex-col md:flex-row items-start md:items-center justify-between mb-10 bg-yellow-900/30 p-6 rounded-2xl border border-yellow-500/30 shadow-lg group relative gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">🎉</span> สคริปต์ Mastermind พร้อมใช้งานแล้ว!
+                    </div>
+                    <!-- โซนปุ่มแยกภาพ/วิดีโอ (สว่างเมื่อเมาส์ชี้) -->
+                    <div class="flex flex-wrap gap-2 opacity-20 group-hover:opacity-100 transition-all duration-300 z-10">
+                        <!-- ปุ่ม 1: กวาดเฉพาะ Image Prompt -->
+                        <button onclick="copyImagePrompts()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 border border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] cursor-pointer hover:scale-105 transition-transform" title="คัดลอกเฉพาะคำสั่งสร้างภาพ (GEN IMAGE)">
+                            <span class="text-lg">🖼️</span> <span class="tracking-wide">Copy Image</span>
+                        </button>
+                        <!-- ปุ่ม 2: กวาดเฉพาะ Video Prompt -->
+                        <button onclick="copyVideoPrompts()" class="bg-gradient-to-r from-rose-600 to-pink-600 text-white hover:from-rose-500 hover:to-pink-500 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 border border-rose-400 shadow-[0_0_15px_rgba(225,29,72,0.4)] cursor-pointer hover:scale-105 transition-transform" title="คัดลอกเฉพาะคำสั่งสร้างวิดีโอ (GEN VIDEO)">
+                            <span class="text-lg">🎬</span> <span class="tracking-wide">Copy Video</span>
+                        </button>
+                        <!-- ปุ่ม 3: คัดลอกข้อความเต็มทั้งหมดเผื่อไว้ -->
+                        <button onclick="copyAllScript()" class="bg-slate-800 text-slate-300 hover:text-yellow-400 px-3 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 border border-slate-600 hover:border-yellow-500 cursor-pointer shadow-md" title="คัดลอกข้อความเต็มทั้งหมด">
+                            <span class="text-lg">📋</span> <span class="hidden sm:inline">All</span>
+                        </button>
+                    </div>
                 </h3>
                 
                 <div id="dynamicOutput" class="space-y-8 text-base"></div>
@@ -1355,6 +1372,74 @@ ${window.currentGeneratedScript}`;
                 document.getElementById('loadingStatus').classList.add('hidden');
             }
         });
+
+        // ==========================================
+        // 🖼️ ฟังก์ชันลับ 1: ดึงเฉพาะ Prompt ภาพ (GEN IMAGE)
+        // ==========================================
+        window.copyImagePrompts = () => {
+            if (!window.currentGeneratedScript) {
+                window.showToast('ยังไม่มีสคริปต์ให้คัดลอกครับ!', 'warning');
+                return;
+            }
+            let imagePrompts = "";
+            const parts = window.currentGeneratedScript.split('```');
+            for (let i = 0; i < parts.length; i++) {
+                if (i % 2 !== 0) { 
+                    if (parts[i].includes('--ar') || parts[i].includes('8k resolution') || parts[i].includes('cinematic lighting')) {
+                        let cleanCode = parts[i].replace(/^[a-z]*\n/i, '').trim();
+                        imagePrompts += cleanCode + "\n\n";
+                    }
+                }
+            }
+            if (imagePrompts.trim() !== "") {
+                navigator.clipboard.writeText(imagePrompts.trim()).then(() => {
+                    window.showToast('🖼️ คัดลอกเฉพาะ Prompt ภาพ เรียบร้อย!', 'success');
+                }).catch(err => window.showToast('❌ คัดลอกไม่สำเร็จ', 'error'));
+            } else {
+                window.showToast('❌ ไม่พบคำสั่งสร้างภาพในสคริปต์', 'error');
+            }
+        };
+
+        // ==========================================
+        // 🎬 ฟังก์ชันลับ 2: ดึงเฉพาะ Prompt วิดีโอ (GEN VIDEO)
+        // ==========================================
+        window.copyVideoPrompts = () => {
+            if (!window.currentGeneratedScript) {
+                window.showToast('ยังไม่มีสคริปต์ให้คัดลอกครับ!', 'warning');
+                return;
+            }
+            let videoPrompts = "";
+            const parts = window.currentGeneratedScript.split('```');
+            for (let i = 0; i < parts.length; i++) {
+                if (i % 2 !== 0) { 
+                    if (parts[i].includes('A high-quality clip') || parts[i].includes('Audio Requirement')) {
+                        let cleanCode = parts[i].replace(/^[a-z]*\n/i, '').trim();
+                        videoPrompts += cleanCode + "\n\n";
+                    }
+                }
+            }
+            if (videoPrompts.trim() !== "") {
+                navigator.clipboard.writeText(videoPrompts.trim()).then(() => {
+                    window.showToast('🎬 คัดลอกเฉพาะ Prompt วิดีโอ เรียบร้อย!', 'success');
+                }).catch(err => window.showToast('❌ คัดลอกไม่สำเร็จ', 'error'));
+            } else {
+                window.showToast('❌ ไม่พบคำสั่งสร้างวิดีโอในสคริปต์', 'error');
+            }
+        };
+
+        // ==========================================
+        // 📋 ฟังก์ชันลับ 3: คัดลอกสคริปต์ทั้งหมด (เนื้อหาเต็ม)
+        // ==========================================
+        window.copyAllScript = () => {
+            if (!window.currentGeneratedScript) {
+                window.showToast('ยังไม่มีสคริปต์ให้คัดลอกครับ!', 'warning');
+                return;
+            }
+            navigator.clipboard.writeText(window.currentGeneratedScript).then(() => {
+                window.showToast('📋 คัดลอกข้อความเต็มทั้งหมดเรียบร้อยแล้ว!', 'success');
+            });
+        };
+
     </script>
 </body>
 </html>
