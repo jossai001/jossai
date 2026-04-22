@@ -195,7 +195,7 @@
 
             <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 shadow-sm">
                 <label class="flex items-center gap-2 text-base font-bold text-yellow-300 mb-4 uppercase tracking-wide">
-                    <span>🎬</span> 1. ตั้งค่าเป้าหมาย
+                    <span>🎬</span> 1. 
                 </label>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="radio" name="goal" id="goal1" value="1">
@@ -208,9 +208,17 @@
                     <option value="2">🖼️ มี Text เฉพาะปก (Scene 1)</option>
                     <option value="1">🚫 ทุกฉากไม่มี Text เลย</option>
                 </select>
-                <div class="flex items-center justify-between glass-input rounded-xl p-3 px-5 border border-slate-700">
+               <div class="flex items-center justify-between glass-input rounded-xl p-3 px-5 border border-slate-700">
                     <span class="text-sm text-slate-400 font-bold">จำนวนฉาก (ซีน):</span>
                     <input type="number" id="valScenes" value="6" min="1" max="100" class="w-20 bg-transparent text-right outline-none font-bold text-yellow-400 text-xl">
+                </div>
+                
+                <div class="mt-3 bg-gradient-to-r from-orange-500/20 to-yellow-500/10 border border-orange-500/40 p-3 rounded-xl flex items-center gap-3 shadow-inner hover:border-orange-400 transition">
+                    <input type="checkbox" id="valUgcMode" class="w-5 h-5 accent-orange-500 cursor-pointer rounded">
+                    <label for="valUgcMode" class="text-sm font-bold text-orange-300 cursor-pointer flex-1 leading-tight tracking-wide">
+                        📦 เปิดโหมด UGC Realism & Stock <br>
+                        <span class="text-[10px] text-orange-200/70 font-light">(ภาพมือถือ + สต็อกแน่น + ป้ายราคาป่วนสายตา)</span>
+                    </label>
                 </div>
             </div>
 
@@ -972,6 +980,8 @@
             const visualEl = document.getElementById('valVisual');
             const psychEl = document.getElementById('valPsychology');
             const psychInput = psychEl ? psychEl.value : "None";
+            const ugcModeEl = document.getElementById('valUgcMode');
+            const isUgcMode = ugcModeEl ? ugcModeEl.checked : false;
 
             const goalInput = goalEl ? goalEl.value : "2";
             const typoInput = typoEl ? typoEl.value : "3";
@@ -1087,6 +1097,15 @@
 
                     psychPrompt = `\n11. 🧠 [DARK PSYCHOLOGY MODE ACTIVATED]: บังคับเขียนบทพากย์และข้อความฮุกแบบสะกดจิตคนดู โดย${psychDesc} (ใช้เทคนิคนี้บิ้วอารมณ์ให้เนียนที่สุด ห้ามให้คนดูรู้ตัวว่ากำลังถูกขายของ)`;
                 }
+                // [แทรกใหม่] ระบบประมวลผล UGC Realism & Stock
+                let ugcPrompt = "";
+                if (isUgcMode) {
+                    let stockPrompt = goalInput === '2' ? "Massive Stock: เนื่องจากเป็นโหมดขายของ ในฉากหลังต้องมีสินค้าวางเรียงรายจำนวนมาก (Stacked massive inventory) เพื่อสร้างความรู้สึกขายดี" : "";
+                    ugcPrompt = `\n12. 📦 [UGC REALISM & STOCK MODE ACTIVATED]: บังคับใช้คำสั่งต่อไปนี้ใน Image Prompt อย่างเคร่งครัด:
+   - Visual Style: บังคับใช้สไตล์ "Hyper-realistic photography, UGC style, shot on smartphone, raw aesthetic" เป็นค่าเริ่มต้นเพื่อความเรียล
+   - ${stockPrompt}
+   - The Pattern Interrupt: ทุกซีนต้องมีป้ายราคากระดาษสีขาวตัวหนังสือดำหรือแดงสด (Bright yellow paper tag) แปะอยู่ พร้อมระบุราคาหรือข้อความกำกับวันที่ และระบุไว้ว่า "ราคาเปลี่ยนเมื่อโปรโมชั่นหมด" (⚠️ หากไม่ระบุราคามาให้ ห้ามคิดเองเด็ดขาด ให้ใส่คำว่า "ลดล้างสต็อก" แทนลงไปในป้าย)`;
+                }
                 const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 [การตั้งค่าพื้นฐาน]
@@ -1100,7 +1119,7 @@ ${targetPromptMsg}
 8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
 9. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
 10. กฎเครื่องหมายวรรคตอนและภาษา: อนุญาตให้ใช้เครื่องหมาย , หรือ . ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
-${psychPrompt}
+${psychPrompt}${ugcPrompt}
 [การตั้งค่าภาพเพิ่มเติม]
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
 [ข้อมูลคลิป]
