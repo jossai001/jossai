@@ -384,7 +384,7 @@
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <select id="valDialect" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-teal-300 border-2 border-slate-700 shadow-inner">
                         <option value="กลาง">🇹🇭 ถิ่น: กลาง</option><option value="อีสาน">🌶️ ถิ่น: อีสาน</option>
-                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option><option value="ใต้">🌊 ถิ่น: ใต้</option>
+                        <option value="เหนือ">⛰️ ถิ่น: เหนือ</option><option value="ใต้">🌊 ถิ่น: ใต้</option><option value="อังกฤษ">🇺🇸 ภาษา: อังกฤษ (English)</option>
                     </select>
                     <select id="valTone" class="w-full glass-input rounded-xl p-3 text-sm outline-none font-bold text-orange-300 border-2 border-slate-700 shadow-inner">
                         <option value="2">💬 โทน: ธรรมชาติ</option><option value="4">🌶️ โทน: ปากแซ่บ</option>
@@ -1106,7 +1106,13 @@
    - ${stockPrompt}
    - The Pattern Interrupt: ทุกซีนต้องมีป้ายราคากระดาษสีขาวตัวหนังสือดำหรือแดงสด (Bright yellow paper tag) แปะอยู่ พร้อมระบุราคาหรือข้อความกำกับวันที่ และระบุไว้ว่า "ราคาเปลี่ยนเมื่อโปรโมชั่นหมด" (⚠️ หากไม่ระบุราคามาให้ ห้ามคิดเองเด็ดขาด ให้ใส่คำว่า "ลดล้างสต็อก" แทนลงไปในป้าย)`;
                 }
-                const enforcementPrompt = `
+                let langRuleOverride = 'และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%';
+                let systemOverride = '';
+                if (dialectInput === "อังกฤษ") {
+                    langRuleOverride = 'และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาอังกฤษ (English)" เท่านั้น 100%';
+                    systemOverride = '\n🚨 [CRITICAL OVERRIDE]: ยกเลิกกฎข้อ 7 (STRICT THAI) และกฎห้ามใช้ภาษาอังกฤษทั้งหมดในระบบหลัก! สำหรับรอบนี้ บังคับให้บทพากย์, ฮุกหน้าปก และแคปชั่น เป็น "ภาษาอังกฤษ (English)" ล้วน 100%';
+                }
+               const enforcementPrompt = `
 🚨 [UI PAYLOAD: คำสั่งเด็ดขาดจากผู้ใช้ (บังคับทำตาม 100%)] 🚨
 [การตั้งค่าพื้นฐาน]
 1. โครงสร้างคลิป/แนวทางไวรัล (Viral Concept): บังคับนำเสนอในรูปแบบ "${viralTrend}" (นำโครงสร้างนี้มาประยุกต์เข้ากับสินค้า/ไอเดียหลักอย่างแนบเนียน)
@@ -1117,8 +1123,8 @@ ${targetPromptMsg}
 6. สไตล์ภาพหลัก: บังคับสไตล์ "${styleName}" 
 7. ลักษณะตัวละคร: ${characterRule}
 8. ⚠️ ระดับภาษา/โทนเสียง: โทน "${toneName}" (AI ต้องสวมบทบาทเขียนบทสนทนาตามโทนนี้เป๊ะๆ ห้ามใช้คำสุภาพหากเลือกโหมด 3 หรือ 4 เด็ดขาด)
-9. ภาษาถิ่น: บังคับใช้ภาษาถิ่น "${dialectInput}" ในบทพูด
-10. กฎเครื่องหมายวรรคตอนและภาษา: อนุญาตให้ใช้เครื่องหมาย , หรือ . ในบทพูดเด็ดขาด และข้อความ/บทพูดทั้งหมดต้องเป็น "ภาษาไทย" เท่านั้น 100%
+9. ภาษา/ภาษาถิ่น: บังคับใช้ภาษา "${dialectInput}" ในบทพูด
+10. กฎเครื่องหมายวรรคตอนและภาษา: อนุญาตให้ใช้เครื่องหมาย , หรือ . ในบทพูดเด็ดขาด ${langRuleOverride} ${systemOverride}
 ${psychPrompt}${ugcPrompt}
 [การตั้งค่าภาพเพิ่มเติม]
 [การตั้งค่าภาพเพิ่มเติม]${customStylePrompt !== "" ? customStylePrompt : "\n   - ไม่มีระบุเพิ่มเติม (ให้ AI จัดการให้เหมาะสมตามสไตล์ภาพหลัก)"}
